@@ -25,10 +25,12 @@ export const fontsTheme = {
   ButtonBig: {
     ...Inter_500Medium,
     fontSize: 16,
+    color: colorsTheme.white
   },
   ButtonSmall: {
     ...Inter_500Medium,
     fontSize: 14,
+    color: colorsTheme.white
   },
   TextBig: {
     ...Inter_400Regular,
