@@ -4,6 +4,7 @@ import { general } from "../styles/general";
 import CustomInputText from "../components/CustomInputText";
 import CustomInputDate from "../components/CustomInputDate";
 import CustomInputDropdown from "../components/CustomInputDropdown";
+import CustomInputColor from "../components/CustomInputColor";
 
 const main = () => {
   const [nombre, setNombre] = useState("");
@@ -14,10 +15,11 @@ const main = () => {
   const [presupuesto, setPresupuesto] = useState("");
   const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState("");
+  const [color, setColor] = useState("#ffffff");
 
   return (
     <View style={general.safeArea}>
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           gap: 10,
@@ -71,6 +73,12 @@ const main = () => {
         label={"Categoria"}
         value={category}
         setValue={setCategory}
+      /> */}
+      <CustomInputColor
+        label={"Color"}
+        placeholder={"Selecciona un color"}
+        color={color}
+        setColor={setColor}
       />
     </View>
   );

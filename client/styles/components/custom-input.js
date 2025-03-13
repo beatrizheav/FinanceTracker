@@ -60,4 +60,15 @@ export const customInput = StyleSheet.create({
   placeholder: {
     color: colorsTheme.blackWithOpacity,
   },
+  //Color
+  colorPickerContainer: {
+    width: 300,
+    height: 370,
+    paddingBottom: 15,
+  },
+  barColor: {
+    width: "80%",
+    height: 20,
+    borderRadius: 10,
+  },
 });
