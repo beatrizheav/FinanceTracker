@@ -4,8 +4,9 @@ export const colorsTheme = {
   lightGreen: "#53BB53",
   teal: "#067580",
   darkGreen: "#466146",
-  darkGreenWithOpacity: "rgba(70, 97, 70, 0.8)",
   black: "#2F3743",
   white: "#FDFDFD",
   lightGray: "#ECF1F6",
+  darkGreenWithOpacity: "rgba(25, 59, 25, 0.6)", // Fondos modales
+  blackWithOpacity: "rgba(47, 55, 67, 0.4)", // Placehodlers
 };

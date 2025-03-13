@@ -19,6 +19,9 @@ export const customInput = StyleSheet.create({
   textInput: {
     flex: 1,
   },
+  placeholderColor: {
+    color: colorsTheme.blackWithOpacity,
+  },
   textInputParagraph: {
     textAlignVertical: "top",
     paddingTop: 10,
@@ -26,6 +29,7 @@ export const customInput = StyleSheet.create({
   directionRow: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
   icon: {
     justifyContent: "center",
@@ -34,11 +38,13 @@ export const customInput = StyleSheet.create({
   paragraph: {
     height: 80,
   },
+  //Date
   modalBackground: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colorsTheme.darkGreenWithOpacity,
+    zIndex: 1,
   },
   modalContainer: {
     backgroundColor: "white",
@@ -46,5 +52,12 @@ export const customInput = StyleSheet.create({
     borderRadius: 10,
     width: "80%",
     alignItems: "center",
+  },
+  //Dropdown
+  dropContainer: {
+    borderRadius: 10,
+  },
+  placeholder: {
+    color: colorsTheme.blackWithOpacity,
   },
 });
