@@ -34,4 +34,17 @@ export const customInput = StyleSheet.create({
   paragraph: {
     height: 80,
   },
+  modalBackground: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: colorsTheme.darkGreenWithOpacity,
+  },
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    width: "80%",
+    alignItems: "center",
+  },
 });

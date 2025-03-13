@@ -1,12 +1,13 @@
 import { View, Text } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { general } from "../styles/general";
+import { Button } from "react-native";
 import CustomInput from "../components/CustomInput";
 
 const main = () => {
   return (
     <View style={general.safeArea}>
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           gap: 10,
@@ -33,7 +34,7 @@ const main = () => {
         label={"Descripción"}
         placeholder={"Ingresa una descripción"}
         type={"paragraph"}
-      />
+      /> */}
       <CustomInput
         label={"Prespuesto"}
         placeholder={"Ingresa el presupuesto"}
