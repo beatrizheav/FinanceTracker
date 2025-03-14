@@ -1,9 +1,10 @@
-import { Text, TouchableOpacity } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import React from 'react'
 import { customButton } from '../styles/components/custom-button'
+import CustomTitle from './CustomTitle';
 
-const Button = ({onPress, title, background, type}) => {
-  const backgroundStyle = background === 'green' 
+const CustomButton = ({onPress, title, background, type}) => {
+  const backgroundStyle = background === 'green'
     ? customButton.green
     : customButton.white;
   
@@ -11,14 +12,21 @@ const Button = ({onPress, title, background, type}) => {
     ? customButton.modal
     : null;
 
+  const typeTitle = background === 'white'
+    ? 'ButtonSmallGreen'
+    : type === 'modal' && background === 'green'
+    ? 'ButtonSmall'
+    : 'ButtonBig'
+
   return (
       <TouchableOpacity 
         onPress={onPress}
         style={[customButton.container, backgroundStyle, typeStyle]}
       >
-        <Text>{title}</Text>
+        <CustomTitle title={title} type={typeTitle}
+        />
       </TouchableOpacity>
   )
 }
 
-export default Button
+export default CustomButton
