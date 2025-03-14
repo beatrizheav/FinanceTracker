@@ -9,8 +9,6 @@ export const header = StyleSheet.create({
     height: "20%",
     paddingHorizontal: 15,
     backgroundColor: colorsTheme.white,
-    borderBottomWidth: 3,
-    borderBottomColor: colorsTheme.lightGray,
   },
   button: {
     padding: 10,
