@@ -1,10 +1,11 @@
 import { View } from "react-native";
 import React, { useState } from "react";
 import { general } from "../styles/general";
-import CustomInputText from "../components/CustomInputText";
-import CustomInputDate from "../components/CustomInputDate";
-import CustomInputDropdown from "../components/CustomInputDropdown";
-import CustomInputColor from "../components/CustomInputColor";
+import CustomInput from "../components/CustomInput";
+import DatePicker from "../components/DatePicker";
+import DropdownSelect from "../components/DropdownSelect";
+import ColorPicker from "../components/ColorPicker";
+import IconPicker from "../components/IconPicker";
 
 const main = () => {
   const [nombre, setNombre] = useState("");
@@ -16,23 +17,24 @@ const main = () => {
   const [date, setDate] = useState(new Date());
   const [category, setCategory] = useState("");
   const [color, setColor] = useState("#ffffff");
+  const [icon, setIcon] = useState(null);
 
   return (
     <View style={general.safeArea}>
-      {/* <View
+      <View
         style={{
           flexDirection: "row",
           gap: 10,
         }}
       >
-        <CustomInputText
+        <CustomInput
           label={"Nombre"}
           placeholder={"Nombre"}
           type={"text"}
           value={nombre}
           onChange={setNombre}
         />
-        <CustomInputText
+        <CustomInput
           label={"Apellido"}
           placeholder={"Apellido"}
           type={"text"}
@@ -40,46 +42,49 @@ const main = () => {
           onChange={setApellido}
         />
       </View>
-      <CustomInputText
+      <CustomInput
         label={"Contraseña"}
         placeholder={"Ingresa una contraseña"}
         type={"password"}
         value={password}
         onChange={setPassword}
       />
-      <CustomInputText
+      <CustomInput
         label={"Correo electronico"}
         placeholder={"Ingresa tu correo electronico"}
         type={"email"}
         value={email}
         onChange={setEmail}
       />
-      <CustomInputText
+      <CustomInput
         label={"Descripción"}
         placeholder={"Ingresa una descripción"}
         type={"paragraph"}
         value={paragraph}
         onChange={setParagraph}
       />
-      <CustomInputText
+      <CustomInput
         label={"Presupuesto"}
         placeholder={"Ingresa el presupuesto"}
         type={"number"}
         value={presupuesto}
         onChange={setPresupuesto}
       />
-      <CustomInputDate label={"Fecha"} date={date} setDate={setDate} />
-      <CustomInputDropdown
+      <DatePicker label={"Fecha"} date={date} setDate={setDate} />
+      <DropdownSelect
         label={"Categoria"}
         value={category}
         setValue={setCategory}
-      /> */}
-      <CustomInputColor
-        label={"Color"}
-        placeholder={"Selecciona un color"}
-        color={color}
-        setColor={setColor}
       />
+      <View
+        style={{
+          flexDirection: "row",
+          gap: 10,
+        }}
+      >
+        <ColorPicker color={color} setColor={setColor} />
+        <IconPicker icon={icon} setIcon={setIcon} />
+      </View>
     </View>
   );
 };
