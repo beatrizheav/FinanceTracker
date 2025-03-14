@@ -7,6 +7,7 @@ export const colorsTheme = {
   black: "#2F3743",
   white: "#FDFDFD",
   lightGray: "#ECF1F6",
+  mediumGray: "#B0B0B0",
   darkGreenWithOpacity: "rgba(25, 59, 25, 0.6)", // Fondos modales
   blackWithOpacity: "rgba(47, 55, 67, 0.4)", // Placehodlers
 };

@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { colorsTheme } from "../colorsTheme";
 
-export const customInput = StyleSheet.create({
+export const inputs = StyleSheet.create({
   wrapper: {
     flex: 1,
   },
@@ -16,29 +16,30 @@ export const customInput = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 16,
   },
-  textInput: {
-    flex: 1,
-  },
-  placeholderColor: {
-    color: colorsTheme.blackWithOpacity,
-  },
-  textInputParagraph: {
-    textAlignVertical: "top",
-    paddingTop: 10,
+  containerSquare: {
+    height: 80,
+    width: 80,
+    justifyContent: "center",
   },
   directionRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  icon: {
+  inputIcon: {
     justifyContent: "center",
     paddingHorizontal: 5,
   },
-  paragraph: {
+  placeholderColor: {
+    color: colorsTheme.blackWithOpacity,
+  },
+  inputParagraph: {
     height: 80,
   },
-  //Date
+  textInputParagraphNumber: {
+    flex: 1,
+    textAlignVertical: "top",
+  },
   modalBackground: {
     flex: 1,
     justifyContent: "center",
@@ -47,28 +48,10 @@ export const customInput = StyleSheet.create({
     zIndex: 1,
   },
   modalContainer: {
-    backgroundColor: "white",
+    backgroundColor: colorsTheme.white,
     padding: 20,
     borderRadius: 10,
-    width: "80%",
+    width: 350,
     alignItems: "center",
-  },
-  //Dropdown
-  dropContainer: {
-    borderRadius: 10,
-  },
-  placeholder: {
-    color: colorsTheme.blackWithOpacity,
-  },
-  //Color
-  colorPickerContainer: {
-    width: 300,
-    height: 370,
-    paddingBottom: 15,
-  },
-  barColor: {
-    width: "80%",
-    height: 20,
-    borderRadius: 10,
   },
 });

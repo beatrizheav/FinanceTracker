@@ -3,7 +3,7 @@ import { View, Modal, Text, TouchableOpacity, Platform } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import { format, isToday } from "date-fns";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import { customInput } from "../styles/components/custom-input";
+import { inputs } from "../styles/components/inputs";
 import { fontsTheme } from "../styles/fontsTheme";
 import { colorsTheme } from "../styles/colorsTheme";
 
@@ -19,8 +19,8 @@ const DatePickerModal = ({ show, setShow, date, onChange }) => {
 
   return Platform.OS === "ios" ? (
     <Modal visible={show} animationType="fade" transparent>
-      <View style={customInput.modalBackground}>
-        <View style={customInput.modalContainer}>
+      <View style={inputs.modalBackground}>
+        <View style={inputs.modalContainer}>
           <DateTimePicker {...datePickerProps} />
           <TouchableOpacity onPress={() => setShow(false)}>
             <Text>Select Date</Text>
@@ -33,7 +33,7 @@ const DatePickerModal = ({ show, setShow, date, onChange }) => {
   );
 };
 
-const CustomInputDate = ({ label, date, setDate }) => {
+const DatePicker = ({ label, date, setDate }) => {
   const [show, setShow] = useState(false);
 
   const onChange = (event, selectedDate) => {
@@ -47,10 +47,10 @@ const CustomInputDate = ({ label, date, setDate }) => {
   const formattedDate = isToday(date) ? "Today" : format(date, "MMMM dd, yyyy");
 
   return (
-    <View style={customInput.wrapper}>
+    <View style={inputs.wrapper}>
       <Text style={fontsTheme.TitleSmall}>{label}</Text>
       <TouchableOpacity
-        style={[customInput.container, customInput.directionRow]}
+        style={[inputs.container, inputs.directionRow]}
         onPress={() => setShow((prevState) => !prevState)}
         accessible={true}
         accessibilityLabel="Open Date Picker"
@@ -69,8 +69,8 @@ const CustomInputDate = ({ label, date, setDate }) => {
   );
 };
 
-CustomInputDate.defaultProps = {
+DatePicker.defaultProps = {
   date: new Date(),
 };
 
-export default CustomInputDate;
+export default DatePicker;

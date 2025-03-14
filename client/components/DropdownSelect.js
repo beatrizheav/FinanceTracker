@@ -2,7 +2,8 @@ import React, { useState, useCallback } from "react";
 import { Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import Entypo from "@expo/vector-icons/Entypo";
-import { customInput } from "../styles/components/custom-input";
+import { inputs } from "../styles/components/inputs";
+import { dropdownSelect } from "../styles/components/dropdown-select";
 import { colorsTheme } from "../styles/colorsTheme";
 import { fontsTheme } from "../styles/fontsTheme";
 
@@ -17,7 +18,7 @@ const data = [
   { label: "Item 8", value: "8" },
 ];
 
-const DropdownComponent = ({ label, value, setValue }) => {
+const DropdownSelect = ({ label, value, setValue }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const renderChevronIcon = useCallback(
@@ -27,13 +28,13 @@ const DropdownComponent = ({ label, value, setValue }) => {
     []
   );
 
-  const placeholderStyles = [fontsTheme.TextSmall, customInput.placeholder];
+  const placeholderStyles = [fontsTheme.TextSmall, dropdownSelect.placeholder];
 
   return (
-    <View style={customInput.wrapper}>
+    <View style={inputs.wrapper}>
       <Text style={fontsTheme.TitleSmall}>{label}</Text>
       <Dropdown
-        style={[customInput.container]}
+        style={[inputs.container]}
         mode="modal"
         placeholderStyle={placeholderStyles}
         selectedTextStyle={fontsTheme.TextSmall}
@@ -48,11 +49,11 @@ const DropdownComponent = ({ label, value, setValue }) => {
           setIsFocus(false);
         }}
         itemTextStyle={fontsTheme.TextSmall}
-        containerStyle={customInput.dropContainer}
+        containerStyle={dropdownSelect.dropContainer}
         renderRightIcon={renderChevronIcon}
       />
     </View>
   );
 };
 
-export default DropdownComponent;
+export default DropdownSelect;

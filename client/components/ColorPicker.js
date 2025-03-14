@@ -7,8 +7,9 @@ import {
   Modal,
 } from "react-native";
 import ColorPicker from "react-native-wheel-color-picker";
-import Entypo from "@expo/vector-icons/Entypo";
-import { customInput } from "../styles/components/custom-input";
+import AntDesign from "@expo/vector-icons/AntDesign";
+import { inputs } from "../styles/components/inputs";
+import { colorPicker } from "../styles/components/color-picker";
 import { fontsTheme } from "../styles/fontsTheme";
 import { colorsTheme } from "../styles/colorsTheme";
 
@@ -21,9 +22,11 @@ const ColorPickerModal = ({
 }) => {
   return (
     <Modal visible={show} animationType="fade" transparent>
-      <View style={customInput.modalBackground}>
-        <View style={[customInput.modalContainer]}>
-          <View style={customInput.colorPickerContainer}>
+      <View style={inputs.modalBackground}>
+        <View
+          style={[inputs.modalContainer, colorPicker.colorPickerModalContainer]}
+        >
+          <View style={inputs.colorPickerContainer}>
             <ColorPicker
               color={color}
               onColorChange={onChange}
@@ -39,6 +42,7 @@ const ColorPickerModal = ({
               sliderLodingIndicator={<ActivityIndicator size={20} />}
               useNativeDriver={false}
               useNativeLayout={false}
+              style={colorPicker.colorPicker}
             />
           </View>
           <TouchableOpacity onPress={() => setShow(false)}>
@@ -50,7 +54,7 @@ const ColorPickerModal = ({
   );
 };
 
-const CustomInputColor = ({ label, placeholder, color, setColor }) => {
+const ColorPickerComponent = ({ color, setColor }) => {
   const [show, setShow] = useState(false);
 
   const onColorChange = (color) => {
@@ -60,22 +64,24 @@ const CustomInputColor = ({ label, placeholder, color, setColor }) => {
   const background = { backgroundColor: color };
 
   return (
-    <View style={customInput.wrapper}>
-      <Text style={fontsTheme.TitleSmall}>{label}</Text>
+    <View style={inputs.wrapper}>
+      <Text style={fontsTheme.TitleSmall}>Selecciona un color</Text>
       <TouchableOpacity
-        style={[customInput.container, customInput.directionRow]}
+        style={[inputs.container, inputs.directionRow, inputs.containerSquare]}
         onPress={() => setShow(!show)}
         accessible={true}
         accessibilityLabel="Open Date Picker"
         accessibilityRole="button"
       >
         {color !== "#ffffff" ? (
-          <View style={[customInput.barColor, background]} />
+          <View style={[colorPicker.circleColor, background]} />
         ) : (
-          <Text style={fontsTheme.TextSmall}>{placeholder}</Text>
+          <AntDesign
+            name="pluscircleo"
+            size={40}
+            color={colorsTheme.mediumGray}
+          />
         )}
-
-        <Entypo name="chevron-thin-right" size={17} color={colorsTheme.black} />
       </TouchableOpacity>
       {show && (
         <ColorPickerModal
@@ -88,4 +94,4 @@ const CustomInputColor = ({ label, placeholder, color, setColor }) => {
   );
 };
 
-export default CustomInputColor;
+export default ColorPickerComponent;

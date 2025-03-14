@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import { customInput } from "../styles/components/custom-input";
+import { inputs } from "../styles/components/inputs";
 import { fontsTheme } from "../styles/fontsTheme";
 import { colorsTheme } from "../styles/colorsTheme";
 
@@ -25,22 +25,22 @@ export default function CustomInputText({
     }[type] || "default";
 
   const inputContainer = [
-    customInput.container,
-    (type === "password" || type === "number") && customInput.directionRow,
-    type === "paragraph" && customInput.paragraph,
+    inputs.container,
+    (type === "password" || type === "number") && inputs.directionRow,
+    type === "paragraph" && inputs.inputParagraph,
   ];
 
   const textInputStyle = [
-    customInput.textInput,
-    type === "paragraph" && customInput.textInputParagraph,
+    (type === "paragraph" || type === "number") &&
+      inputs.textInputParagraphNumber,
   ];
 
   return (
-    <View style={customInput.wrapper}>
+    <View style={inputs.wrapper}>
       <Text style={fontsTheme.TitleSmall}>{label}</Text>
       <View style={inputContainer}>
         {type === "number" && (
-          <View style={customInput.icon}>
+          <View style={inputs.inputIcon}>
             <FontAwesome6 name="dollar" size={12} color={colorsTheme.black} />
           </View>
         )}
@@ -60,7 +60,7 @@ export default function CustomInputText({
         {type === "password" && (
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
-            style={customInput.icon}
+            style={inputs.inputIcon}
           >
             <Entypo
               name={showPassword ? "eye" : "eye-with-line"}
