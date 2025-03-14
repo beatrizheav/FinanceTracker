@@ -6,6 +6,7 @@ import DatePicker from "../components/DatePicker";
 import DropdownSelect from "../components/DropdownSelect";
 import ColorPicker from "../components/ColorPicker";
 import IconPicker from "../components/IconPicker";
+import AvatarPicker from "../components/AvatarPicker";
 
 const main = () => {
   const [nombre, setNombre] = useState("");
@@ -18,10 +19,11 @@ const main = () => {
   const [category, setCategory] = useState("");
   const [color, setColor] = useState("#ffffff");
   const [icon, setIcon] = useState(null);
+  const [avatar, setAvatar] = useState(null);
 
   return (
     <View style={general.safeArea}>
-      <View
+      {/* <View
         style={{
           flexDirection: "row",
           gap: 10,
@@ -84,7 +86,11 @@ const main = () => {
       >
         <ColorPicker color={color} setColor={setColor} />
         <IconPicker icon={icon} setIcon={setIcon} />
-      </View>
+      </View> */}
+      <AvatarPicker
+        avatarSelected={avatar}
+        setAvatar={(avatarSrc) => setAvatar(avatarSrc)}
+      />
     </View>
   );
 };
