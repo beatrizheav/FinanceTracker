@@ -5,15 +5,17 @@ export const datepickerDropdown = StyleSheet.create({
     padding: 20,
   },
   dropdownButton: {
-    backgroundColor: "#fff",
-    padding: 10,
+    paddingVertical: 10,
     borderRadius: 8,
-    borderWidth: 1,
-    borderColor: "#ccc",
+    alignItems: "center",
+    width: "50%",
     alignItems: "center",
   },
   dropdownButtonText: {
     fontSize: 16,
+  },
+  dateButtonsContainer: {
+    flexDirection: "row",
   },
   dropdownList: {
     marginTop: 5,
@@ -21,6 +23,11 @@ export const datepickerDropdown = StyleSheet.create({
     backgroundColor: "white",
     borderWidth: 1,
     borderColor: "#ccc",
+  },
+  dropDownContainer: {
+    position: "absolute",
+    top: "50",
+    width: "100%",
   },
   monthItem: {
     flex: 1,
