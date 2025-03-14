@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   Image,
@@ -8,16 +8,28 @@ import {
   View,
 } from "react-native";
 import { CameraView, CameraType, useCameraPermissions } from "expo-camera";
+import * as ImagePicker from "expo-image-picker";
 
 const ImagePickerComponent = () => {
   const [facing, setFacing] = useState("back");
   const [permission, requestPermission] = useCameraPermissions();
   const [photo, setPhoto] = useState(null);
+  const [galleryPermission, setGalleryPermission] = useState(null);
 
-  // Handle permission loading
-  if (!permission) return <View />;
+  // Handle camera permissions
+  useEffect(() => {
+    const getPermissions = async () => {
+      const galleryPermissionResult =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      setGalleryPermission(galleryPermissionResult.status === "granted");
+    };
+    getPermissions();
+  }, []);
 
-  // Ask for permission if not granted
+  // Handle camera permission loading
+  if (!permission || galleryPermission === null) return <View />;
+
+  // Ask for camera permission if not granted
   if (!permission.granted) {
     return (
       <View style={styles.container}>
@@ -25,6 +37,21 @@ const ImagePickerComponent = () => {
           We need your permission to access the camera.
         </Text>
         <Button onPress={requestPermission} title="Grant Permission" />
+      </View>
+    );
+  }
+
+  // Ask for gallery permission if not granted
+  if (!galleryPermission) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.message}>
+          We need your permission to access the gallery.
+        </Text>
+        <Button
+          onPress={() => ImagePicker.requestMediaLibraryPermissionsAsync()}
+          title="Grant Gallery Permission"
+        />
       </View>
     );
   }
@@ -46,13 +73,30 @@ const ImagePickerComponent = () => {
     setPhoto(null);
   };
 
+  // Function to pick an image from the gallery
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ["images"], // Correct usage
+      allowsEditing: false,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    const uri = result.assets[0]?.uri;
+    console.log(uri);
+
+    if (!result.canceled) {
+      setPhoto(uri);
+    }
+  };
+
   return (
     <View style={styles.container}>
       {photo ? (
         <View style={styles.container}>
           <Image source={{ uri: photo }} style={styles.preview} />
           <TouchableOpacity style={styles.button} onPress={takeNewPhoto}>
-            <Text style={styles.text}>Take a New Photo</Text>
+            <Text style={styles.text}>New Photo</Text>
           </TouchableOpacity>
         </View>
       ) : (
@@ -75,6 +119,12 @@ const ImagePickerComponent = () => {
               onPress={() => takePicture(this.camera)}
             >
               <Text style={styles.text}>Take Picture</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={pickImage} // Open the gallery to pick an image
+            >
+              <Text style={styles.text}>Pick From Gallery</Text>
             </TouchableOpacity>
           </View>
         </CameraView>
@@ -118,7 +168,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   preview: {
-    height: "80%",
+    height: "60%",
     width: "80%",
     borderRadius: 10,
   },
