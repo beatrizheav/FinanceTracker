@@ -7,6 +7,7 @@ import DropdownSelect from "../components/DropdownSelect";
 import ColorPicker from "../components/ColorPicker";
 import IconPicker from "../components/IconPicker";
 import AvatarPicker from "../components/AvatarPicker";
+import ImagePickerComponent from "../components/ImagePicker";
 
 const main = () => {
   const [nombre, setNombre] = useState("");
@@ -87,10 +88,11 @@ const main = () => {
         <ColorPicker color={color} setColor={setColor} />
         <IconPicker icon={icon} setIcon={setIcon} />
       </View> */}
-      <AvatarPicker
+      {/* <AvatarPicker
         avatarSelected={avatar}
         setAvatar={(avatarSrc) => setAvatar(avatarSrc)}
-      />
+      /> */}
+      <ImagePickerComponent />
     </View>
   );
 };
