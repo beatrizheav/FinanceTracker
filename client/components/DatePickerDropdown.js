@@ -4,7 +4,7 @@ import { datepickerDropdown } from "../styles/components/date-picker-dropdown";
 import { fontsTheme } from "../styles/fontsTheme";
 import { currentMonth, currentYear, months } from "../constants/getDate";
 
-const DateAndYearPicker = ({ onChange }) => {
+const DatePickerDropdown = ({ onChange }) => {
   const [selectedMonth, setSelectedMonth] = useState(months[currentMonth]);
   const [selectedYear, setSelectedYear] = useState(currentYear);
   const [dropdownVisible, setDropdownVisible] = useState(null);
@@ -96,4 +96,4 @@ const DateAndYearPicker = ({ onChange }) => {
   );
 };
 
-export default DateAndYearPicker;
+export default DatePickerDropdown;
