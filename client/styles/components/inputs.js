@@ -20,6 +20,7 @@ export const inputs = StyleSheet.create({
     height: 80,
     width: 80,
     justifyContent: "center",
+    alignItems: "center",
   },
   directionRow: {
     flexDirection: "row",

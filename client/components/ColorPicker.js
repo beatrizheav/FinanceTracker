@@ -63,6 +63,8 @@ const ColorPickerComponent = ({ color, setColor }) => {
 
   const background = { backgroundColor: color };
 
+  const colorShowed = color ? color : "#ffffff";
+
   return (
     <View style={inputs.wrapper}>
       <Text style={fontsTheme.TitleSmall}>Selecciona un color</Text>
@@ -73,7 +75,7 @@ const ColorPickerComponent = ({ color, setColor }) => {
         accessibilityLabel="Open Date Picker"
         accessibilityRole="button"
       >
-        {color !== "#ffffff" ? (
+        {color ? (
           <View style={[colorPicker.circleColor, background]} />
         ) : (
           <AntDesign
@@ -85,7 +87,7 @@ const ColorPickerComponent = ({ color, setColor }) => {
       </TouchableOpacity>
       {show && (
         <ColorPickerModal
-          color={color}
+          color={colorShowed}
           onChange={onColorChange}
           setShow={setShow}
         />
