@@ -21,6 +21,7 @@ const main = () => {
   const [color, setColor] = useState("#ffffff");
   const [icon, setIcon] = useState(null);
   const [avatar, setAvatar] = useState(null);
+  const [image, setImage] = useState(null);
 
   return (
     <View style={general.safeArea}>
@@ -92,7 +93,7 @@ const main = () => {
         avatarSelected={avatar}
         setAvatar={(avatarSrc) => setAvatar(avatarSrc)}
       /> */}
-      <ImagePickerComponent />
+      <ImagePickerComponent image={image} setImage={setImage} />
     </View>
   );
 };
