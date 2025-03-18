@@ -11,9 +11,11 @@
     "test": "jest --watchAll",
     "lint": "expo lint"
   },
-    "jest": {
+  "jest": {
     "preset": "jest-expo",
-    "setupFiles": ["<rootDir>/jest.setup.js"],
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ],
     "clearMocks": true
   },
   "dependencies": {
@@ -21,6 +23,7 @@
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/bottom-tabs": "^7.2.0",
     "@react-navigation/native": "^7.0.14",
+    "date-fns": "^4.1.0",
     "expo": "~52.0.37",
     "expo-blur": "~14.0.3",
     "expo-constants": "~17.0.7",
