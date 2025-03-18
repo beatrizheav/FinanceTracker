@@ -18,9 +18,19 @@ export const fontsTheme = {
     ...Inter_700Bold,
     fontSize: 18,
   },
+  TitleMediumWhite: {
+    ...Inter_700Bold,
+    fontSize: 18,
+    color: colorsTheme.white
+  },
   TitleSmall: {
     ...Inter_700Bold,
     fontSize: 14,
+  },
+  TitleSmallWhite: {
+    ...Inter_700Bold,
+    fontSize: 14,
+    color: colorsTheme.white
   },
   ButtonBig: {
     ...Inter_500Medium,
@@ -45,4 +55,7 @@ export const fontsTheme = {
     ...Inter_400Regular,
     fontSize: 12,
   },
+  whiteColor: {
+    color: colorsTheme.white,
+  }
 };
