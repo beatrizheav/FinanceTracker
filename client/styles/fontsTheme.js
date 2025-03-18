@@ -18,17 +18,34 @@ export const fontsTheme = {
     ...Inter_700Bold,
     fontSize: 18,
   },
+  TitleMediumWhite: {
+    ...Inter_700Bold,
+    fontSize: 18,
+    color: colorsTheme.white
+  },
   TitleSmall: {
     ...Inter_700Bold,
     fontSize: 14,
   },
+  TitleSmallWhite: {
+    ...Inter_700Bold,
+    fontSize: 14,
+    color: colorsTheme.white
+  },
   ButtonBig: {
     ...Inter_500Medium,
     fontSize: 16,
+    color: colorsTheme.white
   },
   ButtonSmall: {
     ...Inter_500Medium,
     fontSize: 14,
+    color: colorsTheme.white
+  },
+  ButtonSmallGreen: {
+    ...Inter_500Medium,
+    fontSize: 14,
+    color: colorsTheme.darkGreen
   },
   TextBig: {
     ...Inter_400Regular,
@@ -38,4 +55,7 @@ export const fontsTheme = {
     ...Inter_400Regular,
     fontSize: 12,
   },
+  whiteColor: {
+    color: colorsTheme.white,
+  }
 };
