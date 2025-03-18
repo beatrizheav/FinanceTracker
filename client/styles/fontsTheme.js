@@ -51,9 +51,29 @@ export const fontsTheme = {
     ...Inter_400Regular,
     fontSize: 14,
   },
+  TextBigGreen: {
+    ...Inter_400Regular,
+    fontSize: 14,
+    color: colorsTheme.lightGreen
+  },
+  TextBigRed: {
+    ...Inter_400Regular,
+    fontSize: 14,
+    color: colorsTheme.red
+  },
+  TextBigTeal: {
+    ...Inter_400Regular,
+    fontSize: 14,
+    color: colorsTheme.teal
+  },
   TextSmall: {
     ...Inter_400Regular,
     fontSize: 12,
+  },
+  TextSmallGray: {
+    ...Inter_400Regular,
+    fontSize: 12,
+    color: colorsTheme.darkGray,
   },
   whiteColor: {
     color: colorsTheme.white,
