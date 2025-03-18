@@ -6,7 +6,7 @@ import { inputs } from "../styles/components/inputs";
 import { fontsTheme } from "../styles/fontsTheme";
 import { colorsTheme } from "../styles/colorsTheme";
 
-export default function CustomInputText({
+export default function CustomInput({
   type,
   label,
   placeholder,
@@ -36,11 +36,13 @@ export default function CustomInputText({
   ];
 
   return (
-    <View style={inputs.wrapper}>
-      <Text style={fontsTheme.TitleSmall}>{label}</Text>
-      <View style={inputContainer}>
+    <View style={inputs.wrapper} testID="input-wrapper">
+      <Text style={fontsTheme.TitleSmall} testID="input-label">
+        {label}
+      </Text>
+      <View style={inputContainer} testID="input-container">
         {type === "number" && (
-          <View style={inputs.inputIcon}>
+          <View style={inputs.inputIcon} testID="input-icon">
             <FontAwesome6 name="dollar" size={12} color={colorsTheme.black} />
           </View>
         )}
@@ -56,11 +58,13 @@ export default function CustomInputText({
           keyboardType={keyboardType}
           autoCapitalize="none"
           multiline={type === "paragraph"}
+          testID="input-field"
         />
         {type === "password" && (
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
             style={inputs.inputIcon}
+            testID="eye-icon"
           >
             <Entypo
               name={showPassword ? "eye" : "eye-with-line"}
