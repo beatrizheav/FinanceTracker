@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import {
-  Button,
   Image,
-  StyleSheet,
   Text,
   TouchableOpacity,
   View,
@@ -11,55 +9,63 @@ import {
 } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
-import { inputs } from "../styles/components/inputs";
-import { fontsTheme } from "../styles/fontsTheme";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { colorsTheme } from "../styles/colorsTheme";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Entypo from "@expo/vector-icons/Entypo";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import { colorsTheme } from "../styles/colorsTheme";
+import CustomButton from "./CustomButton";
+import CustomText from "./CustomText";
+import { imagePicker } from "../styles/components/image-picker";
+import { inputs } from "../styles/components/inputs";
+import { fontsTheme } from "../styles/fontsTheme";
 
 const ImageModal = ({ image, setShowImage }) => (
   <Modal>
     <CloseButton onClose={() => setShowImage(false)} />
-    <Image source={{ uri: image }} style={styles.imageViewModal} />
-  </Modal>
-);
-
-const PermissionRequest = ({ message, onRequest }) => (
-  <Modal>
-    <View style={{ height: "50%", width: "100%", backgroundColor: "red" }}>
-      <Text style={styles.message}>{message}</Text>
-      <Button onPress={onRequest} title="Conceder Permiso" />
-    </View>
+    <Image source={{ uri: image }} style={imagePicker.imageViewModal} />
   </Modal>
 );
 
 const CloseButton = ({ onClose }) => (
   <View
     style={[
-      styles.overlayTop,
+      imagePicker.overlayTop,
       Platform.OS === "android"
-        ? styles.overlayTopAndroid
-        : styles.overlayTopiOS,
+        ? imagePicker.overlayTopAndroid
+        : imagePicker.overlayTopiOS,
     ]}
   >
-    <TouchableOpacity style={styles.button} onPress={onClose}>
+    <TouchableOpacity style={imagePicker.button} onPress={onClose}>
       <AntDesign name="close" size={25} color={colorsTheme.mediumGray} />
     </TouchableOpacity>
   </View>
 );
 
+const PermissionRequest = ({ message, onRequest }) => (
+  <Modal>
+    <View style={imagePicker.permissionContainer}>
+      <CustomText type={"TitleSmall"} text={message} />
+      <CustomButton
+        title={"Conceder permiso"}
+        background={"green"}
+        type={"modal"}
+        onPress={onRequest}
+      />
+    </View>
+  </Modal>
+);
+
 const CameraControls = ({ onFlip, onCapture, onPickImage, cameraRef }) => (
   <View
     style={[
-      styles.overlayBottom,
+      imagePicker.overlayBottom,
       Platform.OS === "android"
-        ? styles.overlayBottomAndroid
-        : styles.overlayBottomiOS,
+        ? imagePicker.overlayBottomAndroid
+        : imagePicker.overlayBottomiOS,
     ]}
   >
-    <TouchableOpacity style={styles.button} onPress={onFlip}>
+    <TouchableOpacity style={imagePicker.button} onPress={onFlip}>
       <MaterialIcons
         name="flip-camera-android"
         size={25}
@@ -68,13 +74,13 @@ const CameraControls = ({ onFlip, onCapture, onPickImage, cameraRef }) => (
     </TouchableOpacity>
 
     <TouchableOpacity
-      style={styles.buttonTakePicture}
+      style={imagePicker.buttonTakePicture}
       onPress={() => onCapture(cameraRef.current)}
     >
       <FontAwesome name="circle" size={70} color={colorsTheme.white} />
     </TouchableOpacity>
 
-    <TouchableOpacity style={styles.button} onPress={onPickImage}>
+    <TouchableOpacity style={imagePicker.button} onPress={onPickImage}>
       <Entypo name="images" size={25} color={colorsTheme.mediumGray} />
     </TouchableOpacity>
   </View>
@@ -152,40 +158,44 @@ const ImagePickerModal = ({ setShow, setImage }) => {
 
   return (
     <Modal>
-      <View style={styles.container}>
+      <View style={imagePicker.container}>
         <CloseButton onClose={() => setShow(false)} />
 
         {photo ? (
-          <View style={styles.container}>
-            <Image source={{ uri: photo }} style={styles.preview} />
+          <View style={imagePicker.container}>
+            <Image source={{ uri: photo }} style={imagePicker.preview} />
             <View
               style={[
-                styles.overlayBottom,
+                imagePicker.overlayBottom,
                 Platform.OS === "android"
-                  ? styles.overlayBottomAndroid
-                  : styles.overlayBottomiOS,
+                  ? imagePicker.overlayBottomAndroid
+                  : imagePicker.overlayBottomiOS,
               ]}
             >
               <TouchableOpacity
-                style={[styles.button, styles.buttonLarge]}
+                style={[imagePicker.button, imagePicker.buttonLarge]}
                 onPress={takeNewPhoto}
               >
-                <Text style={[fontsTheme.TextBig, styles.textButton]}>
+                <Text style={[fontsTheme.TextBig, imagePicker.textButton]}>
                   Nueva Foto
                 </Text>
               </TouchableOpacity>
               <TouchableOpacity
-                style={[styles.button, styles.buttonLarge]}
+                style={[imagePicker.button, imagePicker.buttonLarge]}
                 onPress={savePicture}
               >
-                <Text style={[fontsTheme.TextBig, styles.textButton]}>
+                <Text style={[fontsTheme.TextBig, imagePicker.textButton]}>
                   Guardar
                 </Text>
               </TouchableOpacity>
             </View>
           </View>
         ) : (
-          <CameraView style={styles.camera} facing={facing} ref={cameraRef}>
+          <CameraView
+            style={imagePicker.camera}
+            facing={facing}
+            ref={cameraRef}
+          >
             <CameraControls
               onFlip={toggleCameraFacing}
               onCapture={takePicture}
@@ -207,22 +217,22 @@ const ImagePickerComponent = ({ image, setImage }) => {
     <View style={inputs.wrapper}>
       <Text style={fontsTheme.TitleSmall}>Agrega un recibo</Text>
       <TouchableOpacity
-        style={[inputs.container, styles.inputContainer]}
+        style={[inputs.container, imagePicker.inputContainer]}
         onPress={() => (image ? null : setShow(true))}
       >
         {image ? (
           <TouchableOpacity
-            style={styles.imagePreviewContainer}
+            style={imagePicker.imagePreviewContainer}
             onPress={() => setShowImage(true)}
           >
-            <Image source={{ uri: image }} style={styles.imagePreview} />
+            <Image source={{ uri: image }} style={imagePicker.imagePreview} />
           </TouchableOpacity>
         ) : (
           <View>
             <FontAwesome
               name="image"
               size={30}
-              style={styles.iconSelectImage}
+              style={imagePicker.iconSelectImage}
             />
             <Text style={fontsTheme.TextSmall}>Selecciona una imagen</Text>
           </View>
@@ -230,7 +240,7 @@ const ImagePickerComponent = ({ image, setImage }) => {
       </TouchableOpacity>
       {image && (
         <TouchableOpacity
-          style={styles.editButtonContainer}
+          style={imagePicker.editButtonContainer}
           onPress={() => setShow(true)}
         >
           <Text style={fontsTheme.TitleSmall}>Editar</Text>
@@ -243,87 +253,3 @@ const ImagePickerComponent = ({ image, setImage }) => {
 };
 
 export default ImagePickerComponent;
-
-const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: "center" },
-  camera: { flex: 1 },
-  overlayBottom: {
-    position: "absolute",
-    left: 0,
-    right: 0,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 30,
-    alignItems: "center",
-  },
-  overlayBottomiOS: {
-    bottom: 35,
-  },
-  overlayBottomAndroid: {
-    bottom: 20,
-  },
-  overlayTop: {
-    position: "absolute",
-
-    right: 30,
-    zIndex: 2,
-    justifyContent: "space-between",
-  },
-  overlayTopAndroid: {
-    top: 15,
-  },
-  overlayTopiOS: {
-    top: 60,
-  },
-  button: {
-    width: 55,
-    height: 55,
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: colorsTheme.black,
-    borderRadius: 30,
-  },
-  buttonLarge: {
-    width: 150,
-    height: 40,
-  },
-  buttonTakePicture: {
-    height: 80,
-    width: 80,
-    borderRadius: 40,
-    borderWidth: 2,
-    borderColor: colorsTheme.white,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  imagePreviewContainer: {
-    width: "100%",
-    height: "100%",
-    justifyContent: "center",
-  },
-  imagePreview: {
-    flex: 1,
-    paddingVertical: 10,
-    borderRadius: 10,
-  },
-  inputContainer: {
-    borderStyle: "dashed",
-    height: 150,
-    alignItems: "center",
-  },
-  editButtonContainer: {
-    width: "100%",
-    alignItems: "flex-end",
-    paddingTop: 5,
-  },
-  textButton: {
-    color: colorsTheme.mediumGray,
-  },
-  imageViewModal: {
-    flex: 1,
-  },
-  iconSelectImage: {
-    alignSelf: "center",
-    color: colorsTheme.mediumGray,
-  },
-});
