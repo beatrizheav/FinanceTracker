@@ -1,18 +1,17 @@
 import { StyleSheet } from "react-native";
+import { colorsTheme } from "../colorsTheme";
 
 export const datepickerDropdown = StyleSheet.create({
   container: {
     padding: 20,
+    alignItems: "center",
   },
   dropdownButton: {
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: "center",
-    width: "50%",
+    width: "30%",
     alignItems: "center",
-  },
-  dropdownButtonText: {
-    fontSize: 16,
   },
   dateButtonsContainer: {
     flexDirection: "row",
@@ -20,14 +19,15 @@ export const datepickerDropdown = StyleSheet.create({
   dropdownList: {
     marginTop: 5,
     borderRadius: 8,
-    backgroundColor: "white",
+    backgroundColor: colorsTheme.white,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: colorsTheme.darkGreen,
   },
   dropDownContainer: {
     position: "absolute",
     top: "50",
     width: "100%",
+    zIndex: 10,
   },
   monthItem: {
     flex: 1,
@@ -37,9 +37,6 @@ export const datepickerDropdown = StyleSheet.create({
     borderRadius: 20,
   },
   selectedMonth: {
-    backgroundColor: "#4F6F52",
-  },
-  monthText: {
-    fontSize: 16,
+    backgroundColor: colorsTheme.darkGreen,
   },
 });

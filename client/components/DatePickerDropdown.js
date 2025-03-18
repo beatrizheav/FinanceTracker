@@ -1,62 +1,54 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, FlatList } from "react-native";
 import { datepickerDropdown } from "../styles/components/date-picker-dropdown";
+import { fontsTheme } from "../styles/fontsTheme";
+import { currentMonth, currentYear, months } from "../constants/getDate";
 
-const DateAndYearPicker = () => {
-  const currentYear = new Date().getFullYear();
-  const currentMonth = new Date().getMonth();
-  const months = [
-    "Enero",
-    "Febrero",
-    "Marzo",
-    "Abril",
-    "Mayo",
-    "Junio",
-    "Julio",
-    "Agosto",
-    "Septiembre",
-    "Octubre",
-    "Noviembre",
-    "Diciembre",
-  ];
-
-  // Estados y datos para los meses y los años
+const DateAndYearPicker = ({ onChange }) => {
   const [selectedMonth, setSelectedMonth] = useState(months[currentMonth]);
   const [selectedYear, setSelectedYear] = useState(currentYear);
-  const [dropdownVisible, setDropdownVisible] = useState(null); // null cuando no se muestra ningún menú
+  const [dropdownVisible, setDropdownVisible] = useState(null);
 
-  const years = Array.from({ length: 9 }, (_, i) => currentYear + i);
+  const years = Array.from({ length: 12 }, (_, i) => currentYear + i);
 
   const toggleDropdown = (menu) => {
-    // Si se hace clic en el mismo menú, se cierra; si se hace clic en otro, se abre ese
     setDropdownVisible(dropdownVisible === menu ? null : menu);
   };
+
+  const handleMonthSelect = (item) => {
+    setSelectedMonth(item);
+    setDropdownVisible(null);
+    onChange && onChange({ month: item, year: selectedYear });
+  };
+
+  const handleYearSelect = (item) => {
+    setSelectedYear(item);
+    setDropdownVisible(null);
+    onChange && onChange({ month: selectedMonth, year: item });
+  };
+
+  useEffect(() => {
+    onChange && onChange({ month: selectedMonth, year: selectedYear });
+  }, []);
 
   return (
     <View style={datepickerDropdown.container}>
       <View style={datepickerDropdown.dateButtonsContainer}>
-        {/* Botón de selección de mes */}
         <TouchableOpacity
           onPress={() => toggleDropdown("month")}
           style={datepickerDropdown.dropdownButton}
         >
-          <Text style={datepickerDropdown.dropdownButtonText}>
-            {selectedMonth} ▼
-          </Text>
+          <Text style={fontsTheme.TitleSmall}>{selectedMonth} ▼</Text>
         </TouchableOpacity>
 
-        {/* Botón de selección de año */}
         <TouchableOpacity
           onPress={() => toggleDropdown("year")}
           style={datepickerDropdown.dropdownButton}
         >
-          <Text style={datepickerDropdown.dropdownButtonText}>
-            {selectedYear} ▼
-          </Text>
+          <Text style={fontsTheme.TitleSmall}>{selectedYear} ▼</Text>
         </TouchableOpacity>
       </View>
 
-      {/* Menú desplegable para los meses */}
       {dropdownVisible === "month" && (
         <View style={datepickerDropdown.dropDownContainer}>
           <FlatList
@@ -69,12 +61,9 @@ const DateAndYearPicker = () => {
                   datepickerDropdown.monthItem,
                   selectedMonth === item && datepickerDropdown.selectedMonth,
                 ]}
-                onPress={() => {
-                  setSelectedMonth(item);
-                  setDropdownVisible(null); // Cerrar el menú después de seleccionar
-                }}
+                onPress={() => handleMonthSelect(item)}
               >
-                <Text style={datepickerDropdown.monthText}>{item}</Text>
+                <Text style={fontsTheme.TitleSmall}>{item}</Text>
               </TouchableOpacity>
             )}
             contentContainerStyle={datepickerDropdown.dropdownList}
@@ -82,7 +71,6 @@ const DateAndYearPicker = () => {
         </View>
       )}
 
-      {/* Menú desplegable para los años */}
       {dropdownVisible === "year" && (
         <View style={datepickerDropdown.dropDownContainer}>
           <FlatList
@@ -95,19 +83,15 @@ const DateAndYearPicker = () => {
                   datepickerDropdown.monthItem,
                   selectedYear === item && datepickerDropdown.selectedMonth,
                 ]}
-                onPress={() => {
-                  setSelectedYear(item);
-                  setDropdownVisible(null); // Cerrar el menú después de seleccionar
-                }}
+                onPress={() => handleYearSelect(item)}
               >
-                <Text style={datepickerDropdown.monthText}>{item}</Text>
+                <Text style={fontsTheme.TitleSmall}>{item}</Text>
               </TouchableOpacity>
             )}
             contentContainerStyle={datepickerDropdown.dropdownList}
           />
         </View>
       )}
-      {/* <Text>{selectedMonth + " " + selectedYear}</Text> */}
     </View>
   );
 };
