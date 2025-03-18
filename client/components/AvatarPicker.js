@@ -8,16 +8,17 @@ import {
   Image,
   Button,
 } from "react-native";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { avatars } from "../constants/avatars";
 import { avatarPicker } from "../styles/components/avatar-picker";
 import { fontsTheme } from "../styles/fontsTheme";
 import { inputs } from "../styles/components/inputs";
+import { colorsTheme } from "../styles/colorsTheme";
 
 const AvatarPicker = ({ avatarSelected, setAvatar }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
 
   const handleAvatarSelect = (avatarKey) => {
-    console.log(avatarKey);
     setAvatar(avatarKey);
     setIsModalVisible(false);
   };
@@ -27,15 +28,20 @@ const AvatarPicker = ({ avatarSelected, setAvatar }) => {
 
   return (
     <View style={inputs.wrapper}>
-      <Text style={fontsTheme.TitleSmall}>Pick an avatar!</Text>
+      <Text style={fontsTheme.TitleSmall}>Selecciona un avatar</Text>
       <TouchableOpacity
         onPress={() => setIsModalVisible(true)}
         style={[inputs.container, inputs.containerSquare]}
       >
-        <Image
-          source={avatar ? avatar.src : require("../assets/avatars/add.png")}
-          style={avatarPicker.avatarImage}
-        />
+        {avatar ? (
+          <Image source={avatar.src} style={avatarPicker.avatarImage} />
+        ) : (
+          <AntDesign
+            name="pluscircleo"
+            size={40}
+            color={colorsTheme.mediumGray}
+          />
+        )}
       </TouchableOpacity>
       <Modal
         visible={isModalVisible}
