@@ -14,10 +14,10 @@ const ActivityDisplay = ({title, date, quantity = 0, icon, screen, color}) => {
     const iconColor = color ? color : '#c94848'; //Validates if there is data in the color, if not, sets a default color
     const iconBackground = color ? `${color}1a` : '#c948481a'; // takes the property color and adds a default opacity to it
     const quantityColor = screen === 'income' //changes the text color depending on the screen
-        ? 'TextBigGreen'
+        ? activityDisplay.green
         : screen === 'expense'
-            ? 'TextBigRed'
-            : 'TextBigTeal'
+            ? activityDisplay.red
+            : activityDisplay.teal
     const validQuantity = Number(quantity) || 0; //Validates if the quantity is a number and if not, adds 0 by default.
     const quantityText = quantity ? `${screen === 'expense' ? '-' : ''} $ ${validQuantity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$ 0.00'; //Validates if there is data in the quantity, if not, sets a default quantity
 
@@ -49,13 +49,14 @@ const ActivityDisplay = ({title, date, quantity = 0, icon, screen, color}) => {
             </View>
             <View style={activityDisplay.description}>
                 <CustomText text={formatTitle} type={'TextBig'}/>
-                { screen === 'category' ? null : <CustomText text={formatDate} type={'TextSmallGray'}/>}
+                { screen === 'category' ? null : <CustomText text={formatDate} type={'TextSmall'} color={activityDisplay.darkGray}/>}
             </View>
         </View>
         <View style={activityDisplay.format}>
             <CustomText 
                 text={quantityText} 
-                type={quantityColor}
+                type={'TextBig'}
+                color={quantityColor}
             />
             <Ionicons 
                 testID="chevron-forward" 

@@ -21,5 +21,17 @@ export const activityDisplay = StyleSheet.create({
     },
     iconForward: {
         marginRight: -7,
+    },
+    darkGray: {
+        color: colorsTheme.darkGray
+    },
+    green: {
+        color: colorsTheme.lightGreen
+    },
+    red: {
+        color: colorsTheme.red
+    },
+    teal: {
+        color: colorsTheme.teal
     }
 })

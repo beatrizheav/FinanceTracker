@@ -16,14 +16,19 @@ export const customButton = StyleSheet.create({
     width: '40%',
   },
 
-  green: {
+  backgroundGreen: {
     backgroundColor: colorsTheme.darkGreen,
   },
 
-  white: {
+  backgroundWhite: {
     backgroundColor: colorsTheme.white,
     borderWidth: 1,
     borderColor: colorsTheme.darkGreen,
   },
-
+  white: {
+    color: colorsTheme.white
+  },
+  green : {
+    color: colorsTheme.darkGreen
+  }
 });
