@@ -6,24 +6,19 @@ import { inputs } from "../styles/components/inputs";
 import { dropdownSelect } from "../styles/components/dropdown-select";
 import { colorsTheme } from "../styles/colorsTheme";
 import { fontsTheme } from "../styles/fontsTheme";
-
-const data = [
-  { label: "Item 1", value: "1" },
-  { label: "Item 2", value: "2" },
-  { label: "Item 3", value: "3" },
-  { label: "Item 4", value: "4" },
-  { label: "Item 5", value: "5" },
-  { label: "Item 6", value: "6" },
-  { label: "Item 7", value: "7" },
-  { label: "Item 8", value: "8" },
-];
+import { data } from "../constants/categoryData";
 
 const DropdownSelect = ({ label, value, setValue }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const renderChevronIcon = useCallback(
     () => (
-      <Entypo name="chevron-thin-right" size={17} color={colorsTheme.black} />
+      <Entypo
+        name="chevron-thin-right"
+        size={17}
+        color={colorsTheme.black}
+        testID="chevron-icon"
+      />
     ),
     []
   );
@@ -35,7 +30,7 @@ const DropdownSelect = ({ label, value, setValue }) => {
       <Text style={fontsTheme.TitleSmall}>{label}</Text>
       <Dropdown
         style={[inputs.container]}
-        mode="modal"
+        mode="default"
         placeholderStyle={placeholderStyles}
         selectedTextStyle={fontsTheme.TextSmall}
         data={data}
@@ -51,6 +46,7 @@ const DropdownSelect = ({ label, value, setValue }) => {
         itemTextStyle={fontsTheme.TextSmall}
         containerStyle={dropdownSelect.dropContainer}
         renderRightIcon={renderChevronIcon}
+        testID="dropdown-select"
       />
     </View>
   );
