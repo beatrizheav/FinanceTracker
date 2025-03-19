@@ -21,7 +21,7 @@ const DatePickerModal = ({ show, setShow, date, onChange }) => {
     <Modal visible={show} animationType="fade" transparent>
       <View style={inputs.modalBackground}>
         <View style={inputs.modalContainer}>
-          <DateTimePicker {...datePickerProps} />
+          <DateTimePicker {...datePickerProps} testID="date-picker" />
           <TouchableOpacity onPress={() => setShow(false)}>
             <Text>Select Date</Text>
           </TouchableOpacity>
@@ -29,7 +29,7 @@ const DatePickerModal = ({ show, setShow, date, onChange }) => {
       </View>
     </Modal>
   ) : (
-    show && <DateTimePicker {...datePickerProps} />
+    show && <DateTimePicker {...datePickerProps} testID="date-picker" />
   );
 };
 
