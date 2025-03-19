@@ -7,4 +7,5 @@ export const colorsTheme = {
   black: "#2F3743",
   white: "#FDFDFD",
   lightGray: "#ECF1F6",
+  darkGray: "#7c8996",
 };

@@ -5,26 +5,27 @@ import CustomTitle from './CustomTitle';
 
 const CustomButton = ({onPress, title, background, type}) => {
   const backgroundStyle = background === 'green'
-    ? customButton.green
-    : customButton.white;
+    ? customButton.backgroundGreen
+    : customButton.backgroundWhite;
   
   const typeStyle = type === 'modal'
     ? customButton.modal
     : null;
 
-  const typeTitle = background === 'white'
-    ? 'ButtonSmallGreen'
-    : type === 'modal' && background === 'green'
+  const typeTitle = type === 'modal' 
     ? 'ButtonSmall'
-    : 'ButtonBig'
+    : 'ButtonBig';
+
+  const textColor = background === 'white' 
+    ? customButton.green
+    : customButton.white;
 
   return (
       <TouchableOpacity 
         onPress={onPress}
         style={[customButton.container, backgroundStyle, typeStyle]}
       >
-        <CustomTitle title={title} type={typeTitle}
-        />
+        <CustomTitle title={title} type={typeTitle} color={textColor}/>
       </TouchableOpacity>
   )
 }
