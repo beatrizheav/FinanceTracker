@@ -8,4 +8,5 @@ export const colorsTheme = {
   white: "#FDFDFD",
   lightGray: "#ECF1F6",
   darkGray: "#7c8996",
+  darkSmooth: "rgba(0,0,0,0.1)"
 };
