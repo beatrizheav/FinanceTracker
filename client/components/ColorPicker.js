@@ -72,11 +72,14 @@ const ColorPickerComponent = ({ color, setColor }) => {
         style={[inputs.container, inputs.directionRow, inputs.containerSquare]}
         onPress={() => setShow(!show)}
         accessible={true}
-        accessibilityLabel="Open Date Picker"
+        accessibilityLabel="Open Color Picker"
         accessibilityRole="button"
       >
         {color ? (
-          <View style={[colorPicker.circleColor, background]} />
+          <View
+            style={[colorPicker.circleColor, background]}
+            testID="color-circle"
+          />
         ) : (
           <AntDesign
             name="pluscircleo"
