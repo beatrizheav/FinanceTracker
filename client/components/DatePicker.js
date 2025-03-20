@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { View, Modal, Text, TouchableOpacity, Platform } from "react-native";
+import { View, Modal, TouchableOpacity, Platform } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import { format, isToday } from "date-fns";
 import DateTimePicker from "@react-native-community/datetimepicker";
+import CustomTitle from "./CustomTitle";
+import CustomText from "./CustomText";
 import { inputs } from "../styles/components/inputs";
-import { fontsTheme } from "../styles/fontsTheme";
 import { colorsTheme } from "../styles/colorsTheme";
+import CustomButton from "./CustomButton";
 
 const DatePickerModal = ({ show, setShow, date, onChange }) => {
   const datePickerProps = {
@@ -22,9 +24,11 @@ const DatePickerModal = ({ show, setShow, date, onChange }) => {
       <View style={inputs.modalBackground}>
         <View style={inputs.modalContainer}>
           <DateTimePicker {...datePickerProps} testID="date-picker" />
-          <TouchableOpacity onPress={() => setShow(false)}>
-            <Text>Select Date</Text>
-          </TouchableOpacity>
+          <CustomButton
+            onPress={() => setShow(false)}
+            title={"Select date"}
+            background={"green"}
+          />
         </View>
       </View>
     </Modal>
@@ -48,7 +52,7 @@ const DatePicker = ({ label, date, setDate }) => {
 
   return (
     <View style={inputs.wrapper}>
-      <Text style={fontsTheme.TitleSmall}>{label}</Text>
+      <CustomTitle title={label} type={"TitleSmall"} />
       <TouchableOpacity
         style={[inputs.container, inputs.directionRow]}
         onPress={() => setShow((prevState) => !prevState)}
@@ -56,7 +60,7 @@ const DatePicker = ({ label, date, setDate }) => {
         accessibilityLabel="Open Date Picker"
         accessibilityRole="button"
       >
-        <Text style={fontsTheme.TextSmall}>{formattedDate}</Text>
+        <CustomText text={formattedDate} type={"TextSmall"} />
         <Entypo name="chevron-thin-right" size={17} color={colorsTheme.black} />
       </TouchableOpacity>
       <DatePickerModal
