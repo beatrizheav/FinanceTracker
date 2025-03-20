@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Text, View, TouchableOpacity, Modal } from "react-native";
+import { View, TouchableOpacity, Modal } from "react-native";
 import { IconPicker } from "@grassper/react-native-icon-picker";
 import * as Icon from "@expo/vector-icons";
 import AntDesign from "@expo/vector-icons/AntDesign";
+import CustomTitle from "./CustomTitle";
 import { colorsTheme } from "../styles/colorsTheme";
 import { inputs } from "../styles/components/inputs";
 import { iconPicker } from "../styles/components/icon-picker";
-import { fontsTheme } from "../styles/fontsTheme";
+import CustomText from "./CustomText";
 
 const IconPickerModal = ({ handleSubmit, show }) => {
   return (
@@ -51,7 +52,7 @@ const renderIcon = ({ icon }) => {
   } else {
     return (
       <View>
-        <Text>Icon not found</Text>
+        <CustomText type={"TextSmall"} text={"Icon not found"} />
       </View>
     );
   }
@@ -69,7 +70,11 @@ const IconPickerComponent = ({ icon, setIcon }) => {
 
   return (
     <View style={inputs.wrapper}>
-      <Text style={fontsTheme.TitleSmall}>Selecciona un icono</Text>
+      <CustomTitle
+        title={"Selecciona un icono"}
+        type={"TitleSmall"}
+        testID={"input-label"}
+      />
       <TouchableOpacity
         style={[inputs.container, inputs.directionRow, inputs.containerSquare]}
         onPress={() => setShow(!show)}
