@@ -1,12 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import {
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
-  Modal,
-  Platform,
-} from "react-native";
+import { Image, TouchableOpacity, View, Modal, Platform } from "react-native";
 import { CameraView, useCameraPermissions } from "expo-camera";
 import * as ImagePicker from "expo-image-picker";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
@@ -16,9 +9,9 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { colorsTheme } from "../styles/colorsTheme";
 import CustomButton from "./CustomButton";
 import CustomText from "./CustomText";
+import CustomTitle from "./CustomTitle";
 import { imagePicker } from "../styles/components/image-picker";
 import { inputs } from "../styles/components/inputs";
-import { fontsTheme } from "../styles/fontsTheme";
 
 const ImageModal = ({ image, setShowImage }) => (
   <Modal>
@@ -176,22 +169,17 @@ const ImagePickerModal = ({ setShow, setImage }) => {
                   : imagePicker.overlayBottomiOS,
               ]}
             >
-              <TouchableOpacity
-                style={[imagePicker.button, imagePicker.buttonLarge]}
+              <CustomButton
                 onPress={takeNewPhoto}
-              >
-                <Text style={[fontsTheme.TextBig, imagePicker.textButton]}>
-                  Nueva Foto
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={[imagePicker.button, imagePicker.buttonLarge]}
+                title={"Nueva Foto"}
+                type={"modal"}
+              />
+              <CustomButton
                 onPress={savePicture}
-              >
-                <Text style={[fontsTheme.TextBig, imagePicker.textButton]}>
-                  Guardar
-                </Text>
-              </TouchableOpacity>
+                title={"Guardar"}
+                background={"green"}
+                type={"modal"}
+              />
             </View>
           </View>
         ) : (
@@ -213,7 +201,7 @@ const ImagePickerModal = ({ setShow, setImage }) => {
   );
 };
 
-const ImagePickerComponent = ({ image, setImage }) => {
+const ImagePickerComponent = ({ image, setImage, label }) => {
   const [show, setShow] = useState(false);
   const [showImage, setShowImage] = useState(false);
 
@@ -221,7 +209,7 @@ const ImagePickerComponent = ({ image, setImage }) => {
 
   return (
     <View style={inputs.wrapper}>
-      <Text style={fontsTheme.TitleSmall}>Agrega un recibo</Text>
+      <CustomTitle title={label} type={"TitleSmall"} testID={"input-label"} />
       <TouchableOpacity
         style={[inputs.container, imagePicker.inputContainer]}
         onPress={() => (image ? null : setShow(true))}
@@ -245,7 +233,7 @@ const ImagePickerComponent = ({ image, setImage }) => {
               size={30}
               style={imagePicker.iconSelectImage}
             />
-            <Text style={fontsTheme.TextSmall}>Selecciona una imagen</Text>
+            <CustomText text={"Selecciona una imágen"} type={"TextSmall"} />
           </View>
         )}
       </TouchableOpacity>
@@ -254,7 +242,7 @@ const ImagePickerComponent = ({ image, setImage }) => {
           style={imagePicker.editButtonContainer}
           onPress={() => setShow(true)}
         >
-          <Text style={fontsTheme.TitleSmall}>Editar</Text>
+          <CustomText type={"TitleSmall"} text={"Editar"} />
         </TouchableOpacity>
       )}
       {showImage && <ImageModal image={image} setShowImage={setShowImage} />}

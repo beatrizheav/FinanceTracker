@@ -33,16 +33,12 @@ export const imagePicker = StyleSheet.create({
     top: 60,
   },
   button: {
-    width: 55,
-    height: 55,
+    width: 45,
+    height: 45,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colorsTheme.black,
+    backgroundColor: colorsTheme.darkGreen,
     borderRadius: 30,
-  },
-  buttonLarge: {
-    width: 150,
-    height: 40,
   },
   buttonTakePicture: {
     height: 80,
