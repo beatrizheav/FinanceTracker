@@ -13,8 +13,7 @@ export const header = StyleSheet.create({
   button: {
     padding: 10,
   },
-  title: {
-    fontSize: 18,
-    fontWeight: "bold",
-  },
+  black: {
+    color: colorsTheme.black
+  }
 });

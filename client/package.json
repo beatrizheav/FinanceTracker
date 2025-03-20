@@ -11,9 +11,11 @@
     "test": "jest --watchAll",
     "lint": "expo lint"
   },
-    "jest": {
+  "jest": {
     "preset": "jest-expo",
-    "setupFiles": ["<rootDir>/jest.setup.js"],
+    "setupFiles": [
+      "<rootDir>/jest.setup.js"
+    ],
     "clearMocks": true
   },
   "dependencies": {
