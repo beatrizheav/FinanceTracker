@@ -6,7 +6,6 @@ import {
   Text,
   FlatList,
   Image,
-  Button,
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { avatars } from "../constants/avatars";
@@ -14,6 +13,7 @@ import { avatarPicker } from "../styles/components/avatar-picker";
 import { fontsTheme } from "../styles/fontsTheme";
 import { inputs } from "../styles/components/inputs";
 import { colorsTheme } from "../styles/colorsTheme";
+import CustomButton from "./CustomButton";
 
 const AvatarPicker = ({ avatarSelected, setAvatar }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -63,7 +63,12 @@ const AvatarPicker = ({ avatarSelected, setAvatar }) => {
                 </TouchableOpacity>
               )}
             />
-            <Button title="Close" onPress={() => setIsModalVisible(false)} />
+            <CustomButton
+              title={"Close"}
+              onPress={() => setIsModalVisible(false)}
+              type={"modal"}
+              background={"green"}
+            />
           </View>
         </View>
       </Modal>
