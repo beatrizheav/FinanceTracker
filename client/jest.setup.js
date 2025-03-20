@@ -1,20 +1,25 @@
-jest.mock('expo-font');
+jest.mock("expo-font");
 
-jest.mock('@expo/vector-icons', () => {
-    return {
-      Ionicons: ({ name, ...props }) => {
-        const React = require('react');
-        const { Text } = require('react-native');
-        return <Text {...props}>{name}</Text>;
-      },
-    };
-  });
+// Mock de todos los íconos que puedas usar (agrega los que uses)
+jest.mock("@expo/vector-icons", () => ({
+  Ionicons: ({ name, ...props }) => {
+    const React = require("react");
+    const { Text } = require("react-native");
+    return <Text {...props}>Ionicon: {name}</Text>;
+  },
+  FontAwesome: ({ name, ...props }) => {
+    const React = require("react");
+    const { Text } = require("react-native");
+    return <Text {...props}>Icon: {name}</Text>;
+  },
+}));
 
-  jest.mock('./components/CustomTitle.js', () => {
-    const React = require('react');
-    const { Text } = require('react-native');
-    return {
-      __esModule: true,
-      default: ({ title }) => <Text>{title}</Text>,
-    };
-  });
+// Mock de tu componente CustomTitle
+jest.mock("./components/CustomTitle.js", () => {
+  const React = require("react");
+  const { Text } = require("react-native");
+  return {
+    __esModule: true,
+    default: ({ title }) => <Text>{title}</Text>,
+  };
+});
