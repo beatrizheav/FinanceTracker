@@ -35,6 +35,8 @@ export default function CustomInput({
       inputs.textInputParagraphNumber,
   ];
 
+  const inputEditable = onChange ? true : false;
+
   return (
     <View style={inputs.wrapper} testID="input-wrapper">
       <Text style={fontsTheme.TitleSmall} testID="input-label">
@@ -59,6 +61,7 @@ export default function CustomInput({
           autoCapitalize="none"
           multiline={type === "paragraph"}
           testID="input-field"
+          editable={inputEditable}
         />
         {type === "password" && (
           <TouchableOpacity

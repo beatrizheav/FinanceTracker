@@ -217,6 +217,8 @@ const ImagePickerComponent = ({ image, setImage }) => {
   const [show, setShow] = useState(false);
   const [showImage, setShowImage] = useState(false);
 
+  const imageEditable = setImage ? true : false;
+
   return (
     <View style={inputs.wrapper}>
       <Text style={fontsTheme.TitleSmall}>Agrega un recibo</Text>
@@ -247,7 +249,7 @@ const ImagePickerComponent = ({ image, setImage }) => {
           </View>
         )}
       </TouchableOpacity>
-      {image && (
+      {image && imageEditable && (
         <TouchableOpacity
           style={imagePicker.editButtonContainer}
           onPress={() => setShow(true)}
