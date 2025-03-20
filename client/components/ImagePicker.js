@@ -80,7 +80,11 @@ const CameraControls = ({ onFlip, onCapture, onPickImage, cameraRef }) => (
       <FontAwesome name="circle" size={70} color={colorsTheme.white} />
     </TouchableOpacity>
 
-    <TouchableOpacity style={imagePicker.button} onPress={onPickImage}>
+    <TouchableOpacity
+      style={imagePicker.button}
+      onPress={onPickImage}
+      testID="pick-image-button"
+    >
       <Entypo name="images" size={25} color={colorsTheme.mediumGray} />
     </TouchableOpacity>
   </View>
@@ -158,7 +162,7 @@ const ImagePickerModal = ({ setShow, setImage }) => {
 
   return (
     <Modal>
-      <View style={imagePicker.container}>
+      <View style={imagePicker.container} testID="image-picker-modal">
         <CloseButton onClose={() => setShow(false)} />
 
         {photo ? (
@@ -219,13 +223,18 @@ const ImagePickerComponent = ({ image, setImage }) => {
       <TouchableOpacity
         style={[inputs.container, imagePicker.inputContainer]}
         onPress={() => (image ? null : setShow(true))}
+        testID="button-open-modal"
       >
         {image ? (
           <TouchableOpacity
             style={imagePicker.imagePreviewContainer}
             onPress={() => setShowImage(true)}
           >
-            <Image source={{ uri: image }} style={imagePicker.imagePreview} />
+            <Image
+              source={{ uri: image }}
+              style={imagePicker.imagePreview}
+              testID="image-preview"
+            />
           </TouchableOpacity>
         ) : (
           <View>
