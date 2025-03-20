@@ -59,6 +59,12 @@ export const imagePicker = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 10,
   },
+  preview: {
+    height: "450",
+    width: "300",
+    alignSelf: "center",
+    borderRadius: 10,
+  },
   inputContainer: {
     borderStyle: "dashed",
     height: 150,
