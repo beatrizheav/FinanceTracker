@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 export const colorPicker = StyleSheet.create({
   colorPickerModalContainer: {
     height: 430,
-    paddingBottom: 40,
+    paddingBottom: 80,
   },
   colorPicker: {
     paddingBottom: 20,

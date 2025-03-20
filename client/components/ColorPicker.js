@@ -12,6 +12,7 @@ import { inputs } from "../styles/components/inputs";
 import { colorPicker } from "../styles/components/color-picker";
 import { fontsTheme } from "../styles/fontsTheme";
 import { colorsTheme } from "../styles/colorsTheme";
+import CustomButton from "./CustomButton";
 
 const ColorPickerModal = ({
   show,
@@ -45,9 +46,14 @@ const ColorPickerModal = ({
               style={colorPicker.colorPicker}
             />
           </View>
-          <TouchableOpacity onPress={() => setShow(false)}>
+          <CustomButton
+            title={"Seleccionar color"}
+            onPress={() => setShow(false)}
+            background={"green"}
+          />
+          {/* <TouchableOpacity onPress={() => setShow(false)}>
             <Text>Seleccionar color</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </Modal>
