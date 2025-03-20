@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import {
   View,
   Text,
@@ -7,14 +7,13 @@ import {
   Pressable,
   Dimensions,
   FlatList,
+  Animated,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 import { colorsTheme } from "../styles/colorsTheme";
-
-const { width, height } = Dimensions.get("window");
-const SIDE_MENU_WIDTH = width * 0.8;
-const AVATAR_SECTION_HEIGHT = height * 0.25;
-const BUTTON_HEIGHT = height * 0.065;
+import { offset, SIDE_MENU_WIDTH } from "../constants/sideMenuSizes";
+import { sideMenu } from "../styles/components/side-menu";
 
 const menuItems = [
   { key: "1", icon: "home", label: "Inicio" },
@@ -23,116 +22,114 @@ const menuItems = [
   { key: "4", icon: "folder-o", label: "Categorias" },
 ];
 
-const SideMenu = () => {
+const SideMenu = ({ visible, onClose }) => {
+  const slideAnim = useRef(new Animated.Value(-SIDE_MENU_WIDTH)).current;
+
+  useEffect(() => {
+    if (visible) {
+      Animated.timing(slideAnim, {
+        toValue: -offset,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+    } else {
+      Animated.timing(slideAnim, {
+        toValue: -SIDE_MENU_WIDTH,
+        duration: 500,
+        useNativeDriver: false,
+      }).start();
+    }
+  }, [visible]);
+
+  if (!visible) return null;
+
   return (
-    <View style={styles.container}>
-      <View style={styles.avatarSection}>
-        <Image
-          source={{ uri: "https://via.placeholder.com/100" }}
-          style={styles.avatar}
-        />
-        <Text style={styles.name}>Nombre de Usuario</Text>
-        <Text style={styles.email}>correo@ejemplo.com</Text>
-      </View>
+    <TouchableWithoutFeedback onPress={onClose}>
+      <View style={sideMenu.backdrop}>
+        <TouchableWithoutFeedback>
+          <Animated.View style={[sideMenu.container, { right: slideAnim }]}>
+            <Pressable style={sideMenu.closeButton} onPress={onClose}>
+              <FontAwesome name="close" size={30} color={colorsTheme.white} />
+            </Pressable>
 
-      <FlatList
-        data={menuItems}
-        contentContainerStyle={{ paddingBottom: 10 }}
-        keyExtractor={(item) => item.key}
-        renderItem={({ item }) => (
-          <Pressable style={styles.menuButton}>
-            <FontAwesome name={item.icon} size={24} style={styles.icon} />
-            <Text style={styles.buttonText}>{item.label}</Text>
-          </Pressable>
-        )}
-      />
+            <View style={sideMenu.avatarSection}>
+              <Image
+                source={require("../assets/images/Sophie.png")}
+                style={sideMenu.avatar}
+              />
+              <Text style={sideMenu.name}>Nombre de Usuario</Text>
+              <Text style={sideMenu.email}>correo@ejemplo.com</Text>
+            </View>
 
-      <View style={styles.logoutSection}>
-        <Pressable style={styles.logoutButton}>
-          <FontAwesome name="sign-out" size={20} style={styles.logoutIcon} />
-          <Text style={styles.logoutButtonText}>Cerrar sesión</Text>
-        </Pressable>
+            <FlatList
+              data={menuItems}
+              contentContainerStyle={{ paddingBottom: 10 }}
+              keyExtractor={(item) => item.key}
+              renderItem={({ item }) => (
+                <Pressable
+                  style={({ pressed }) => [
+                    sideMenu.menuButton,
+                    pressed && { backgroundColor: colorsTheme.white },
+                  ]}
+                >
+                  {({ pressed }) => (
+                    <>
+                      <FontAwesome
+                        name={item.icon}
+                        size={24}
+                        style={[
+                          sideMenu.icon,
+                          pressed && { color: colorsTheme.darkGreen },
+                        ]}
+                      />
+                      <Text
+                        style={[
+                          sideMenu.buttonText,
+                          pressed && { color: colorsTheme.darkGreen },
+                        ]}
+                      >
+                        {item.label}
+                      </Text>
+                    </>
+                  )}
+                </Pressable>
+              )}
+            />
+
+            <View style={sideMenu.logoutSection}>
+              <Pressable
+                style={({ pressed }) => [
+                  sideMenu.logoutButton,
+                  pressed && { backgroundColor: colorsTheme.darkGreen },
+                ]}
+              >
+                {({ pressed }) => (
+                  <>
+                    <FontAwesome
+                      name="sign-out"
+                      size={20}
+                      style={[
+                        sideMenu.logoutIcon,
+                        pressed && { color: colorsTheme.white },
+                      ]}
+                    />
+                    <Text
+                      style={[
+                        sideMenu.logoutButtonText,
+                        pressed && { color: colorsTheme.white },
+                      ]}
+                    >
+                      Cerrar sesión
+                    </Text>
+                  </>
+                )}
+              </Pressable>
+            </View>
+          </Animated.View>
+        </TouchableWithoutFeedback>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    position: "absolute",
-    right: 0,
-    top: 0,
-    height: height,
-    width: SIDE_MENU_WIDTH,
-    elevation: 5,
-    paddingHorizontal: "10%",
-    paddingBottom: 40,
-    display: "flex",
-    backgroundColor: colorsTheme.darkGreen,
-    borderRadius: 5,
-    opacity: 0.9,
-  },
-  avatarSection: {
-    height: AVATAR_SECTION_HEIGHT,
-    justifyContent: "center",
-    alignItems: "center",
-    marginBottom: 50,
-  },
-  avatar: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginBottom: 10,
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: colorsTheme.white,
-  },
-  email: {
-    fontSize: 14,
-    color: colorsTheme.white,
-  },
-  menuButton: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    height: BUTTON_HEIGHT,
-    borderRadius: 5,
-  },
-  icon: {
-    marginRight: 15,
-    color: colorsTheme.white,
-  },
-  buttonText: {
-    fontSize: 16,
-    color: colorsTheme.white,
-  },
-  logoutSection: {
-    backgroundColor: colorsTheme.white,
-    opacity: 0.8,
-    display: "flex",
-    height: BUTTON_HEIGHT,
-    borderRadius: 5,
-    justifyContent: "center",
-  },
-  logoutButton: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  logoutIcon: {
-    marginRight: 15,
-    color: colorsTheme.darkGreen,
-    position: "absolute",
-    left: 15,
-  },
-  logoutButtonText: {
-    fontSize: 16,
-    color: colorsTheme.darkGreen,
-  },
-});
 
 export default SideMenu;
