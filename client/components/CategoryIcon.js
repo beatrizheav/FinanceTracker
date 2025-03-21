@@ -7,11 +7,10 @@ import React from "react";
 
 export default function CategoryIcon({ type, icon, color }) {
   const iconBackground = color ? `${color}1a` : `${colorsTheme.red}1a`; // takes the property color and adds a default opacity to it
+  const iconColor = color ? color : colorsTheme.red;
+  const iconSize = type === "small" ? 30 : 50;
 
   const renderIcon = ({ icon }) => {
-    const iconColor = color ? color : colorsTheme.red;
-    const iconSize = type === "small" ? 30 : 50;
-
     const iconSets = {
       AntDesign: Icon.AntDesign,
       FontAwesome: Icon.FontAwesome,
