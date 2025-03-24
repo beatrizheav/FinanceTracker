@@ -63,7 +63,6 @@ const ModalExpense = ({category, name, date, quantity = 0, description, icon, im
         if (IconComponent) {
           return (
             <IconComponent 
-              testID='default-icon'
               name={iconName} 
               size={50} 
               color={iconColor} />
@@ -71,21 +70,23 @@ const ModalExpense = ({category, name, date, quantity = 0, description, icon, im
         }
     };
 
-    const closeMenu = () => {
+    const closeModal = () => {
         setIsActiveModal(false);
     };
   return (
     <Modal>
-        <TouchableWithoutFeedback onPress={closeMenu}>
+        <TouchableWithoutFeedback onPress={closeModal} testID="modal-overlay">
             <View style={modalExpense.overlay}>
-            <TouchableWithoutFeedback onPress={() => {}}>
+            <TouchableWithoutFeedback>
                 <View style={[modalExpense.container, heightModal]}>
                     <View style={modalExpense.container_closeIcon}>
                         <Ionicons
-                            onPress={closeMenu} 
+                            onPress={closeModal} 
                             name={'close'} 
                             size={27} 
-                            color={colorsTheme.black}/>
+                            color={colorsTheme.black}
+                            testID='close-icon'
+                            />
                     </View>
                     <View>
                         <View style={modalExpense.container_icon}>
@@ -114,8 +115,18 @@ const ModalExpense = ({category, name, date, quantity = 0, description, icon, im
                         />}
                     </View>
                     <View style={modalExpense.container_buttons}>
-                        <CustomButton onPress={() => handleDelete(userId, expenseId)} title={'Eliminar'} background={'white'} type={'modal'} />
-                        <CustomButton onPress={() => handleEdit(expenseId)} title={'Editar'} background={'green'} type={'modal'} />
+                        <CustomButton 
+                            onPress={() => handleDelete(userId, expenseId)} 
+                            title={'Eliminar'} 
+                            background={'white'} 
+                            type={'modal'} 
+                            testID='button-Eliminar'/>
+                        <CustomButton 
+                            onPress={() => handleEdit(expenseId)} 
+                            title={'Editar'} 
+                            background={'green'} 
+                            type={'modal'} 
+                            testID='button-Editar'/>
                     </View>
                 </View>
             </TouchableWithoutFeedback>
