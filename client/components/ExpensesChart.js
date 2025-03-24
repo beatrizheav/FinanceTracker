@@ -35,7 +35,7 @@ const ExpensesChart = () => {
   ];
 
   return (
-    <View style={expensesChart.container}>
+    <View style={expensesChart.container} testID="expenses-chart">
       <CustomTitle title={"Distribución de gastos"} type={"TitleSmall"} />
       <View style={expensesChart.graphContainer}>
         {/* Lista personalizada a la izquierda */}

@@ -11,6 +11,7 @@ const ExpensesScrollview = () => {
 
   return (
     <ScrollView
+      testID="expenses-scrollview"
       horizontal={true}
       decelerationRate={0}
       snapToInterval={354}
@@ -22,6 +23,7 @@ const ExpensesScrollview = () => {
       <ExpensesChart />
       {categories.map((category, index) => (
         <CategoryExpense
+          testID="category-expense"
           key={index}
           name={category.name}
           budget={category.budget}
