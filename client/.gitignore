@@ -3,6 +3,12 @@
 # dependencies
 node_modules/
 
+## Tests coverage
+coverage/
+
+## Tests snapshots
+__snapshots__
+
 # Expo
 .expo/
 dist/

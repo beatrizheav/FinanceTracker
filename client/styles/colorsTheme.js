@@ -8,4 +8,8 @@ export const colorsTheme = {
   white: "#FDFDFD",
   lightGray: "#ECF1F6",
   darkGray: "#7c8996",
+  darkSmooth: "rgba(0,0,0,0.1)",
+  mediumGray: "#B0B0B0",
+  darkGreenWithOpacity: "rgba(25, 59, 25, 0.6)", // Fondos modales
+  blackWithOpacity: "rgba(47, 55, 67, 0.4)", // Placehodlers
 };
