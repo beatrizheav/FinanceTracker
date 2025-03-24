@@ -22,7 +22,7 @@ export default function CategoryExpense({
       <CustomTitle title={name} type={"TitleMedium"} />
       <View>
         <CustomText text={"$" + totalExpenses + " de $" + budget} />
-        <View style={{ paddingTop: 5 }}>
+        <View style={categoryExpense.progressBarContainer}>
           <Progress.Bar
             progress={progress}
             width={null}

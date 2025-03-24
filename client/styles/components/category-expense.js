@@ -1,3 +1,6 @@
+import { StyleSheet } from "react-native";
+import { colorsTheme } from "../colorsTheme";
+
 export const categoryExpense = StyleSheet.create({
   container: {
     justifyContent: "space-around",
@@ -8,5 +11,8 @@ export const categoryExpense = StyleSheet.create({
     width: 340,
     height: 260,
     marginRight: 14,
+  },
+  progressBarContainer: {
+    paddingTop: 5,
   },
 });
