@@ -1,3 +1,6 @@
+import { StyleSheet } from "react-native";
+import { colorsTheme } from "../colorsTheme";
+
 export const expensesChart = StyleSheet.create({
   container: {
     borderRadius: 20,
