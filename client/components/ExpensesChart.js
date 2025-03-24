@@ -55,6 +55,7 @@ const ExpensesChart = () => {
 
         {/* Gráfico circular */}
         <PieChart
+          testID="pie-chart"
           data={finalData}
           width={screenWidth * 0.6}
           height={200}

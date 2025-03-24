@@ -24,6 +24,7 @@ export default function CategoryExpense({
         <CustomText text={"$" + totalExpenses + " de $" + budget} />
         <View style={categoryExpense.progressBarContainer}>
           <Progress.Bar
+            testID="progress-bar"
             progress={progress}
             width={null}
             color={color}

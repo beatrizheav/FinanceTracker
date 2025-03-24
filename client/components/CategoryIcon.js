@@ -47,7 +47,7 @@ export default function CategoryIcon({ type, icon, color }) {
   ];
 
   return (
-    <View style={containerStyle}>
+    <View style={containerStyle} testID="container-icon">
       <View>{renderIcon({ icon })}</View>
     </View>
   );
