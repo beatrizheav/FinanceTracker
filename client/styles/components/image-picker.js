@@ -67,7 +67,7 @@ export const imagePicker = StyleSheet.create({
   },
   inputContainer: {
     borderStyle: "dashed",
-    height: 150,
+    height: 120,
     alignItems: "center",
   },
   editButtonContainer: {
