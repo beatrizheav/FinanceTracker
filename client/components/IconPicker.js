@@ -68,9 +68,7 @@ const renderIcon = ({ icon }) => {
   }
 };
 
-const IconPickerComponent = ({ icon, setIcon }) => {
-  const [show, setShow] = useState(false);
-
+const IconPickerComponent = ({ icon, setIcon, show, setShow }) => {
   const handleSubmit = (...params) => {
     const [, , iconName, iconSet] = params;
     setIcon({ iconName, iconSet });

@@ -57,9 +57,7 @@ const ColorPickerModal = ({
   );
 };
 
-const ColorPickerComponent = ({ color, setColor }) => {
-  const [show, setShow] = useState(false);
-
+const ColorPickerComponent = ({ color, setColor, show, setShow }) => {
   const onColorChange = (color) => {
     setColor(color);
   };
