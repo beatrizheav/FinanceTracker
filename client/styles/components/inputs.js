@@ -3,7 +3,7 @@ import { colorsTheme } from "../colorsTheme";
 
 export const inputs = StyleSheet.create({
   wrapper: {
-    flex: 1,
+    paddingVertical: 10,
   },
   container: {
     width: "100%",
