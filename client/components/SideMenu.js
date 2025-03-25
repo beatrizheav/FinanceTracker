@@ -54,7 +54,7 @@ const SideMenu = ({ visible, onClose }) => {
 
             <View style={sideMenu.avatarSection}>
               <Image
-                source={require("../assets/images/Sophie.png")}
+                source={require("../assets/avatars/3.png")}
                 style={sideMenu.avatar}
               />
               <Text style={sideMenu.name}>Nombre de Usuario</Text>
