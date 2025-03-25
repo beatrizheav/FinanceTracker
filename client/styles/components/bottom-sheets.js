@@ -1,15 +1,16 @@
-import { StyleSheet } from "react-native";
+import { Platform, StyleSheet } from "react-native";
+import { colorsTheme } from "../colorsTheme";
 
 export const sheets = StyleSheet.create({
-  container: {
-    flex: 1,
-    position: "absolute",
+  background: {
+    backgroundColor: colorsTheme.darkGreenWithOpacity,
   },
-  sheetStyles: {
+  container: {
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
-    paddingTop: 20,
     justifyContent: "space-between",
+    paddingHorizontal: 20,
+    paddingBottom: Platform.OS === "ios" ? 20 : 0,
   },
   header: {
     paddingBottom: 15,

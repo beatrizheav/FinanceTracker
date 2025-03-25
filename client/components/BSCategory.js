@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { TouchableWithoutFeedback, View, Keyboard } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { handleInputChange } from "../hooks/handleInputChange";
@@ -9,18 +9,21 @@ import IconPicker from "./IconPicker";
 import CustomButton from "./CustomButton";
 import { sheets } from "../styles/components/bottom-sheets";
 import { bsCategory } from "../styles/components/bs-category";
-import { general } from "../styles/general";
 
 export default function BSCategory({ action, visible, setVisible, category }) {
+  const [colorModalVisible, setColorModalVisible] = useState(false);
+  const [iconModalVisible, setIconModalVisible] = useState(false);
   const refRBSheet = useRef();
 
   useEffect(() => {
-    if (visible) {
+    if (visible && refRBSheet.current) {
       refRBSheet.current.open();
-    } else {
-      refRBSheet.current.close();
     }
   }, [visible]);
+
+  const handleClose = () => {
+    if (visible) setVisible(false);
+  };
 
   const [categoryData, setCategoryData] = useState({
     name: "",
@@ -29,69 +32,81 @@ export default function BSCategory({ action, visible, setVisible, category }) {
     icon: null,
   });
 
-  console.log(categoryData);
+  const ableToDrag = !colorModalVisible && !iconModalVisible;
 
   return (
-    <View style={sheets.container}>
-      <RBSheet
-        closeOnPressMask={true}
-        onClose={() => setVisible(false)}
-        ref={refRBSheet}
-        customStyles={{
-          container: {
-            ...general.safeArea,
-            ...sheets.sheetStyles,
-            ...bsCategory.sheetCategory,
-          },
-        }}
-        customModalProps={{
-          animationType: "slide",
-          statusBarTranslucent: false,
-        }}
-      >
-        <View style={sheets.header}>
-          <CustomTitle title={"Categoría"} type={"TitleMedium"} />
-        </View>
+    <RBSheet
+      closeOnPressMask={true}
+      closeOnPressBack={true} //Android only
+      draggable={ableToDrag}
+      dragOnContent={ableToDrag}
+      onClose={handleClose}
+      ref={refRBSheet}
+      customStyles={{
+        wrapper: {
+          ...sheets.background,
+        },
+        container: {
+          ...sheets.container,
+          ...bsCategory.sheetCategory,
+        },
+      }}
+      customModalProps={{
+        animationType: "none",
+        statusBarTranslucent: false,
+      }}
+      height={500}
+    >
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
-          <CustomInput
-            type={"text"}
-            label={"Nombre"}
-            placeholder={"Ingresa el nombre de la categoría"}
-            value={categoryData.name}
-            onChange={(text) =>
-              handleInputChange(setCategoryData, "name", text)
-            }
-          />
-          <CustomInput
-            type={"number"}
-            label={"Presupuesto"}
-            placeholder={"Ingresa el presupuesto de la categoría"}
-            value={categoryData.budget}
-            onChange={(text) =>
-              handleInputChange(setCategoryData, "budget", text)
-            }
-          />
-          <View style={bsCategory.pickersContainers}>
-            <View style={bsCategory.picker}>
-              <ColorPicker
-                color={categoryData.color}
-                setColor={(color) =>
-                  handleInputChange(setCategoryData, "color", color)
-                }
-              />
-            </View>
-            <View style={bsCategory.picker}>
-              <IconPicker
-                icon={categoryData.icon}
-                setIcon={(icon) =>
-                  handleInputChange(setCategoryData, "icon", icon)
-                }
-              />
+          <View style={sheets.header}>
+            <CustomTitle title={"Categoría"} type={"TitleMedium"} />
+          </View>
+          <View>
+            <CustomInput
+              type={"text"}
+              label={"Nombre"}
+              placeholder={"Ingresa el nombre de la categoría"}
+              value={categoryData.name}
+              onChange={(text) =>
+                handleInputChange(setCategoryData, "name", text)
+              }
+            />
+            <CustomInput
+              type={"number"}
+              label={"Presupuesto"}
+              placeholder={"Ingresa el presupuesto de la categoría"}
+              value={categoryData.budget}
+              onChange={(text) =>
+                handleInputChange(setCategoryData, "budget", text)
+              }
+            />
+            <View style={bsCategory.pickersContainers}>
+              <View style={bsCategory.picker}>
+                <ColorPicker
+                  color={categoryData.color}
+                  setColor={(color) =>
+                    handleInputChange(setCategoryData, "color", color)
+                  }
+                  show={colorModalVisible}
+                  setShow={setColorModalVisible}
+                />
+              </View>
+              <View style={bsCategory.picker}>
+                <IconPicker
+                  icon={categoryData.icon}
+                  setIcon={(icon) =>
+                    handleInputChange(setCategoryData, "icon", icon)
+                  }
+                  show={iconModalVisible}
+                  setShow={setIconModalVisible}
+                />
+              </View>
             </View>
           </View>
+          <CustomButton title={"Agregar categoría"} background={"green"} />
         </View>
-        <CustomButton title={"Agregar categoría"} background={"green"} />
-      </RBSheet>
-    </View>
+      </TouchableWithoutFeedback>
+    </RBSheet>
   );
 }
