@@ -107,8 +107,6 @@ describe('ModalExpense Component', () => {
 
 
 it('executes onPress of Alert when Eliminar is confirmed', () => {
-    // simula la consola
-    console.log = jest.fn();
   
     const mockAlert = jest.spyOn(Alert, 'alert').mockImplementation((title, message, buttons) => {
         if (Array.isArray(buttons)) {
@@ -120,16 +118,13 @@ it('executes onPress of Alert when Eliminar is confirmed', () => {
     const { getByTestId } = render(<ModalExpense {...mockProps} visible={true} />);
     fireEvent.press(getByTestId('button-Eliminar'));
   
-    expect(console.log).toHaveBeenCalledWith('userId:', '1234', 'expenseId:', '5678');
     expect(Alert.alert).toHaveBeenCalledWith('Gasto Eliminado');
     mockAlert.mockRestore();
   });
 
   it('calls handleEdit and logs expenseId', () => {
-    console.log = jest.fn();
     const { getByTestId } = render(<ModalExpense {...mockProps} />);
 
     fireEvent.press(getByTestId('button-Editar'));
-    expect(console.log).toHaveBeenCalledWith('expenseId:', '5678');
   });
 });

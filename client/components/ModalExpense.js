@@ -27,6 +27,7 @@ const ModalExpense = ({category, name, date, quantity = 0, description, icon, im
     const heightInputs = image ? {height: '37%'} : {height: '20%'};
 
     const handleDelete = (userId, expenseId) => {
+        //agregar la logica para eliminar el gasto
         Alert.alert(
             'Eliminar Gasto',
             '¿Estas seguro que deseas eliminar el gasto?',
@@ -34,7 +35,6 @@ const ModalExpense = ({category, name, date, quantity = 0, description, icon, im
               {
                 text: 'Eliminar',
                 onPress: () => {
-                    console.log('userId:', userId, 'expenseId:', expenseId), 
                     Alert.alert('Gasto Eliminado')},
                 style: 'default',
               },
@@ -48,7 +48,7 @@ const ModalExpense = ({category, name, date, quantity = 0, description, icon, im
     }
 
     const handleEdit = (expenseId) => {
-        console.log('expenseId:', expenseId)
+        //agregar logica para editar el gasto
     }
 
     const renderIcon = ({ icon }) => {
