@@ -6,8 +6,10 @@ import CustomTitle from "./CustomTitle";
 import CustomInput from "./CustomInput";
 import ColorPicker from "./ColorPicker";
 import IconPicker from "./IconPicker";
+import CustomButton from "./CustomButton";
 import { sheets } from "../styles/components/bottom-sheets";
 import { bsCategory } from "../styles/components/bs-category";
+import { general } from "../styles/general";
 
 export default function BSCategory({ action, visible, setVisible, category }) {
   const refRBSheet = useRef();
@@ -37,6 +39,7 @@ export default function BSCategory({ action, visible, setVisible, category }) {
         ref={refRBSheet}
         customStyles={{
           container: {
+            ...general.safeArea,
             ...sheets.sheetStyles,
             ...bsCategory.sheetCategory,
           },
@@ -46,35 +49,48 @@ export default function BSCategory({ action, visible, setVisible, category }) {
           statusBarTranslucent: false,
         }}
       >
-        <CustomTitle title={"Categoria"} type={"TitleMedium"} />
-        <CustomInput
-          type={"text"}
-          label={"Nombre"}
-          placeholder={"Ingresa el nombre de la categoría"}
-          value={categoryData.name}
-          onChange={(text) => handleInputChange(setCategoryData, "name", text)}
-        />
-        <CustomInput
-          type={"number"}
-          label={"Presupuesto"}
-          placeholder={"Ingresa el presupuesto de la categoría"}
-          value={categoryData.budget}
-          onChange={(text) =>
-            handleInputChange(setCategoryData, "budget", text)
-          }
-        />
+        <View style={sheets.header}>
+          <CustomTitle title={"Categoría"} type={"TitleMedium"} />
+        </View>
         <View>
-          <ColorPicker
-            color={categoryData.color}
-            setColor={(color) =>
-              handleInputChange(setCategoryData, "color", color)
+          <CustomInput
+            type={"text"}
+            label={"Nombre"}
+            placeholder={"Ingresa el nombre de la categoría"}
+            value={categoryData.name}
+            onChange={(text) =>
+              handleInputChange(setCategoryData, "name", text)
             }
           />
-          <IconPicker
-            icon={categoryData.icon}
-            setIcon={(icon) => handleInputChange(setCategoryData, "icon", icon)}
+          <CustomInput
+            type={"number"}
+            label={"Presupuesto"}
+            placeholder={"Ingresa el presupuesto de la categoría"}
+            value={categoryData.budget}
+            onChange={(text) =>
+              handleInputChange(setCategoryData, "budget", text)
+            }
           />
+          <View style={bsCategory.pickersContainers}>
+            <View style={bsCategory.picker}>
+              <ColorPicker
+                color={categoryData.color}
+                setColor={(color) =>
+                  handleInputChange(setCategoryData, "color", color)
+                }
+              />
+            </View>
+            <View style={bsCategory.picker}>
+              <IconPicker
+                icon={categoryData.icon}
+                setIcon={(icon) =>
+                  handleInputChange(setCategoryData, "icon", icon)
+                }
+              />
+            </View>
+          </View>
         </View>
+        <CustomButton title={"Agregar categoría"} background={"green"} />
       </RBSheet>
     </View>
   );
