@@ -1,4 +1,4 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { handleInputChange } from "../hooks/handleInputChange";
