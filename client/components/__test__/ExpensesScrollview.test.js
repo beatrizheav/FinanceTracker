@@ -44,7 +44,6 @@ describe("ExpensesScrollview", () => {
     fireEvent.scroll(scrollView, {
       nativeEvent: { contentOffset: { x: 100 } },
     });
-    console.log(scrollView.props);
     expect(scrollView.props.contentContainerStyle.paddingLeft).toBe(30);
   });
 });
