@@ -38,9 +38,19 @@ const IconPickerModal = ({ handleSubmit, show }) => {
 const renderIcon = ({ icon }) => {
   const iconSets = {
     AntDesign: Icon.AntDesign,
+    Entypo: Icon.Entypo,
+    EvilIcons: Icon.EvilIcons,
+    Feather: Icon.Feather,
     FontAwesome: Icon.FontAwesome,
-    MaterialIcons: Icon.MaterialIcons,
+    FontAwesome5: Icon.FontAwesome5,
+    Fontisto: Icon.Fontisto,
+    Foundation: Icon.Foundation,
     Ionicons: Icon.Ionicons,
+    MaterialCommunityIcons: Icon.MaterialCommunityIcons,
+    MaterialIcons: Icon.MaterialIcons,
+    Octicons: Icon.Octicons,
+    SimpleLineIcons: Icon.SimpleLineIcons,
+    Zocial: Icon.Zocial,
   };
 
   const IconComponent = iconSets[icon.iconSet];
