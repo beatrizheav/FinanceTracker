@@ -12,20 +12,17 @@ const ModalCategory = ({name, budget = 0, totalExpenses = 0, icon, color, catego
     const formatName = name ? name : 'Categoria no encontrada'; //Validates if there is data in the title, if not, sets a default title
     const formatBudget = budget ? ` $ ${budget.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$ 0.00'; //Validates if there is data in the quantity, if not, sets a default quantity
     const formatTotalExpenses = totalExpenses ? `- $ ${totalExpenses.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$ 0.00'; //Validates if there is data in the quantity, if not, sets a default quantity
-    
-    const closeModal = () => {
-        setIsActiveModalCategory(false);
-    };
+
     const handleDelete = (userId, categoryId) => {
         //agregar la logica para eliminar el gasto
         Alert.alert(
-            `Eliminar Gasto con id: ${categoryId}`,
-            '¿Estas seguro que deseas eliminar el gasto?',
+            `Eliminar Categoria con id: ${categoryId}`,
+            '¿Estas seguro que deseas eliminar la categoria?',
             [
               {
                 text: 'Eliminar',
                 onPress: () => {
-                    Alert.alert('Gasto Eliminado'),
+                    Alert.alert('Categoria Eliminada'),
                     setIsActiveModalCategory(false)},
                 style: 'default',
               },
@@ -39,11 +36,14 @@ const ModalCategory = ({name, budget = 0, totalExpenses = 0, icon, color, catego
     }
     const handleEdit = (categoryId) => {
         //agregar logica para editar el gasto
-    }
+    };
 
+    const closeModal = () => {
+        setIsActiveModalCategory(false);
+    };
     return (
         <Modal>
-        <TouchableWithoutFeedback onPress={closeModal}>
+        <TouchableWithoutFeedback onPress={closeModal} testID="modal-overlay">
             <View style={modalCategory.overlay}>
             <TouchableWithoutFeedback>
                 <View style={modalCategory.container}>

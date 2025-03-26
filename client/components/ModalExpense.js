@@ -1,7 +1,6 @@
 import { View, Text, Modal, Alert, Platform, TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import * as Icon from "@expo/vector-icons";
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import CustomButton from './CustomButton'
@@ -13,7 +12,7 @@ import { colorsTheme } from '../styles/colorsTheme';
 import { fontsTheme } from '../styles/fontsTheme';
 import CategoryIcon from './CategoryIcon';
 
-const ModalExpense = ({category, name, date, quantity = 0, description, icon, image, userId, expenseId, setIsActiveModalExpense}) => {
+const ModalExpense = ({category, name, date, quantity = 0, description, image, userId, expenseId, setIsActiveModalExpense}) => {
     const formatNameCategory = category.name ? category.name : 'Categoria no encontrada'; //Validates if there is data in the title, if not, sets a default title
     const formatNameExpense = name ? name : 'Titulo no encontrado';
     const formatDate = date ? format(date, "dd 'de' MMMM yyyy", {locale: es}) : 'fecha no encontrada'; //takes the date and formats it
@@ -36,7 +35,7 @@ const ModalExpense = ({category, name, date, quantity = 0, description, icon, im
                 onPress: () => {
                     Alert.alert('Gasto Eliminado'),
                     setIsActiveModalExpense(false);
-    },
+                },
                 style: 'default',
               },
               {
