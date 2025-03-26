@@ -6,6 +6,9 @@ import {
   Inter_500Medium,
   Inter_700Bold,
 } from "@expo-google-fonts/inter";
+import * as SplashScreen from "expo-splash-screen";
+
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
   const router = useRouter();
@@ -18,6 +21,7 @@ export default function App() {
 
   useEffect(() => {
     if (fontsLoaded) {
+      SplashScreen.hideAsync();
       router.replace("/main");
     }
   }, [fontsLoaded, router]);
