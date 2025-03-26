@@ -10,7 +10,7 @@ import CustomButton from "./CustomButton";
 import { sheets } from "../styles/components/bottom-sheets";
 import { bsCategory } from "../styles/components/bs-category";
 
-export default function BSCategory({ action, visible, setVisible, category }) {
+export default function BSCategory({ edit, visible, setVisible, category }) {
   const [colorModalVisible, setColorModalVisible] = useState(false);
   const [iconModalVisible, setIconModalVisible] = useState(false);
   const refRBSheet = useRef();
@@ -32,7 +32,15 @@ export default function BSCategory({ action, visible, setVisible, category }) {
     icon: null,
   });
 
+  useEffect(() => {
+    if (edit) {
+      setCategoryData(category);
+    }
+  }, [edit]);
+
   const ableToDrag = !colorModalVisible && !iconModalVisible;
+
+  const titleButton = edit ? "Guardar cambios" : "Agregar categoría";
 
   return (
     <RBSheet
@@ -104,7 +112,7 @@ export default function BSCategory({ action, visible, setVisible, category }) {
               </View>
             </View>
           </View>
-          <CustomButton title={"Agregar categoría"} background={"green"} />
+          <CustomButton title={titleButton} background={"green"} />
         </View>
       </TouchableWithoutFeedback>
     </RBSheet>
