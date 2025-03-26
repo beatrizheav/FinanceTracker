@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { colorsTheme } from "../colorsTheme";
 
-export const modalExpense = StyleSheet.create({
+export const modalCategory = StyleSheet.create({
   overlay: {
     position: 'absolute',
     top: 0,
@@ -14,7 +14,7 @@ export const modalExpense = StyleSheet.create({
   },
   container: {
     justifyContent: 'flex-start',
-    borderRadius: 15,
+    borderRadius: 20,
     width: '76%',
     backgroundColor: colorsTheme.white,
   },
@@ -30,14 +30,13 @@ export const modalExpense = StyleSheet.create({
     marginTop: 35,
     paddingHorizontal: 6,
   },
-  container_inputAndImage: {
-    paddingHorizontal: 12,
-    paddingTop: 10,
-  },
   container_buttons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: '14%',
+  },
+  teal: {
+    color: colorsTheme.teal
   },
   red: {
     color: colorsTheme.red

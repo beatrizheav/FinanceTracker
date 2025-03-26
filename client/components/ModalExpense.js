@@ -1,7 +1,6 @@
 import { View, Text, Modal, Alert, Platform, TouchableWithoutFeedback } from 'react-native'
 import React from 'react'
 import { Ionicons } from '@expo/vector-icons';
-import * as Icon from "@expo/vector-icons";
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
 import CustomButton from './CustomButton'
@@ -11,13 +10,12 @@ import ImagePickerComponent from './ImagePicker';
 import { modalExpense } from '../styles/components/modal-expense';
 import { colorsTheme } from '../styles/colorsTheme';
 import { fontsTheme } from '../styles/fontsTheme';
+import CategoryIcon from './CategoryIcon';
 
-const ModalExpense = ({category, name, date, quantity = 0, description, icon, image, userId, expenseId, setIsActiveModal}) => {
+const ModalExpense = ({category, name, date, quantity = 0, description, image, userId, expenseId, setIsActiveModalExpense}) => {
     const formatNameCategory = category.name ? category.name : 'Categoria no encontrada'; //Validates if there is data in the title, if not, sets a default title
     const formatNameExpense = name ? name : 'Titulo no encontrado';
     const formatDate = date ? format(date, "dd 'de' MMMM yyyy", {locale: es}) : 'fecha no encontrada'; //takes the date and formats it
-    const iconColor = category.color ? category.color : '#c94848'; //Validates if there is data in the color, if not, sets a default color
-    const iconBackground = category.color ? `${category.color}1a` : '#c948481a'; // takes the property color and adds a default opacity to it
     const validQuantity = Number(quantity) || 0;
     const quantityText = quantity ? `- $ ${validQuantity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$ 0.00'; //Validates if there is data in the quantity, if not, sets a default quantity
     const validImage = image ? image : false;
@@ -29,13 +27,15 @@ const ModalExpense = ({category, name, date, quantity = 0, description, icon, im
     const handleDelete = (userId, expenseId) => {
         //agregar la logica para eliminar el gasto
         Alert.alert(
-            'Eliminar Gasto',
+            `Eliminar Gasto con id ${expenseId}`,
             '¿Estas seguro que deseas eliminar el gasto?',
             [
               {
                 text: 'Eliminar',
                 onPress: () => {
-                    Alert.alert('Gasto Eliminado')},
+                    Alert.alert('Gasto Eliminado'),
+                    setIsActiveModalExpense(false);
+                },
                 style: 'default',
               },
               {
@@ -51,27 +51,8 @@ const ModalExpense = ({category, name, date, quantity = 0, description, icon, im
         //agregar logica para editar el gasto
     }
 
-    const renderIcon = ({ icon }) => {
-        const iconSets = {
-          AntDesign: Icon.AntDesign,
-          FontAwesome: Icon.FontAwesome,
-          MaterialIcons: Icon.MaterialIcons,
-          Ionicons: Icon.Ionicons,
-        };
-        const IconComponent = iconSets[category.icon?.iconSet || 'Ionicons'];
-        const iconName = category.icon.iconSet ? category.icon?.iconName : 'alert-circle-sharp'
-        if (IconComponent) {
-          return (
-            <IconComponent 
-              name={iconName} 
-              size={50} 
-              color={iconColor} />
-          );
-        }
-    };
-
     const closeModal = () => {
-        setIsActiveModal(false);
+        setIsActiveModalExpense(false);
     };
   return (
     <Modal>
@@ -90,10 +71,8 @@ const ModalExpense = ({category, name, date, quantity = 0, description, icon, im
                     </View>
                     <View>
                         <View style={modalExpense.container_icon}>
-                            <View style={[modalExpense.iconBackground, {backgroundColor: iconBackground}]}>
-                                <View>{renderIcon({ icon })}</View>
-                            </View>
-                            <Text style={[fontsTheme.TitleSmall, {color: iconColor}]}>{formatNameCategory}</Text>
+                            <CategoryIcon icon={category.icon} type={"big"} color={category.color}/>
+                            <Text style={[fontsTheme.TitleSmall, {color: category.color}]}>{formatNameCategory}</Text>
                         </View>
                     </View>
                     <View style={modalExpense.container_details}>

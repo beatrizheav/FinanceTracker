@@ -12,10 +12,6 @@ export const activityDisplay = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center'
     },
-    iconBackground: {
-        padding: 13,
-        borderRadius: 50,  
-    },
     description: {
         marginLeft: 8,
     },

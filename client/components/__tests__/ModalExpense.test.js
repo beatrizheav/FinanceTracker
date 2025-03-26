@@ -34,7 +34,7 @@ describe('ModalExpense Component', () => {
     image: 'fake-image-uri',
     userId: '1234',
     expenseId: '5678',
-    setIsActiveModal: jest.fn(),
+    setIsActiveModalExpense: jest.fn(),
   };
 
   it('renders modal with provided data', () => {
@@ -89,9 +89,9 @@ describe('ModalExpense Component', () => {
     const { getByTestId } = render(<ModalExpense {...mockProps} />);
 
     fireEvent.press(getByTestId('close-icon'));
-    expect(mockProps.setIsActiveModal).toHaveBeenCalledWith(false);
+    expect(mockProps.setIsActiveModalExpense).toHaveBeenCalledWith(false);
     fireEvent.press(getByTestId('modal-overlay'));
-    expect(mockProps.setIsActiveModal).toHaveBeenCalledWith(false);
+    expect(mockProps.setIsActiveModalExpense).toHaveBeenCalledWith(false);
   });
 
   it('renders modal correctly without an image', () => {
