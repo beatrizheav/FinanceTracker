@@ -11,7 +11,7 @@ import CategoryIcon from './CategoryIcon';
 
 const ModalIncome = ({name, date, quantity = 0, icon, color, incomeId, setIsActiveModalIncome}) => {
     const userId = 2; //temporal userId
-    const formatName = name ? name : 'Categoria no encontrada'; //Validates if there is data in the title, if not, sets a default title
+    const formatName = name ? name : 'Nombre no encontrado'; //Validates if there is data in the title, if not, sets a default title
     const formatDate = date ? format(date, "dd 'de' MMMM yyyy", {locale: es}) : 'fecha no encontrada'; //takes the date and formats it
     const formatQuantity = quantity ? ` $ ${quantity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$ 0.00'; //Validates if there is data in the quantity, if not, sets a default quantity
     
