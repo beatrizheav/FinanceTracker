@@ -51,18 +51,13 @@ const ColorPickerModal = ({
             onPress={() => setShow(false)}
             background={"green"}
           />
-          {/* <TouchableOpacity onPress={() => setShow(false)}>
-            <Text>Seleccionar color</Text>
-          </TouchableOpacity> */}
         </View>
       </View>
     </Modal>
   );
 };
 
-const ColorPickerComponent = ({ color, setColor }) => {
-  const [show, setShow] = useState(false);
-
+const ColorPickerComponent = ({ color, setColor, show, setShow }) => {
   const onColorChange = (color) => {
     setColor(color);
   };
