@@ -23,11 +23,6 @@ export const modalExpense = StyleSheet.create({
     justifyContent: 'flex-end',
     margin: 10,
   },
-  container_buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: '14%',
-  },
   container_icon: {
     alignItems: 'center', 
   },
@@ -39,13 +34,10 @@ export const modalExpense = StyleSheet.create({
     paddingHorizontal: 12,
     paddingTop: 10,
   },
-  iconBackground: {
-    width: 80,
-    height: 80,
-    padding: 13,
-    borderRadius: 50, 
-    justifyContent: 'center',
-    alignItems: 'center'
+  container_buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: '14%',
   },
   red: {
     color: colorsTheme.red
