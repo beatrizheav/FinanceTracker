@@ -22,7 +22,7 @@ export default function BSCategory({ edit, visible, setVisible, category }) {
   }, [visible]);
 
   const handleClose = () => {
-    if (visible) setVisible(false);
+    setVisible(false);
   };
 
   const [categoryData, setCategoryData] = useState({
