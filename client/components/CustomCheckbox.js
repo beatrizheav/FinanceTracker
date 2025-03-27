@@ -5,8 +5,8 @@ import CustomText from "./CustomText";
 import { colorsTheme } from "../styles/colorsTheme";
 import { customCheckbox } from "../styles/components/custom-checkbox";
 
-export default function CustomCheckbox({ text }) {
-  const [selected, setSelected] = useState(false);
+export default function CustomCheckbox({ text, fixed }) {
+  const [selected, setSelected] = useState(fixed);
   return (
     <View style={customCheckbox.container}>
       <View style={customCheckbox.checkbox}>
