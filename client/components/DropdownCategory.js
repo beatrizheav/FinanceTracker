@@ -9,9 +9,7 @@ import { colorsTheme } from "../styles/colorsTheme";
 import { fontsTheme } from "../styles/fontsTheme";
 import { data } from "../constants/categoryData";
 
-const DropdownCategory = ({ value, setValue }) => {
-  const [isFocus, setIsFocus] = useState(false);
-
+const DropdownCategory = ({ value, setValue, show, setShow }) => {
   const renderChevronIcon = useCallback(
     () => (
       <Entypo
@@ -44,12 +42,12 @@ const DropdownCategory = ({ value, setValue }) => {
         data={data}
         labelField="label"
         valueField="value"
-        placeholder={!isFocus ? "Select item" : "..."}
+        placeholder={!show ? "Select item" : "..."}
         value={value}
-        onFocus={() => setIsFocus(true)}
+        onFocus={() => setShow(true)}
         onChange={(item) => {
           setValue(item.value);
-          setIsFocus(false);
+          setShow(false);
         }}
         itemTextStyle={fontsTheme.TextSmall}
         containerStyle={dropdownCategory.dropContainer}
