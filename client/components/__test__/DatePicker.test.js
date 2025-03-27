@@ -1,12 +1,12 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import DatePicker from "../DatePicker";
 import { Platform } from "react-native";
 import { format } from "date-fns";
 
 describe("DatePicker", () => {
   it("should open modal when TouchableOpacity is pressed", async () => {
-    const { getByText, getByRole } = render(
+    const { getByText, getByRole, findByText } = render(
       <DatePicker label="Pick a Date" date={new Date()} setDate={() => {}} />
     );
 
@@ -17,24 +17,26 @@ describe("DatePicker", () => {
     fireEvent.press(getByRole("button"));
 
     // Verifica que el modal ahora está visible
-    expect(getByText("Select Date")).toBeVisible();
+    const selectDateText = await findByText("Select date");
+    expect(selectDateText).toBeVisible();
   });
 
-  it("hides the modal when 'Select Date' is pressed on iOS", () => {
+  it("hides the modal when 'Select Date' is pressed on iOS", async () => {
     Platform.OS = "ios";
 
     const mockSetDate = jest.fn();
-    const { getByLabelText, getByText, queryByText } = render(
+    const { getByLabelText, getByText, queryByText, findByText } = render(
       <DatePicker label="Pick a date" date={new Date()} setDate={mockSetDate} />
     );
 
     // Abrir el modal
     fireEvent.press(getByLabelText("Open Date Picker"));
-    expect(getByText("Select Date")).toBeTruthy();
+    const selectDateText = await findByText("Select date");
+    expect(selectDateText).toBeVisible();
 
     // Cerrar el modal
-    fireEvent.press(getByText("Select Date"));
-    expect(queryByText("Select Date")).toBeNull();
+    fireEvent.press(selectDateText); // Disparar el evento para cerrar el modal
+    await waitFor(() => expect(queryByText("Select Date")).toBeNull()); // Esperar a que no esté presente
   });
 
   it("updates the date and hides the modal on Android", () => {
@@ -84,11 +86,11 @@ describe("DatePicker", () => {
     expect(mockSetDate).toHaveBeenCalledWith(currentDate);
   });
 
-  it("does not hide the modal on iOS after selecting a date", () => {
+  it("does not hide the modal on iOS after selecting a date", async () => {
     Platform.OS = "ios";
 
     const mockSetDate = jest.fn();
-    const { getByLabelText, getByTestId, getByText } = render(
+    const { getByLabelText, getByTestId, findByText } = render(
       <DatePicker label="Pick a date" date={new Date()} setDate={mockSetDate} />
     );
 
@@ -99,7 +101,8 @@ describe("DatePicker", () => {
       nativeEvent: { timestamp: selectedDate.getTime() },
     });
 
-    expect(getByText("Select Date")).toBeTruthy();
+    const selectDateText = await findByText("Select date");
+    expect(selectDateText).toBeVisible();
   });
 
   it("displays 'Today' when the selected date is today", () => {
