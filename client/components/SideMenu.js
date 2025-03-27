@@ -48,7 +48,10 @@ const SideMenu = ({ visible, setMenuVisible }) => {
       <View style={sideMenu.backdrop}>
         <TouchableWithoutFeedback>
           <Animated.View style={[sideMenu.container, { right: slideAnim }]}>
-            <Pressable style={sideMenu.closeButton} onPress={() => setMenuVisible(false)}>
+            <Pressable
+              style={sideMenu.closeButton}
+              onPress={() => setMenuVisible(false)}
+            >
               <FontAwesome name="close" size={30} color={colorsTheme.white} />
             </Pressable>
 
@@ -75,14 +78,16 @@ const SideMenu = ({ visible, setMenuVisible }) => {
                 >
                   {({ pressed }) => (
                     <>
-                      <FontAwesome
-                        name={item.icon}
-                        size={24}
-                        style={[
-                          sideMenu.icon,
-                          pressed && { color: colorsTheme.darkGreen },
-                        ]}
-                      />
+                      <View style={sideMenu.iconContainer}>
+                        <FontAwesome
+                          name={item.icon}
+                          size={24}
+                          style={[
+                            sideMenu.icon,
+                            pressed && { color: colorsTheme.darkGreen },
+                          ]}
+                        />
+                      </View>
                       <Text
                         style={[
                           sideMenu.buttonText,

@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions, Platform } from "react-native";
 import {
   AVATAR_SECTION_HEIGHT,
   BUTTON_HEIGHT,
@@ -7,22 +7,27 @@ import {
 } from "../../constants/sideMenuSizes";
 import { colorsTheme } from "../colorsTheme";
 
+const { width, height: screenHeight } = Dimensions.get("window");
+
 export const sideMenu = StyleSheet.create({
   backdrop: {
     position: "absolute",
+    top: 0,
+    left: 0,
     width: "100%",
-    height: "100%",
-    display: "flex",
+    height: height,
     alignItems: "flex-end",
+    zIndex: 50,
+    paddingTop: Platform.OS === "android" ? 0 : 55,
   },
   container: {
     width: SIDE_MENU_WIDTH,
-    height: height,
+    height: screenHeight,
     backgroundColor: colorsTheme.darkGreen,
     paddingHorizontal: "5%",
     paddingBottom: 40,
     borderRadius: 5,
-    opacity: 0.95,
+    height: Platform.OS === "android" ? height : height - 55,
   },
   closeButton: {
     position: "absolute",
@@ -91,5 +96,9 @@ export const sideMenu = StyleSheet.create({
   logoutButtonText: {
     fontSize: 16,
     color: colorsTheme.darkGreen,
+  },
+  iconContainer: {
+    width: 40,
+    alignItems: "center",
   },
 });
