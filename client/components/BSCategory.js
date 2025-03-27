@@ -47,7 +47,6 @@ export default function BSCategory({ edit, visible, setVisible, category }) {
       closeOnPressMask={true}
       closeOnPressBack={true} //Android only
       draggable={ableToDrag}
-      dragOnContent={ableToDrag}
       onClose={handleClose}
       ref={refRBSheet}
       customStyles={{
