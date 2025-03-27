@@ -9,7 +9,7 @@ const CustomText = ({ text, type, numberOfLines = 1, color }) => {
   return (
     <View>
       <Text
-        style={[fontsTheme[textStyle], textColor]}
+        style={[fontsTheme[textStyle], { color: textColor }]}
         numberOfLines={numberOfLines}
         ellipsizeMode="tail"
       >
