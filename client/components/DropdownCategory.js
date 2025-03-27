@@ -4,12 +4,12 @@ import { Dropdown } from "react-native-element-dropdown";
 import Entypo from "@expo/vector-icons/Entypo";
 import CustomTitle from "./CustomTitle";
 import { inputs } from "../styles/components/inputs";
-import { dropdownSelect } from "../styles/components/dropdown-select";
+import { dropdownCategory } from "../styles/components/dropdown-category";
 import { colorsTheme } from "../styles/colorsTheme";
 import { fontsTheme } from "../styles/fontsTheme";
 import { data } from "../constants/categoryData";
 
-const DropdownSelect = ({ label, value, setValue }) => {
+const DropdownCategory = ({ value, setValue }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const renderChevronIcon = useCallback(
@@ -24,11 +24,18 @@ const DropdownSelect = ({ label, value, setValue }) => {
     []
   );
 
-  const placeholderStyles = [fontsTheme.TextSmall, dropdownSelect.placeholder];
+  const placeholderStyles = [
+    fontsTheme.TextSmall,
+    dropdownCategory.placeholder,
+  ];
 
   return (
     <View style={inputs.wrapper}>
-      <CustomTitle title={label} type={"TitleSmall"} testID={"input-label"} />
+      <CustomTitle
+        title={"Categoría"}
+        type={"TitleSmall"}
+        testID={"input-label"}
+      />
       <Dropdown
         style={[inputs.container]}
         mode="modal"
@@ -45,7 +52,7 @@ const DropdownSelect = ({ label, value, setValue }) => {
           setIsFocus(false);
         }}
         itemTextStyle={fontsTheme.TextSmall}
-        containerStyle={dropdownSelect.dropContainer}
+        containerStyle={dropdownCategory.dropContainer}
         renderRightIcon={renderChevronIcon}
         testID="dropdown-select"
       />
@@ -53,4 +60,4 @@ const DropdownSelect = ({ label, value, setValue }) => {
   );
 };
 
-export default DropdownSelect;
+export default DropdownCategory;
