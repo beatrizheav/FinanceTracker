@@ -22,7 +22,7 @@ export default function BSCategory({ edit, visible, setVisible, category }) {
   }, [visible]);
 
   const handleClose = () => {
-    if (visible) setVisible(false);
+    setVisible(false);
   };
 
   const [categoryData, setCategoryData] = useState({
@@ -47,7 +47,6 @@ export default function BSCategory({ edit, visible, setVisible, category }) {
       closeOnPressMask={true}
       closeOnPressBack={true} //Android only
       draggable={ableToDrag}
-      dragOnContent={ableToDrag}
       onClose={handleClose}
       ref={refRBSheet}
       customStyles={{
