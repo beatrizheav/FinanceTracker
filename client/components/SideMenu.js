@@ -22,7 +22,7 @@ const menuItems = [
   { key: "4", icon: "folder-o", label: "Categorias" },
 ];
 
-const SideMenu = ({ visible, onClose }) => {
+const SideMenu = ({ visible, setMenuVisible }) => {
   const slideAnim = useRef(new Animated.Value(-SIDE_MENU_WIDTH)).current;
 
   useEffect(() => {
@@ -44,11 +44,14 @@ const SideMenu = ({ visible, onClose }) => {
   if (!visible) return null;
 
   return (
-    <TouchableWithoutFeedback onPress={onClose}>
+    <TouchableWithoutFeedback onPress={() => setMenuVisible(false)}>
       <View style={sideMenu.backdrop}>
         <TouchableWithoutFeedback>
           <Animated.View style={[sideMenu.container, { right: slideAnim }]}>
-            <Pressable style={sideMenu.closeButton} onPress={onClose}>
+            <Pressable
+              style={sideMenu.closeButton}
+              onPress={() => setMenuVisible(false)}
+            >
               <FontAwesome name="close" size={30} color={colorsTheme.white} />
             </Pressable>
 
@@ -64,6 +67,7 @@ const SideMenu = ({ visible, onClose }) => {
             <FlatList
               data={menuItems}
               contentContainerStyle={{ paddingBottom: 10 }}
+              scrollEnabled={false}
               keyExtractor={(item) => item.key}
               renderItem={({ item }) => (
                 <Pressable
@@ -74,14 +78,16 @@ const SideMenu = ({ visible, onClose }) => {
                 >
                   {({ pressed }) => (
                     <>
-                      <FontAwesome
-                        name={item.icon}
-                        size={24}
-                        style={[
-                          sideMenu.icon,
-                          pressed && { color: colorsTheme.darkGreen },
-                        ]}
-                      />
+                      <View style={sideMenu.iconContainer}>
+                        <FontAwesome
+                          name={item.icon}
+                          size={24}
+                          style={[
+                            sideMenu.icon,
+                            pressed && { color: colorsTheme.darkGreen },
+                          ]}
+                        />
+                      </View>
                       <Text
                         style={[
                           sideMenu.buttonText,
