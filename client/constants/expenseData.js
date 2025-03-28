@@ -12,7 +12,7 @@ export const expenseData = {
   },
   name: "Pago de renta",
   date: "2011-10-10T14:48:00",
-  quantity: 1000,
+  quantity: 1000.555,
   description: "Pago que debo hacer para pagar la renta",
   image:
     "https://www.tipotexto.com/wp-content/uploads/Walmart_B_plantilla_captura_400900.png",
