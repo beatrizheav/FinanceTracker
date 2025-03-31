@@ -7,7 +7,7 @@ import CustomText from "../components/CustomText";
 import CustomInput from "../components/CustomInput";
 import AvatarPicker from "../components/AvatarPicker";
 import CustomButton from "../components/CustomButton";
-
+import { registrationScreen } from "../styles/screens/registration";
 import { general } from "../styles/general";
 
 export default function registration() {
@@ -36,19 +36,14 @@ export default function registration() {
   return (
     <View style={general.safeArea}>
       <Header title={"Crear cuenta"} />
-      <View
-        style={{
-          justifyContent: "space-between",
-          flex: 1,
-        }}
-      >
-        <View style={{ paddingTop: 100, paddingBottom: 20 }}>
+      <View style={registrationScreen.container}>
+        <View style={registrationScreen.title}>
           <CustomText text={"Crear cuenta"} type={"TitleBig"} />
           <CustomText text={"¡Estás a un paso de empezar! "} type={"TextBig"} />
         </View>
         <View>
-          <View style={{ flexDirection: "row", gap: 10 }}>
-            <View style={{ flex: 1 }}>
+          <View style={registrationScreen.namesContainer}>
+            <View style={registrationScreen.name}>
               <CustomInput
                 label={"Nombre"}
                 placeholder={"Luis"}
@@ -58,7 +53,7 @@ export default function registration() {
                 }
               />
             </View>
-            <View style={{ flex: 1 }}>
+            <View style={registrationScreen.name}>
               <CustomInput
                 label={"Apellido"}
                 placeholder={"Ramirez"}
