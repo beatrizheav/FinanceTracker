@@ -5,10 +5,14 @@ import CustomInput from "../components/CustomInput";
 import { colorsTheme } from "../styles/colorsTheme";
 import CustomButton from "../components/CustomButton";
 import { loginScreen } from "../styles/screens/login-screen";
+import { handleInputChange } from "../hooks/handleInputChange";
+import { Link } from "expo-router";
 
 const LoginScreen = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginData, setLoginData] = useState({
+    email: "",
+    password: "",
+  });
 
   return (
     <View style={loginScreen.screenContainer}>
@@ -31,15 +35,19 @@ const LoginScreen = () => {
             type={"email"}
             label={"Correo Electronico"}
             placeholder={"Ingresa tu correo electronico"}
-            value={email}
-            onChange={setEmail}
+            value={loginData.email}
+            onChange={(text) => {
+              handleInputChange(setLoginData, "email", text);
+            }}
           />
           <CustomInput
             type={"password"}
             label={"Contrasena"}
             placeholder={"Ingresa tu contrasena"}
-            value={password}
-            onChange={setPassword}
+            value={loginData.password}
+            onChange={(text) => {
+              handleInputChange(setLoginData, "password", text);
+            }}
           />
         </View>
         <View style={loginScreen.buttonContainer}>
@@ -50,11 +58,9 @@ const LoginScreen = () => {
               type={"ButtonSmall"}
               color={{ color: colorsTheme.darkGray }}
             />
-            <CustomTitle
-              title={"Registrate"}
-              type={"ButtonSmall"}
-              color={{ color: colorsTheme.teal }}
-            />
+            <Link href="/" style={loginScreen.registerLink}>
+              Registrate
+            </Link>
           </View>
         </View>
       </View>

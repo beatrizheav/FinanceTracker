@@ -29,4 +29,7 @@ export const loginScreen = StyleSheet.create({
   labelsContainer: {
     flexDirection: "row",
   },
+  registerLink: {
+    color: colorsTheme.teal,
+  },
 });
