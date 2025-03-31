@@ -5,10 +5,9 @@ export const loginScreen = StyleSheet.create({
   screenContainer: {
     display: "flex",
     width: "100%",
-    height: "80%",
+    height: "100%",
     justifyContent: "space-evenly",
     alignItems: "center",
-    paddingHorizontal: 20,
   },
   itemsContainer: {
     width: "100%",

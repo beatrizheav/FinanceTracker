@@ -7,12 +7,25 @@ import CustomButton from "../components/CustomButton";
 import { loginScreen } from "../styles/screens/login-screen";
 import { handleInputChange } from "../hooks/handleInputChange";
 import { Link } from "expo-router";
+import useFormValidation from "../hooks/useFormValidation";
 
 const LoginScreen = () => {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
   });
+
+  const data = { ...loginData };
+
+  const validateForm = useFormValidation(data, "login");
+
+  const handleSubmit = () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    alert("Able to log in");
+  };
 
   return (
     <View style={loginScreen.screenContainer}>
@@ -51,7 +64,11 @@ const LoginScreen = () => {
           />
         </View>
         <View style={loginScreen.buttonContainer}>
-          <CustomButton title={"Iniciar Sesion"} background={"green"} />
+          <CustomButton
+            title={"Iniciar Sesion"}
+            background={"green"}
+            onPress={() => handleSubmit()}
+          />
           <View style={loginScreen.labelsContainer}>
             <CustomTitle
               title={"Aun no tienes una cuenta? "}
