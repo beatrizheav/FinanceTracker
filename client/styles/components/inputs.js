@@ -55,4 +55,5 @@ export const inputs = StyleSheet.create({
     width: 350,
     alignItems: "center",
   },
+  textInput: { flex: 1 },
 });
