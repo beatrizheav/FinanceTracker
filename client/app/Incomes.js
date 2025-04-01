@@ -3,7 +3,6 @@ import React, { useState, useRef, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { isSameDay, isAfter, isBefore, subDays } from 'date-fns';
 import Header from '../components/Header'
-import CustomTitle from '../components/CustomTitle'
 import ActivityDisplay from '../components/ActivityDisplay'
 import CustomText from '../components/CustomText'
 import AddButton from '../components/AddButton'
@@ -12,14 +11,17 @@ import { general } from '../styles/general'
 import { colorsTheme } from '../styles/colorsTheme';
 import { incomes } from '../styles/screens/incomes';
 import ModalIncome from '../components/ModalIncome';
+import BSIncome from "../components/BSIncome";
 
 const Incomes = () => {
     const [selectedIncome, setSelectedIncome] = useState(null);
     const [isActiveModalIncome, setIsActiveModalIncome] = useState(false);
+    const [isActiveBSIncome, setIsActiveBSIncome] = useState(false);
+    const edit = false;
     const fixedIncomes = incomesData.filter(item => item.fixed === true); //incomes fixed
     const today = new Date();
     const twoWeeksAgo = subDays(today, 14);
-    const [isActiveAddButton, setIsActiveAddButton] = useState(false);
+    //const [isActiveAddButton, setIsActiveAddButton] = useState(false);
     const [expandedSections, setExpandedSections] = useState({
         fixed: false,
         today: false,
@@ -35,6 +37,15 @@ const Incomes = () => {
         return isAfter(incomeDate, twoWeeksAgo) && isBefore(incomeDate, today);
       });
 
+      const showModalIncome = (income) => {
+        setSelectedIncome(income);
+        setIsActiveModalIncome(true);
+      };
+
+      const showBottom = () => {
+        setIsActiveBSIncome(!isActiveBSIncome)
+      }
+
       const toggleSection = (section) => {
         setExpandedSections((prev) => ({
           ...prev,
@@ -44,50 +55,27 @@ const Incomes = () => {
       
       const getIcon = (section) => 
         expandedSections[section] ? 'chevron-up-outline' : 'chevron-down-outline';
-      
-      const showBottom = () => {
-        setIsActiveAddButton(!isActiveAddButton)
-      }
-
-      // const getDynamicHeight = () => {
-      //   if (expandedSections.fixed){
-      //     if(fixedIncomes.length === 1){
-      //         return { height: '10%', borderColor: 'blue'}
-      //     } else if(fixedIncomes.length === 2) {
-      //         return { height: '20%', borderColor: 'green'}
-      //     } else {
-      //         return { height: '30%', borderWidth: 1, borderColor: 'pink'}
-      //     }
-      //   };
-
-      //   if (expandedSections.today){
-      //     if(todayIncomes.length === 1){
-      //         return { height: '10%', borderWidth: 1, borderColor: 'blue'}
-      //     } else if(todayIncomes.length === 2) {
-      //         return { height: '20%'}
-      //     } else {
-      //         return { height: '30%', borderWidth: 1, borderColor: 'yellow'}
-      //     }
-      //   };
-
-      //   if (expandedSections.last){
-      //     if(!expandedSections.fixed && !expandedSections.today){
-      //         return { height: '80%'}
-      //     }
-      //   }
-      // }
 
       const getFixedHeightStyle = () => {
         if (!expandedSections.fixed) return {};
-        if (fixedIncomes.length === 1) return { height: '10%', borderColor: 'blue', borderWidth: 1 };
-        if (fixedIncomes.length === 2) return { height: '20%', borderColor: 'green', borderWidth: 1 };
-        return { maxHeight: '45%', borderColor: 'yellow', borderWidth: 1 };
+        if (fixedIncomes.length === 1) return { height: 70 };
+        if (fixedIncomes.length === 2) return { height: 135 };
+        return { height: 200 };
       };
 
-      const showModalIncome = (income) => {
-        setSelectedIncome(income);
-        setIsActiveModalIncome(true);
+      const getTodayHeightStyle = () => {
+        if (!expandedSections.today) return {};
+        if (todayIncomes.length === 1) return { height: 70 };
+        if (todayIncomes.length === 2) return { height: 135 };
+        return { height: 200 };
       };
+
+      const getLastHeightStyle = () => {
+        if (!expandedSections.last) return {};
+        if (expandedSections.today || expandedSections.fixed) return { height: 200 };
+        return { height: '80%' };
+      };
+
   return (
     <View style={general.safeArea}>
         <Header title={'Ingresos'}/>
@@ -96,7 +84,7 @@ const Incomes = () => {
                 <Pressable 
                   onPress={() => toggleSection('fixed')}
                   style={incomes.container_title}>
-                    <CustomTitle title={'Ingresos fijos'} type={'TitleBig'}/>
+                    <CustomText text={'Ingresos fijos'} type={'TitleBig'}/>
                         <Ionicons
                             onPress={() => toggleSection('fixed')}
                             name={getIcon('fixed')}
@@ -134,7 +122,7 @@ const Incomes = () => {
                 <Pressable
                   onPress={() => toggleSection('today')}
                   style={incomes.container_title}>
-                    <CustomTitle title={'Hoy'} type={'TitleBig'}/>
+                    <CustomText text={'Hoy'} type={'TitleBig'}/>
                     <Ionicons
                         onPress={() => toggleSection('today')} 
                         name={getIcon('today')} 
@@ -154,7 +142,7 @@ const Incomes = () => {
                             data={todayIncomes}
                             keyExtractor={item => item.incomeId.toString()}
                             showsVerticalScrollIndicator={false}
-                            //style={[getDynamicHeight(), incomes.border]}
+                            style={getTodayHeightStyle()}
                             renderItem={({item}) => 
                                 <ActivityDisplay 
                                   {... item}
@@ -170,7 +158,7 @@ const Incomes = () => {
                 <Pressable
                   onPress={() => toggleSection('last')}
                   style={incomes.container_title}>
-                    <CustomTitle title={'Últimas dos semanas'} type={'TitleBig'}/>
+                    <CustomText text={'Últimas dos semanas'} type={'TitleBig'}/>
                     <Ionicons
                         onPress={() => toggleSection('last')} 
                         name={getIcon('last')} 
@@ -190,7 +178,7 @@ const Incomes = () => {
                             data={lastTwoWeeksIncomes}
                             keyExtractor={item => item.incomeId.toString()}
                             showsVerticalScrollIndicator={false}
-                            //style={[getDynamicHeight(), incomes.border]}
+                            style={getLastHeightStyle()}
                             renderItem={({item}) => 
                                 <ActivityDisplay 
                                   {... item} 
@@ -203,13 +191,19 @@ const Incomes = () => {
                 }
             </View>
         </View>
-        <AddButton onPress={showBottom} isActiveAddButton={isActiveAddButton}/>
+        <AddButton onPress={showBottom}/>
         {isActiveModalIncome && selectedIncome && (
           <ModalIncome
             {...selectedIncome}
             setIsActiveModalIncome={setIsActiveModalIncome}
           />
         )}
+        <BSIncome
+        visible={isActiveBSIncome}
+        setVisible={setIsActiveBSIncome}
+        edit={edit}
+        income={selectedIncome}
+      />
     </View>
   )
 }

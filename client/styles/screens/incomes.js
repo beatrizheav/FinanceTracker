@@ -9,16 +9,14 @@ export const incomes = StyleSheet.create({
     flexDirection: "row",
     alignItems: 'center',
     justifyContent: "flex-start",
-    borderWidth: 1,
-    borderColor: 'red',
   },
   icon_chev: {
     marginTop: 5,
     marginLeft: 10,
   },
   container_text: {
-    //marginTop: 10,
-   // marginBottom: 20,
+    marginTop: 10,
+    marginBottom: 20,
 
   },
   black: {
