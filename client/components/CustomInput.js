@@ -34,6 +34,7 @@ export default function CustomInput({
   const textInputStyle = [
     (type === "paragraph" || type === "number") &&
       inputs.textInputParagraphNumber,
+    inputs.textInput,
   ];
 
   const inputEditable = onChange ? true : false;
