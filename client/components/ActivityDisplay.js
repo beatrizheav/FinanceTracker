@@ -14,10 +14,10 @@ const ActivityDisplay = ({name, date, quantity = 0, onPress, category, screen}) 
     const icon = screen === 'income' ?  {"iconName": "attach-money","iconSet": "MaterialIcons"} : category.icon;
     const color = screen === 'income' ? colorsTheme.lightGreen : category.color;
     const quantityColor = screen === 'income' //changes the text color depending on the screen
-        ? activityDisplay.green
+        ? colorsTheme.lightGreen
         : screen === 'expense'
-            ? activityDisplay.red
-            : activityDisplay.teal
+            ? colorsTheme.red
+            : colorsTheme.teal
     const validQuantity = Number(quantity) || 0; //Validates if the quantity is a number and if not, adds 0 by default.
     const quantityText = quantity 
         ? `${screen === 'expense' ? '-' : ''} $ ${validQuantity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` 

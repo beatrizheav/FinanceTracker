@@ -35,7 +35,4 @@ export const modalIncome = StyleSheet.create({
     justifyContent: 'space-between',
     marginTop: '14%',
   },
-  green: {
-    color: colorsTheme.lightGreen
-  },
 });
