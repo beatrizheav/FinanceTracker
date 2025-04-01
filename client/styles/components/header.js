@@ -3,7 +3,7 @@ import { colorsTheme } from "../colorsTheme";
 
 export const header = StyleSheet.create({
   header: {
-    position: "absolute",
+    position: "relative",
     top: 0,
     left: 0,
     right: 0,
@@ -12,8 +12,6 @@ export const header = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 15,
-    zIndex: 100,
-    paddingTop: Platform.OS === "android" ? 0 : 55,
   },
   button: {
     padding: 10,
