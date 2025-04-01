@@ -201,7 +201,7 @@ const ImagePickerModal = ({ setShow, setImage }) => {
   );
 };
 
-const ImagePickerComponent = ({ image, setImage, label }) => {
+const ImagePickerComponent = ({ image, setImage }) => {
   const [show, setShow] = useState(false);
   const [showImage, setShowImage] = useState(false);
 
@@ -209,7 +209,11 @@ const ImagePickerComponent = ({ image, setImage, label }) => {
 
   return (
     <View style={inputs.wrapper}>
-      <CustomTitle title={label} type={"TitleSmall"} testID={"input-label"} />
+      <CustomTitle
+        title={"Recibo (Opcional)"}
+        type={"TitleSmall"}
+        testID={"input-label"}
+      />
       <TouchableOpacity
         style={[inputs.container, imagePicker.inputContainer]}
         onPress={() => (image ? null : setShow(true))}

@@ -9,7 +9,7 @@ import { inputs } from "../styles/components/inputs";
 import { colorsTheme } from "../styles/colorsTheme";
 import CustomButton from "./CustomButton";
 
-const DatePickerModal = ({ show, setShow, date, onChange }) => {
+const DatePickerModal = ({ show, setShow, date = new Date(), onChange }) => {
   const datePickerProps = {
     value: date,
     mode: "date",
@@ -37,7 +37,7 @@ const DatePickerModal = ({ show, setShow, date, onChange }) => {
   );
 };
 
-const DatePicker = ({ label, date, setDate }) => {
+const DatePicker = ({ date, setDate }) => {
   const [show, setShow] = useState(false);
 
   const onChange = (event, selectedDate) => {
@@ -52,7 +52,7 @@ const DatePicker = ({ label, date, setDate }) => {
 
   return (
     <View style={inputs.wrapper}>
-      <CustomTitle title={label} type={"TitleSmall"} />
+      <CustomTitle title={"Fecha"} type={"TitleSmall"} />
       <TouchableOpacity
         style={[inputs.container, inputs.directionRow]}
         onPress={() => setShow((prevState) => !prevState)}
@@ -71,10 +71,6 @@ const DatePicker = ({ label, date, setDate }) => {
       />
     </View>
   );
-};
-
-DatePicker.defaultProps = {
-  date: new Date(),
 };
 
 export default DatePicker;
