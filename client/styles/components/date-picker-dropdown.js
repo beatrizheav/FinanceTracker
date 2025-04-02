@@ -3,7 +3,7 @@ import { colorsTheme } from "../colorsTheme";
 
 export const datepickerDropdown = StyleSheet.create({
   container: {
-    padding: 20,
+    padding: 10,
   },
   dropdownButton: {
     paddingVertical: 10,
