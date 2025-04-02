@@ -1,21 +1,21 @@
-import { FlatList, TouchableOpacity, View, Dimensions } from "react-native";
+import { FlatList, TouchableOpacity, View } from "react-native";
 import React, { useState } from "react";
-import { general } from "../styles/general";
+import { incomesData } from "../constants/incomesData";
+import { expensesData } from "../constants/expensesData";
 import Header from "../components/Header";
 import DatePickerDropdown from "../components/DatePickerDropdown";
 import BalanceDisplay from "../components/BalanceDisplay";
 import ExpensesScrollview from "../components/ExpensesScrollview";
 import CustomText from "../components/CustomText";
-import { colorsTheme } from "../styles/colorsTheme";
-import ActivityDisplay from "../components/ActivityDisplay";
-import { incomesData } from "../constants/incomesData";
-import { expensesData } from "../constants/expensesData";
 import AddButton from "../components/AddButton";
 import MenuDropdown from "../components/MenuDropdown";
+import ActivityDisplay from "../components/ActivityDisplay";
+import { colorsTheme } from "../styles/colorsTheme";
+import { general } from "../styles/general";
 
 export default function home() {
   const [date, setDate] = useState({ month: "", year: "" });
-  const [activePlusButton, setActivePlusButton] = useState(false);
+  const [addButton, setAddButton] = useState(false);
   const [menuDropdown, setMenuDropdown] = useState(false);
 
   const mergeAndSortData = (incomes, expenses) => {
@@ -78,14 +78,14 @@ export default function home() {
       </View>
       <AddButton
         onPress={() => [
-          setActivePlusButton(!activePlusButton),
+          setAddButton(!addButton),
           setMenuDropdown(!menuDropdown),
         ]}
-        isActiveAddButton={activePlusButton}
+        isActiveAddButton={addButton}
       />
       {menuDropdown && (
         <MenuDropdown
-          setIsActiveAddButton={setActivePlusButton}
+          setIsActiveAddButton={setAddButton}
           setIsActiveMenuDropdown={setMenuDropdown}
         />
       )}
