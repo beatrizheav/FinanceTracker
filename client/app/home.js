@@ -1,23 +1,24 @@
 import { FlatList, TouchableOpacity, View } from "react-native";
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import { incomesData } from "../constants/incomesData";
 import { expensesData } from "../constants/expensesData";
-import { category } from "../constants/category";
-import { incomeData } from "../constants/incomeData";
-import { expenseData } from "../constants/expenseData";
+
 import Header from "../components/Header";
 import DatePickerDropdown from "../components/DatePickerDropdown";
 import BalanceDisplay from "../components/BalanceDisplay";
 import ExpensesScrollview from "../components/ExpensesScrollview";
 import CustomText from "../components/CustomText";
-import AddButton from "../components/AddButton";
-import MenuDropdown from "../components/MenuDropdown";
 import ActivityDisplay from "../components/ActivityDisplay";
-import { colorsTheme } from "../styles/colorsTheme";
-import { general } from "../styles/general";
+import MenuDropdown from "../components/MenuDropdown";
+import AddButton from "../components/AddButton";
 import BSCategory from "../components/BSCategory";
 import BSExpense from "../components/BSExpense";
 import BSIncome from "../components/BSIncome";
+import ModalExpense from "../components/ModalExpense";
+import ModalIncome from "../components/ModalIncome";
+
+import { colorsTheme } from "../styles/colorsTheme";
+import { general } from "../styles/general";
 
 // Function to combine and sort data
 const mergeAndSortData = (incomes, expenses) => {
@@ -32,12 +33,23 @@ export default function home() {
   const [addButton, setAddButton] = useState(false);
   const [menuDropdown, setMenuDropdown] = useState(false);
   const [activeBS, setActiveBS] = useState(""); // "Categoria", "Ingreso" o "Gasto"
+  const [activeModal, setActiveModal] = useState("");
+  const [activity, setActivity] = useState(null);
 
   // Combined data with useMemo to avoid recalculate in every render
   const combinedData = useMemo(
     () => mergeAndSortData(incomesData, expensesData),
     []
   );
+
+  const selectActivity = (item) => {
+    setActivity(item);
+    item.category ? setActiveModal("Gasto") : setActiveModal("Ingreso");
+  };
+  const handleCloseBS = () => {
+    setActiveBS("");
+    setActivity(null);
+  };
 
   return (
     <View style={general.safeArea}>
@@ -81,6 +93,7 @@ export default function home() {
               quantity={item.quantity}
               screen={item.category ? "expense" : "income"}
               category={item.category}
+              onPress={() => selectActivity(item)}
             />
           )}
         />
@@ -105,27 +118,48 @@ export default function home() {
 
       {/* Conditional renders of the bottom sheets */}
       {activeBS === "Categoria" && (
-        <BSCategory
-          visible={true}
-          setVisible={() => setActiveBS("")}
-          edit={true}
-          category={category}
-        />
+        <BSCategory visible={true} setVisible={handleCloseBS} edit={false} />
       )}
       {activeBS === "Ingreso" && (
         <BSIncome
           visible={true}
-          setVisible={() => setActiveBS("")}
-          edit={true}
-          income={incomeData}
+          setVisible={handleCloseBS}
+          edit={!!activity}
+          income={activity}
         />
       )}
       {activeBS === "Gasto" && (
         <BSExpense
           visible={true}
-          setVisible={() => setActiveBS("")}
-          edit={true}
-          expense={expenseData}
+          setVisible={handleCloseBS}
+          edit={!!activity}
+          expense={activity}
+        />
+      )}
+
+      {/* Conditional renders of the modals */}
+      {activeModal === "Gasto" && (
+        <ModalExpense
+          {...activity}
+          setIsActiveModalExpense={() => {
+            setActiveModal(""), setActivity(null);
+          }}
+          onEdit={() => {
+            setActiveModal("");
+            setActiveBS("Gasto");
+          }}
+        />
+      )}
+      {activeModal === "Ingreso" && (
+        <ModalIncome
+          {...activity}
+          setIsActiveModalIncome={() => {
+            setActiveModal(""), setActivity(null);
+          }}
+          onEdit={() => {
+            setActiveModal("");
+            setActiveBS("Ingreso");
+          }}
         />
       )}
     </View>
