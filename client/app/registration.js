@@ -1,4 +1,4 @@
-import { View } from "react-native";
+import { View, Alert } from "react-native";
 import React, { useState } from "react";
 import { handleInputChange } from "../hooks/handleInputChange";
 import useFormValidation from "../hooks/useFormValidation";
@@ -30,7 +30,7 @@ export default function registration() {
       return;
     }
 
-    alert("Able to register");
+    Alert.alert("Able to register");
   };
 
   return (
@@ -98,7 +98,8 @@ export default function registration() {
           />
         </View>
         <CustomButton
-          title={"Crear cuenta"}
+          title={"Registrate"}
+          testID="register-button"
           background={"green"}
           onPress={() => handleSubmit()}
         />
