@@ -29,6 +29,7 @@ const ModalExpense = ({
   userId,
   expenseId,
   setIsActiveModalExpense,
+  onEdit,
 }) => {
   const formatNameCategory = category.name
     ? category.name
@@ -76,13 +77,14 @@ const ModalExpense = ({
     );
   };
 
-  const handleEdit = (expenseId) => {
-    //agregar logica para editar el gasto
+  const handleEdit = () => {
+    onEdit();
   };
 
   const closeModal = () => {
     setIsActiveModalExpense(false);
   };
+
   return (
     <Modal transparent={true}>
       <TouchableWithoutFeedback onPress={closeModal} testID="modal-overlay">
@@ -143,7 +145,7 @@ const ModalExpense = ({
                   testID="button-Eliminar"
                 />
                 <CustomButton
-                  onPress={() => handleEdit(expenseId)}
+                  onPress={() => handleEdit()}
                   title={"Editar"}
                   background={"green"}
                   type={"modal"}
