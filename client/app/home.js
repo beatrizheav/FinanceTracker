@@ -42,13 +42,23 @@ export default function home() {
     []
   );
 
-  const selectActivity = (item) => {
+  const onPressActivity = (item) => {
     setActivity(item);
     item.category ? setActiveModal("Gasto") : setActiveModal("Ingreso");
   };
+
   const handleCloseBS = () => {
     setActiveBS("");
     setActivity(null);
+  };
+
+  const handleEditModals = (BS) => {
+    setActiveModal("");
+    setActiveBS(BS);
+  };
+
+  const handleCloseModals = () => {
+    setActiveModal(""), setActivity(null);
   };
 
   return (
@@ -93,7 +103,7 @@ export default function home() {
               quantity={item.quantity}
               screen={item.category ? "expense" : "income"}
               category={item.category}
-              onPress={() => selectActivity(item)}
+              onPress={() => onPressActivity(item)}
             />
           )}
         />
@@ -141,25 +151,15 @@ export default function home() {
       {activeModal === "Gasto" && (
         <ModalExpense
           {...activity}
-          setIsActiveModalExpense={() => {
-            setActiveModal(""), setActivity(null);
-          }}
-          onEdit={() => {
-            setActiveModal("");
-            setActiveBS("Gasto");
-          }}
+          setIsActiveModalExpense={handleCloseModals}
+          onEdit={() => handleEditModals("Gasto")}
         />
       )}
       {activeModal === "Ingreso" && (
         <ModalIncome
           {...activity}
-          setIsActiveModalIncome={() => {
-            setActiveModal(""), setActivity(null);
-          }}
-          onEdit={() => {
-            setActiveModal("");
-            setActiveBS("Ingreso");
-          }}
+          setIsActiveModalIncome={handleCloseModals}
+          onEdit={() => handleEditModals("Ingreso")}
         />
       )}
     </View>
