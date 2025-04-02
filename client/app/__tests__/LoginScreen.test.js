@@ -1,19 +1,19 @@
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import LoginScreen from "../loginScreen";
+import Login from "../login"; // Cambio aquí
 
 jest.mock("expo-router", () => ({
   Link: ({ children }) => children,
 }));
 
-// Ensure alert is mocked before tests
+// Asegura que alert esté mockeado antes de las pruebas
 beforeAll(() => {
   global.alert = jest.fn();
 });
 
-describe("LoginScreen", () => {
+describe("Login", () => {
   it("should render the main elements", () => {
-    const { getByText, getByPlaceholderText } = render(<LoginScreen />);
+    const { getByText, getByPlaceholderText } = render(<Login />); // Cambio aquí
 
     expect(getByText("Bienvenido a \nFinance Tracker!")).toBeTruthy();
     expect(
@@ -25,7 +25,7 @@ describe("LoginScreen", () => {
   });
 
   it("should allow entering data into input fields", () => {
-    const { getByPlaceholderText } = render(<LoginScreen />);
+    const { getByPlaceholderText } = render(<Login />); // Cambio aquí
     const emailInput = getByPlaceholderText("Ingresa tu correo electronico");
     const passwordInput = getByPlaceholderText("Ingresa tu contrasena");
 
@@ -37,12 +37,12 @@ describe("LoginScreen", () => {
   });
 
   it("should execute handleSubmit when pressing the button", () => {
-    const { getByText, getByPlaceholderText } = render(<LoginScreen />);
+    const { getByText, getByPlaceholderText } = render(<Login />); // Cambio aquí
     const emailInput = getByPlaceholderText("Ingresa tu correo electronico");
     const passwordInput = getByPlaceholderText("Ingresa tu contrasena");
     const button = getByText("Iniciar Sesion");
 
-    // Fill in the form to pass validation
+    // Llenar el formulario para pasar la validación
     fireEvent.changeText(emailInput, "test@example.com");
     fireEvent.changeText(passwordInput, "password123");
 

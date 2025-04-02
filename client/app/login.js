@@ -9,7 +9,7 @@ import { handleInputChange } from "../hooks/handleInputChange";
 import { Link } from "expo-router";
 import useFormValidation from "../hooks/useFormValidation";
 
-const LoginScreen = () => {
+export default function login() {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -83,6 +83,4 @@ const LoginScreen = () => {
       </View>
     </View>
   );
-};
-
-export default LoginScreen;
+}
