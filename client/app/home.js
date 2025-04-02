@@ -1,7 +1,10 @@
 import { FlatList, TouchableOpacity, View } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { incomesData } from "../constants/incomesData";
 import { expensesData } from "../constants/expensesData";
+import { category } from "../constants/category";
+import { incomeData } from "../constants/incomeData";
+import { expenseData } from "../constants/expenseData";
 import Header from "../components/Header";
 import DatePickerDropdown from "../components/DatePickerDropdown";
 import BalanceDisplay from "../components/BalanceDisplay";
@@ -12,23 +15,29 @@ import MenuDropdown from "../components/MenuDropdown";
 import ActivityDisplay from "../components/ActivityDisplay";
 import { colorsTheme } from "../styles/colorsTheme";
 import { general } from "../styles/general";
+import BSCategory from "../components/BSCategory";
+import BSExpense from "../components/BSExpense";
+import BSIncome from "../components/BSIncome";
+
+// Function to combine and sort data
+const mergeAndSortData = (incomes, expenses) => {
+  return [...incomes, ...expenses]
+    .map((item, index) => ({ ...item, id: (index + 1).toString() }))
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 10);
+};
 
 export default function home() {
   const [date, setDate] = useState({ month: "", year: "" });
   const [addButton, setAddButton] = useState(false);
   const [menuDropdown, setMenuDropdown] = useState(false);
+  const [activeBS, setActiveBS] = useState(""); // "Categoria", "Ingreso" o "Gasto"
 
-  const mergeAndSortData = (incomes, expenses) => {
-    const mergedData = [...incomes, ...expenses].map((item, index) => ({
-      ...item,
-      id: (index + 1).toString(),
-    }));
-    return mergedData
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .slice(0, 10);
-  };
-
-  const combinedData = mergeAndSortData(incomesData, expensesData);
+  // Combined data with useMemo to avoid recalculate in every render
+  const combinedData = useMemo(
+    () => mergeAndSortData(incomesData, expensesData),
+    []
+  );
 
   return (
     <View style={general.safeArea}>
@@ -76,6 +85,8 @@ export default function home() {
           )}
         />
       </View>
+
+      {/* Float button tu open menu */}
       <AddButton
         onPress={() => [
           setAddButton(!addButton),
@@ -83,10 +94,38 @@ export default function home() {
         ]}
         isActiveAddButton={addButton}
       />
+
       {menuDropdown && (
         <MenuDropdown
           setIsActiveAddButton={setAddButton}
           setIsActiveMenuDropdown={setMenuDropdown}
+          setActiveBS={setActiveBS}
+        />
+      )}
+
+      {/* Conditional renders of the bottom sheets */}
+      {activeBS === "Categoria" && (
+        <BSCategory
+          visible={true}
+          setVisible={() => setActiveBS("")}
+          edit={true}
+          category={category}
+        />
+      )}
+      {activeBS === "Ingreso" && (
+        <BSIncome
+          visible={true}
+          setVisible={() => setActiveBS("")}
+          edit={true}
+          income={incomeData}
+        />
+      )}
+      {activeBS === "Gasto" && (
+        <BSExpense
+          visible={true}
+          setVisible={() => setActiveBS("")}
+          edit={true}
+          expense={expenseData}
         />
       )}
     </View>
