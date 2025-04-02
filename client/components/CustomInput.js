@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, TextInput, TouchableOpacity } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
@@ -39,6 +39,42 @@ export default function CustomInput({
 
   const inputEditable = onChange ? true : false;
 
+  const handleValue = () => {
+    if (type === "number" && value !== undefined && value !== null) {
+      return value.toLocaleString("en-US", {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2,
+      });
+    }
+    return value;
+  };
+
+  const handleOnChange = (inputValue) => {
+    if (type === "number") {
+      // Permitir números y el punto decimal
+      const cleaned = inputValue.replace(/[^0-9.]/g, "");
+
+      // Evitar múltiples puntos decimales
+      const dotCount = (cleaned.match(/\./g) || []).length;
+      if (dotCount > 1) return;
+
+      // Permitir valores como "0.", "123." temporalmente
+      if (cleaned === "" || cleaned === "." || cleaned.endsWith(".")) {
+        onChange(cleaned);
+        return;
+      }
+
+      const numericValue = parseFloat(cleaned);
+
+      if (!isNaN(numericValue)) {
+        onChange(numericValue);
+      }
+      return;
+    }
+
+    onChange(inputValue);
+  };
+
   return (
     <View style={inputs.wrapper} testID="input-wrapper">
       <CustomTitle title={label} type={"TitleSmall"} testID={"input-label"} />
@@ -49,8 +85,8 @@ export default function CustomInput({
           </View>
         )}
         <TextInput
-          value={value}
-          onChangeText={(newText) => onChange(newText)}
+          value={handleValue()}
+          onChangeText={handleOnChange}
           placeholder={placeholder}
           placeholderTextColor={colorsTheme.blackWithOpacity}
           style={[fontsTheme.TextSmall, textInputStyle]}

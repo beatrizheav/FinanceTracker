@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { colorsTheme } from "../colorsTheme";
 
-export const dropdownSelect = StyleSheet.create({
+export const dropdownCategory = StyleSheet.create({
   dropContainer: {
     borderRadius: 10,
   },
