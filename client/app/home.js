@@ -1,4 +1,4 @@
-import { FlatList, TouchableOpacity, View } from "react-native";
+import { FlatList, TouchableOpacity, View, Dimensions } from "react-native";
 import React, { useState } from "react";
 import { general } from "../styles/general";
 import Header from "../components/Header";
@@ -10,48 +10,45 @@ import { colorsTheme } from "../styles/colorsTheme";
 import ActivityDisplay from "../components/ActivityDisplay";
 import { incomesData } from "../constants/incomesData";
 import { expensesData } from "../constants/expensesData";
+import AddButton from "../components/AddButton";
+import MenuDropdown from "../components/MenuDropdown";
 
 export default function home() {
   const [date, setDate] = useState({ month: "", year: "" });
-
-  console.log(date);
+  const [activePlusButton, setActivePlusButton] = useState(false);
+  const [menuDropdown, setMenuDropdown] = useState(false);
 
   const mergeAndSortData = (incomes, expenses) => {
-    const mergedData = [...incomes, ...expenses];
-
-    return mergedData.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const mergedData = [...incomes, ...expenses].map((item, index) => ({
+      ...item,
+      id: (index + 1).toString(),
+    }));
+    return mergedData
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .slice(0, 10);
   };
 
   const combinedData = mergeAndSortData(incomesData, expensesData);
-  console.log(combinedData);
-
-  const categoria = {
-    id: 2,
-    name: "Casa",
-    color: "#3b6e40",
-    icon: {
-      iconName: "house",
-      iconSet: "MaterialIcons",
-    },
-  };
 
   return (
     <View style={general.safeArea}>
       <Header title={"Home"} />
-      <View style={{ paddingTop: 50 }}>
+      <View style={{ paddingTop: 50, flex: 1 }}>
         <DatePickerDropdown
           onChange={({ month, year }) =>
             setDate((prev) => ({ ...prev, month, year }))
           }
         />
         <BalanceDisplay income={10000} expense={4000} />
+        <View style={{ marginHorizontal: -16, paddingVertical: 10 }}>
+          <ExpensesScrollview />
+        </View>
         <View
           style={{
             flexDirection: "row",
-            marginTop: 350,
             justifyContent: "space-between",
             alignItems: "center",
-            // backgroundColor: "red",
+            paddingVertical: 8,
           }}
         >
           <CustomText text={"Actividad Reciente"} type={"TitleSmall"} />
@@ -63,15 +60,35 @@ export default function home() {
             />
           </TouchableOpacity>
         </View>
-        <ActivityDisplay
-          name={"Pago de renta"}
-          date={"2024-03-01T10:00:00"}
-          quantity={150}
-          screen={"expense"}
-          category={categoria}
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          style={{ flex: 1 }}
+          data={combinedData}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <ActivityDisplay
+              name={item.name}
+              date={item.date}
+              quantity={item.quantity}
+              screen={item.category ? "expense" : "income"}
+              category={item.category}
+            />
+          )}
         />
       </View>
-      <ExpensesScrollview />
+      <AddButton
+        onPress={() => [
+          setActivePlusButton(!activePlusButton),
+          setMenuDropdown(!menuDropdown),
+        ]}
+        isActiveAddButton={activePlusButton}
+      />
+      {menuDropdown && (
+        <MenuDropdown
+          setIsActiveAddButton={setActivePlusButton}
+          setIsActiveMenuDropdown={setMenuDropdown}
+        />
+      )}
     </View>
   );
 }
