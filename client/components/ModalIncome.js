@@ -15,6 +15,7 @@ const ModalIncome = ({
   quantity = 0,
   incomeId,
   setIsActiveModalIncome,
+  onEdit,
 }) => {
   const userId = 2; //temporal userId
   const formatName = name ? name : "Nombre no encontrado"; //Validates if there is data in the title, if not, sets a default title
@@ -51,8 +52,9 @@ const ModalIncome = ({
       ]
     );
   };
+
   const handleEdit = (incomeId) => {
-    //agregar logica para editar el gasto
+    onEdit();
   };
 
   const closeModal = () => {
