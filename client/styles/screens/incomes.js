@@ -17,13 +17,8 @@ export const incomes = StyleSheet.create({
   container_text: {
     marginTop: 10,
     marginBottom: 20,
-
   },
   black: {
     color: colorsTheme.black
-  },
-  border: {
-        borderWidth: 1,
-    borderColor: 'red',
   }
 });

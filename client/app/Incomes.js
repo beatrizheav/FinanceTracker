@@ -1,5 +1,5 @@
-import { View, FlatList, Animated, Easing, Pressable } from 'react-native'
-import React, { useState, useRef, useEffect } from 'react'
+import { View, FlatList, Pressable } from 'react-native'
+import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { isSameDay, isAfter, isBefore, subDays } from 'date-fns';
 import Header from '../components/Header'
@@ -17,11 +17,10 @@ const Incomes = () => {
     const [selectedIncome, setSelectedIncome] = useState(null);
     const [isActiveModalIncome, setIsActiveModalIncome] = useState(false);
     const [isActiveBSIncome, setIsActiveBSIncome] = useState(false);
-    const edit = false;
+    const [editMode, setEditMode] = useState(false);
     const fixedIncomes = incomesData.filter(item => item.fixed === true); //incomes fixed
     const today = new Date();
     const twoWeeksAgo = subDays(today, 14);
-    //const [isActiveAddButton, setIsActiveAddButton] = useState(false);
     const [expandedSections, setExpandedSections] = useState({
         fixed: false,
         today: false,
@@ -43,7 +42,9 @@ const Incomes = () => {
       };
 
       const showBottom = () => {
-        setIsActiveBSIncome(!isActiveBSIncome)
+        setSelectedIncome(null);
+        setEditMode(false);
+        setIsActiveBSIncome(true);
       }
 
       const toggleSection = (section) => {
@@ -196,12 +197,17 @@ const Incomes = () => {
           <ModalIncome
             {...selectedIncome}
             setIsActiveModalIncome={setIsActiveModalIncome}
+            onEdit={() => {
+              setEditMode(true);
+              setIsActiveModalIncome(false);
+              setIsActiveBSIncome(true);
+            }}
           />
         )}
         <BSIncome
         visible={isActiveBSIncome}
         setVisible={setIsActiveBSIncome}
-        edit={edit}
+        edit={editMode}
         income={selectedIncome}
       />
     </View>

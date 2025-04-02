@@ -9,7 +9,13 @@ import { Ionicons } from '@expo/vector-icons';
 import { colorsTheme } from '../styles/colorsTheme';
 import CategoryIcon from './CategoryIcon';
 
-const ModalIncome = ({name, date, quantity = 0, incomeId, setIsActiveModalIncome}) => {
+const ModalIncome = ({
+    name, 
+    date, 
+    quantity = 0, 
+    incomeId, 
+    setIsActiveModalIncome,
+    onEdit}) => {
     const userId = 2; //temporal userId
     const formatName = name ? name : 'Nombre no encontrado'; //Validates if there is data in the title, if not, sets a default title
     const formatDate = date ? format(date, "dd 'de' MMMM yyyy", {locale: es}) : 'fecha no encontrada'; //takes the date and formats it
@@ -38,8 +44,8 @@ const ModalIncome = ({name, date, quantity = 0, incomeId, setIsActiveModalIncome
             ],
         )
     }
-    const handleEdit = (incomeId) => {
-        //agregar logica para editar el gasto
+    const handleEdit = () => {
+        onEdit()
     };
 
     const closeModal = () => {
@@ -78,7 +84,7 @@ const ModalIncome = ({name, date, quantity = 0, incomeId, setIsActiveModalIncome
                             type={'modal'} 
                             testID='button-Eliminar'/>
                         <CustomButton 
-                            onPress={() => handleEdit(incomeId)} 
+                            onPress={() => handleEdit()} 
                             title={'Editar'} 
                             background={'green'} 
                             type={'modal'} 

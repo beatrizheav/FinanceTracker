@@ -5,7 +5,7 @@ export const incomesData = [
       name: "Salario mensual",
       date: "2023-02-15T19:15:00",
       quantity: 2356.30,
-      fixed: true
+      fixed: false
     },
     {
       userId: 9,
@@ -13,7 +13,7 @@ export const incomesData = [
       name: "Pago freelance",
       date: "2025-03-15T13:01:00",
       quantity: 1032,
-      fixed: false
+      fixed: true
     },
     {
       userId: 9,
@@ -21,15 +21,15 @@ export const incomesData = [
       name: "Venta de artículo",
       date: "2025-03-28T12:53:00",
       quantity: 1418,
-      fixed: false
+      fixed: true
     },
     {
       userId: 1,
       incomeId: 4,
       name: "Devolución de impuestos",
-      date: "2025-03-20T20:30:00",
+      date: "2025-04-02T20:30:00",
       quantity: 1338,
-      fixed: false
+      fixed: true
     },
     {
       userId: 3,
@@ -37,7 +37,7 @@ export const incomesData = [
       name: "Regalo familiar",
       date: "2025-03-20T23:56:00",
       quantity: 2755,
-      fixed: false
+      fixed: true
     },
     {
       userId: 7,
@@ -61,7 +61,7 @@ export const incomesData = [
       name: "Ingreso por intereses",
       date: "2025-03-30T19:53:00",
       quantity: 911,
-      fixed: true
+      fixed: false
     },
     {
       userId: 2,
@@ -69,7 +69,7 @@ export const incomesData = [
       name: "Reembolso",
       date: "2025-03-30T13:44:00",
       quantity: 1387,
-      fixed: true
+      fixed: false
     },
     {
       userId: 3,
@@ -77,7 +77,7 @@ export const incomesData = [
       name: "Pago de comisión",
       date: "2025-03-15T18:41:00",
       quantity: 1143,
-      fixed: true
+      fixed: false
     },
     {
       userId: 2,

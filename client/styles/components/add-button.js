@@ -6,7 +6,7 @@ export const addButton = StyleSheet.create({
         position: 'absolute',
         alignItems: 'center',
         justifyContent: 'center',
-        right: 30,
+        right: 20,
         bottom: 30,
     },
     background: {
