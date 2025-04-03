@@ -1,4 +1,4 @@
-import { Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { colorsTheme } from "../colorsTheme";
 
 export const header = StyleSheet.create({
