@@ -85,7 +85,7 @@ const Incomes = ({ data = incomesData }) => {
                 <Pressable 
                   onPress={() => toggleSection('fixed')}
                   style={incomes.container_title}>
-                    <CustomText text={'Ingresos fijos'} type={'TitleBig'}/>
+                    <CustomText text={'Ingresos fijos'} type={'TitleMedium'}/>
                         <Ionicons
                             onPress={() => toggleSection('fixed')}
                             name={getIcon('fixed')}
@@ -124,7 +124,7 @@ const Incomes = ({ data = incomesData }) => {
                 <Pressable
                   onPress={() => toggleSection('today')}
                   style={incomes.container_title}>
-                    <CustomText text={'Hoy'} type={'TitleBig'}/>
+                    <CustomText text={'Hoy'} type={'TitleMedium'}/>
                     <Ionicons
                         onPress={() => toggleSection('today')} 
                         name={getIcon('today')} 
@@ -161,7 +161,7 @@ const Incomes = ({ data = incomesData }) => {
                 <Pressable
                   onPress={() => toggleSection('last')}
                   style={incomes.container_title}>
-                    <CustomText text={'Últimas dos semanas'} type={'TitleBig'}/>
+                    <CustomText text={'Últimas dos semanas'} type={'TitleMedium'}/>
                     <Ionicons
                         onPress={() => toggleSection('last')} 
                         name={getIcon('last')} 
