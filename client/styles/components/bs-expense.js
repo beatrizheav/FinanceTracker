@@ -2,6 +2,6 @@ import { StyleSheet, Platform } from "react-native";
 
 export const bsExpense = StyleSheet.create({
   scrollview: {
-    paddingBottom: Platform.OS === "android" ? 0 : 110,
+    paddingBottom: Platform.OS === "android" ? 110 : 120,
   },
 });
