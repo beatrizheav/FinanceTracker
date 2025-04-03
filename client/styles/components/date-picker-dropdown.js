@@ -9,7 +9,7 @@ export const datepickerDropdown = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 8,
     alignItems: "center",
-    width: "30%",
+    paddingRight: 15,
     alignItems: "center",
   },
   dateButtonsContainer: {
