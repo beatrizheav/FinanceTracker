@@ -13,12 +13,12 @@ import { incomes } from '../styles/screens/incomes';
 import ModalIncome from '../components/ModalIncome';
 import BSIncome from "../components/BSIncome";
 
-const Incomes = () => {
+const Incomes = ({ data = incomesData }) => {
     const [selectedIncome, setSelectedIncome] = useState(null);
     const [isActiveModalIncome, setIsActiveModalIncome] = useState(false);
     const [isActiveBSIncome, setIsActiveBSIncome] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const fixedIncomes = incomesData.filter(item => item.fixed === true); //incomes fixed
+    const fixedIncomes = data.filter(item => item.fixed === true); //incomes fixed
     const today = new Date();
     const twoWeeksAgo = subDays(today, 14);
     const [expandedSections, setExpandedSections] = useState({
@@ -27,11 +27,11 @@ const Incomes = () => {
         last: false
       });
 
-      const todayIncomes = incomesData.filter((item) => //incomes of today
+      const todayIncomes = data.filter((item) => //incomes of today
         isSameDay(new Date(item.date), today)
       );
 
-      const lastTwoWeeksIncomes = incomesData.filter((item) => { //incomes of last two weeks
+      const lastTwoWeeksIncomes = data.filter((item) => { //incomes of last two weeks
         const incomeDate = new Date(item.date);
         return isAfter(incomeDate, twoWeeksAgo) && isBefore(incomeDate, today);
       });
@@ -74,7 +74,7 @@ const Incomes = () => {
       const getLastHeightStyle = () => {
         if (!expandedSections.last) return {};
         if (expandedSections.today || expandedSections.fixed) return { height: 200 };
-        return { height: '80%' };
+        return { height: '86%' };
       };
 
   return (
@@ -92,7 +92,7 @@ const Incomes = () => {
                             size={27}
                             color={colorsTheme.black}
                             style={incomes.icon_chev}
-                            testID="down-icon"
+                            testID="chevron-down-outline"
                         />
                 </Pressable>
                 {expandedSections.fixed && fixedIncomes.length === 0
@@ -111,7 +111,8 @@ const Incomes = () => {
                                 <ActivityDisplay 
                                   {... item}
                                   onPress={()=> showModalIncome(item)} 
-                                  screen={'income'}/>
+                                  screen={'income'}
+                                  testID="mock-income-item"/>
                             }
                         />
                       )
@@ -130,7 +131,7 @@ const Incomes = () => {
                         size={27} 
                         color={colorsTheme.black}
                         style={incomes.icon_chev}
-                        testID='down-icon'
+                        testID='chevron-down-outline'
                     />
                 </Pressable>
                 {expandedSections.today && todayIncomes.length === 0
@@ -148,7 +149,8 @@ const Incomes = () => {
                                 <ActivityDisplay 
                                   {... item}
                                   onPress={()=> showModalIncome(item)} 
-                                  screen={'income'}/>
+                                  screen={'income'}
+                                  testID="mock-income-item"/>
                             }
                         />
                       )
@@ -166,7 +168,7 @@ const Incomes = () => {
                         size={27} 
                         color={colorsTheme.black}
                         style={incomes.icon_chev}
-                        testID='down-icon'
+                        testID='chevron-down-outline'
                     />
                 </Pressable>
                 {expandedSections.last && lastTwoWeeksIncomes.length === 0
@@ -184,7 +186,8 @@ const Incomes = () => {
                                 <ActivityDisplay 
                                   {... item} 
                                   onPress={()=> showModalIncome(item)}
-                                  screen={'income'}/>
+                                  screen={'income'}
+                                  testID="mock-income-item"/>
                             }
                         />
                       )
