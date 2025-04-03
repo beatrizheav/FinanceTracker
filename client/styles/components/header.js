@@ -11,7 +11,7 @@ export const header = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 15,
+    paddingHorizontal: 16,
     marginHorizontal: -16,
   },
   button: {
