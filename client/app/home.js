@@ -2,7 +2,6 @@ import { FlatList, TouchableOpacity, View } from "react-native";
 import React, { useState, useMemo } from "react";
 import { incomesData } from "../constants/incomesData";
 import { expensesData } from "../constants/expensesData";
-
 import Header from "../components/Header";
 import DatePickerDropdown from "../components/DatePickerDropdown";
 import BalanceDisplay from "../components/BalanceDisplay";
@@ -16,7 +15,7 @@ import BSExpense from "../components/BSExpense";
 import BSIncome from "../components/BSIncome";
 import ModalExpense from "../components/ModalExpense";
 import ModalIncome from "../components/ModalIncome";
-
+import { homeStyles } from "../styles/screens/home";
 import { colorsTheme } from "../styles/colorsTheme";
 import { general } from "../styles/general";
 
@@ -28,15 +27,12 @@ const mergeAndSortData = (incomes, expenses) => {
     .slice(0, 10);
 };
 
-export default function home() {
+export default function HomeScreen() {
   const [date, setDate] = useState({ month: "", year: "" });
-  const [addButton, setAddButton] = useState(false);
-  const [menuDropdown, setMenuDropdown] = useState(false);
-  const [activeBS, setActiveBS] = useState(""); // "Categoria", "Ingreso" o "Gasto"
-  const [activeModal, setActiveModal] = useState("");
+  const [isMenuActive, setIsMenuActive] = useState(false);
+  const [activeSheet, setActiveSheet] = useState(null); // "Categoria", "Ingreso", "Gasto", "ModalIngreso", "ModalGasto"
   const [activity, setActivity] = useState(null);
 
-  // Combined data with useMemo to avoid recalculate in every render
   const combinedData = useMemo(
     () => mergeAndSortData(incomesData, expensesData),
     []
@@ -44,120 +40,90 @@ export default function home() {
 
   const onPressActivity = (item) => {
     setActivity(item);
-    item.category ? setActiveModal("Gasto") : setActiveModal("Ingreso");
+    setActiveSheet(item.category ? "ModalGasto" : "ModalIngreso");
   };
 
-  const handleCloseBS = () => {
-    setActiveBS("");
+  const handleCloseSheet = () => {
+    setActiveSheet(null);
     setActivity(null);
-  };
-
-  const handleEditModals = (BS) => {
-    setActiveModal("");
-    setActiveBS(BS);
-  };
-
-  const handleCloseModals = () => {
-    setActiveModal(""), setActivity(null);
   };
 
   return (
     <View style={general.safeArea}>
-      <Header title={"Home"} />
-      <DatePickerDropdown
-        onChange={({ month, year }) =>
-          setDate((prev) => ({ ...prev, month, year }))
-        }
-      />
+      <Header title="Home" />
+      <DatePickerDropdown onChange={setDate} />
       <BalanceDisplay income={10000} expense={4000} />
-      <View style={{ marginHorizontal: -16, paddingVertical: 10 }}>
+      <View style={homeStyles.expensesScrollview}>
         <ExpensesScrollview />
       </View>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          paddingVertical: 8,
-        }}
-      >
-        <CustomText text={"Actividad Reciente"} type={"TitleSmall"} />
+      <View style={homeStyles.headerRecentActivity}>
+        <CustomText text="Actividad Reciente" type="TitleSmall" />
         <TouchableOpacity>
           <CustomText
-            text={"Ver todo"}
-            type={"TextSmall"}
+            text="Ver todo"
+            type="TextSmall"
             color={colorsTheme.teal}
           />
         </TouchableOpacity>
       </View>
       <FlatList
         showsVerticalScrollIndicator={false}
-        style={{ flex: 1 }}
         data={combinedData}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <ActivityDisplay
-            name={item.name}
-            date={item.date}
-            quantity={item.quantity}
+            {...item}
             screen={item.category ? "expense" : "income"}
-            category={item.category}
             onPress={() => onPressActivity(item)}
           />
         )}
       />
 
-      {/* Float button tu open menu */}
       <AddButton
-        onPress={() => [
-          setAddButton(!addButton),
-          setMenuDropdown(!menuDropdown),
-        ]}
-        isActiveAddButton={addButton}
+        onPress={() => setIsMenuActive(!isMenuActive)}
+        isActiveAddButton={isMenuActive}
       />
 
-      {menuDropdown && (
+      {isMenuActive && (
         <MenuDropdown
-          setIsActiveAddButton={setAddButton}
-          setIsActiveMenuDropdown={setMenuDropdown}
-          setActiveBS={setActiveBS}
+          setIsActiveAddButton={setIsMenuActive}
+          setIsActiveMenuDropdown={setIsMenuActive}
+          setActiveBS={setActiveSheet}
         />
       )}
 
-      {/* Conditional renders of the bottom sheets */}
-      {activeBS === "Categoria" && (
-        <BSCategory visible={true} setVisible={handleCloseBS} edit={false} />
+      {activeSheet === "Categoria" && (
+        <BSCategory visible setVisible={handleCloseSheet} edit={false} />
       )}
-      {activeBS === "Ingreso" && (
+      {activeSheet === "Ingreso" && (
         <BSIncome
-          visible={true}
-          setVisible={handleCloseBS}
+          visible
+          setVisible={handleCloseSheet}
           edit={!!activity}
           income={activity}
         />
       )}
-      {activeBS === "Gasto" && (
+      {activeSheet === "Gasto" && (
         <BSExpense
-          visible={true}
-          setVisible={handleCloseBS}
+          visible
+          setVisible={handleCloseSheet}
           edit={!!activity}
           expense={activity}
         />
       )}
 
-      {/* Conditional renders of the modals */}
-      {activeModal === "Gasto" && (
+      {activeSheet === "ModalGasto" && (
         <ModalExpense
           {...activity}
-          setIsActiveModalExpense={handleCloseModals}
-          onEdit={() => handleEditModals("Gasto")}
+          setIsActiveModalExpense={handleCloseSheet}
+          onEdit={() => setActiveSheet("Gasto")}
         />
       )}
-      {activeModal === "Ingreso" && (
+      {activeSheet === "ModalIngreso" && (
         <ModalIncome
           {...activity}
-          setIsActiveModalIncome={handleCloseModals}
-          onEdit={() => handleEditModals("Ingreso")}
+          setIsActiveModalIncome={handleCloseSheet}
+          onEdit={() => setActiveSheet("Ingreso")}
         />
       )}
     </View>
