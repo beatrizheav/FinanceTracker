@@ -18,16 +18,15 @@ export const sideMenu = StyleSheet.create({
     height: height,
     alignItems: "flex-end",
     zIndex: 50,
-    paddingTop: Platform.OS === "android" ? 0 : 55,
   },
   container: {
     width: SIDE_MENU_WIDTH,
     height: screenHeight,
     backgroundColor: colorsTheme.darkGreen,
     paddingHorizontal: "5%",
-    paddingBottom: 40,
+    paddingBottom: Platform.OS === "android" ? 40 : 80,
     borderRadius: 5,
-    height: Platform.OS === "android" ? height : height - 55,
+    height: height,
   },
   closeButton: {
     position: "absolute",
