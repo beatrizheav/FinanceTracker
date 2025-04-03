@@ -1,13 +1,10 @@
-import { FlatList, TouchableOpacity, View } from "react-native";
-import React, { useState, useMemo } from "react";
-import { incomesData } from "../constants/incomesData";
-import { expensesData } from "../constants/expensesData";
+import { View } from "react-native";
+import React, { useState } from "react";
 import Header from "../components/Header";
 import DatePickerDropdown from "../components/DatePickerDropdown";
 import BalanceDisplay from "../components/BalanceDisplay";
 import ExpensesScrollview from "../components/ExpensesScrollview";
-import CustomText from "../components/CustomText";
-import ActivityDisplay from "../components/ActivityDisplay";
+import RecentActivity from "../components/RecentActivity";
 import MenuDropdown from "../components/MenuDropdown";
 import AddButton from "../components/AddButton";
 import BSCategory from "../components/BSCategory";
@@ -16,27 +13,13 @@ import BSIncome from "../components/BSIncome";
 import ModalExpense from "../components/ModalExpense";
 import ModalIncome from "../components/ModalIncome";
 import { homeStyles } from "../styles/screens/home";
-import { colorsTheme } from "../styles/colorsTheme";
 import { general } from "../styles/general";
-
-// Function to combine and sort data
-const mergeAndSortData = (incomes, expenses) => {
-  return [...incomes, ...expenses]
-    .map((item, index) => ({ ...item, id: (index + 1).toString() }))
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 10);
-};
 
 export default function HomeScreen() {
   const [date, setDate] = useState({ month: "", year: "" });
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [activeSheet, setActiveSheet] = useState(null); // "Categoria", "Ingreso", "Gasto", "ModalIngreso", "ModalGasto"
-  const [activity, setActivity] = useState(null);
-
-  const combinedData = useMemo(
-    () => mergeAndSortData(incomesData, expensesData),
-    []
-  );
+  const [activity, setActivity] = useState(null); // "Ingreso", "Gasto"
 
   const onPressActivity = (item) => {
     setActivity(item);
@@ -56,29 +39,7 @@ export default function HomeScreen() {
       <View style={homeStyles.expensesScrollview}>
         <ExpensesScrollview />
       </View>
-      <View style={homeStyles.headerRecentActivity}>
-        <CustomText text="Actividad Reciente" type="TitleSmall" />
-        <TouchableOpacity>
-          <CustomText
-            text="Ver todo"
-            type="TextSmall"
-            color={colorsTheme.teal}
-          />
-        </TouchableOpacity>
-      </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={combinedData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <ActivityDisplay
-            {...item}
-            screen={item.category ? "expense" : "income"}
-            onPress={() => onPressActivity(item)}
-          />
-        )}
-      />
-
+      <RecentActivity onPress={(item) => onPressActivity(item)} />
       <AddButton
         onPress={() => setIsMenuActive(!isMenuActive)}
         isActiveAddButton={isMenuActive}
