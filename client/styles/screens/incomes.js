@@ -2,9 +2,6 @@ import { StyleSheet } from "react-native";
 import { colorsTheme } from "../colorsTheme";
 
 export const incomes = StyleSheet.create({
-  container: {
-    marginTop: 100,
-  },
   container_title: {
     flexDirection: "row",
     alignItems: 'center',

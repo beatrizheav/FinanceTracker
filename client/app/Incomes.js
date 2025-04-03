@@ -80,7 +80,7 @@ const Incomes = ({ data = incomesData }) => {
   return (
     <View style={general.safeArea}>
         <Header title={'Ingresos'}/>
-        <View style={incomes.container}>
+        <View>
             <View>
                 <Pressable 
                   onPress={() => toggleSection('fixed')}
