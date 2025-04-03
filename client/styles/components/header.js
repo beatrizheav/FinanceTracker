@@ -12,6 +12,7 @@ export const header = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 15,
+    marginHorizontal: -16,
   },
   button: {
     padding: 10,
