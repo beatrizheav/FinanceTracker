@@ -85,7 +85,7 @@ const expenses = ({ data = expensesData }) => {
                 <Pressable 
                   onPress={() => toggleSection('fixed')}
                   style={expense.container_title}>
-                    <CustomText text={'Gastos fijos'} type={'TitleBig'}/>
+                    <CustomText text={'Gastos fijos'} type={'TitleMedium'}/>
                         <Ionicons
                             onPress={() => toggleSection('fixed')}
                             name={getIcon('fixed')}
@@ -124,7 +124,7 @@ const expenses = ({ data = expensesData }) => {
                 <Pressable
                   onPress={() => toggleSection('today')}
                   style={expense.container_title}>
-                    <CustomText text={'Hoy'} type={'TitleBig'}/>
+                    <CustomText text={'Hoy'} type={'TitleMedium'}/>
                     <Ionicons
                         onPress={() => toggleSection('today')} 
                         name={getIcon('today')} 
@@ -161,7 +161,7 @@ const expenses = ({ data = expensesData }) => {
                 <Pressable
                   onPress={() => toggleSection('last')}
                   style={expense.container_title}>
-                    <CustomText text={'Últimas dos semanas'} type={'TitleBig'}/>
+                    <CustomText text={'Últimas dos semanas'} type={'TitleMedium'}/>
                     <Ionicons
                         onPress={() => toggleSection('last')} 
                         name={getIcon('last')} 
