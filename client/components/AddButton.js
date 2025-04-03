@@ -1,21 +1,24 @@
-import { TouchableOpacity, View } from 'react-native'
-import React from 'react'
+import { TouchableOpacity, View } from "react-native";
+import React from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { colorsTheme } from '../styles/colorsTheme';
-import { addButton } from '../styles/components/add-button';
+import { colorsTheme } from "../styles/colorsTheme";
+import { addButton } from "../styles/components/add-button";
 
-const AddButton = ({onPress, isActiveAddButton}) => {
-    
+const AddButton = ({ onPress, isActiveAddButton }) => {
   return (
-    <TouchableOpacity 
-        onPress={onPress}
-        style={addButton.position}
+    <TouchableOpacity
+      onPress={onPress}
+      style={addButton.position}
+      testID="add-button"
     >
-    <View style={addButton.background}>
-    </View>
-      <Ionicons name={isActiveAddButton ? 'close-circle': 'add-circle'} size={80} color={colorsTheme.yellow} />
+      <View style={addButton.background}></View>
+      <Ionicons
+        name={isActiveAddButton ? "close-circle" : "add-circle"}
+        size={80}
+        color={colorsTheme.yellow}
+      />
     </TouchableOpacity>
-  )
-}
+  );
+};
 
-export default AddButton
+export default AddButton;

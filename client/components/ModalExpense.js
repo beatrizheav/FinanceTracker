@@ -91,7 +91,10 @@ const ModalExpense = ({
         <View style={modalExpense.overlay}>
           <TouchableWithoutFeedback>
             <View style={[modalExpense.container, heightModal]}>
-              <View style={modalExpense.container_closeIcon}>
+              <View
+                style={modalExpense.container_closeIcon}
+                testID="close-icon"
+              >
                 <Ionicons
                   onPress={closeModal}
                   name={"close"}

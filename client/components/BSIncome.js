@@ -61,7 +61,7 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
       }}
       height={500}
     >
-      <View>
+      <View testID="BS-Income">
         <View style={sheets.header}>
           <CustomTitle title={"Ingreso"} type={"TitleMedium"} />
         </View>

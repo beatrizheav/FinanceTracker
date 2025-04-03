@@ -74,7 +74,7 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
       }}
       height={720}
     >
-      <View>
+      <View testID="BS-Expense">
         <View style={sheets.header}>
           <CustomTitle title={"Gasto"} type={"TitleMedium"} />
         </View>

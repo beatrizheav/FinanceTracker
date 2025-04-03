@@ -66,7 +66,7 @@ const ModalIncome = ({
         <View style={modalIncome.overlay}>
           <TouchableWithoutFeedback>
             <View style={modalIncome.container}>
-              <View style={modalIncome.container_closeIcon}>
+              <View style={modalIncome.container_closeIcon} testID="close-icon">
                 <Ionicons
                   onPress={closeModal}
                   name={"close"}
