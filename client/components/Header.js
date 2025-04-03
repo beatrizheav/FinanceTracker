@@ -13,7 +13,7 @@ const Header = ({ title, username }) => {
   const router = useRouter();
 
   // Determine the header mode based on the current route
-  const isHome = pathname === "/main"; //Replace with route for HOME
+  const isHome = pathname === "/home"; //Replace with route for HOME
   const hideMenu = pathname === "/testNoMenu"; // Replace with route where the menu button is hidden
   const testUsername = "Sophie!";
 
