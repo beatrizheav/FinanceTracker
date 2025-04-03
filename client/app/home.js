@@ -64,50 +64,48 @@ export default function home() {
   return (
     <View style={general.safeArea}>
       <Header title={"Home"} />
-      <View style={{ paddingTop: 50, flex: 1 }}>
-        <DatePickerDropdown
-          onChange={({ month, year }) =>
-            setDate((prev) => ({ ...prev, month, year }))
-          }
-        />
-        <BalanceDisplay income={10000} expense={4000} />
-        <View style={{ marginHorizontal: -16, paddingVertical: 10 }}>
-          <ExpensesScrollview />
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            paddingVertical: 8,
-          }}
-        >
-          <CustomText text={"Actividad Reciente"} type={"TitleSmall"} />
-          <TouchableOpacity>
-            <CustomText
-              text={"Ver todo"}
-              type={"TextSmall"}
-              color={colorsTheme.teal}
-            />
-          </TouchableOpacity>
-        </View>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          style={{ flex: 1 }}
-          data={combinedData}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <ActivityDisplay
-              name={item.name}
-              date={item.date}
-              quantity={item.quantity}
-              screen={item.category ? "expense" : "income"}
-              category={item.category}
-              onPress={() => onPressActivity(item)}
-            />
-          )}
-        />
+      <DatePickerDropdown
+        onChange={({ month, year }) =>
+          setDate((prev) => ({ ...prev, month, year }))
+        }
+      />
+      <BalanceDisplay income={10000} expense={4000} />
+      <View style={{ marginHorizontal: -16, paddingVertical: 10 }}>
+        <ExpensesScrollview />
       </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          alignItems: "center",
+          paddingVertical: 8,
+        }}
+      >
+        <CustomText text={"Actividad Reciente"} type={"TitleSmall"} />
+        <TouchableOpacity>
+          <CustomText
+            text={"Ver todo"}
+            type={"TextSmall"}
+            color={colorsTheme.teal}
+          />
+        </TouchableOpacity>
+      </View>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        style={{ flex: 1 }}
+        data={combinedData}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <ActivityDisplay
+            name={item.name}
+            date={item.date}
+            quantity={item.quantity}
+            screen={item.category ? "expense" : "income"}
+            category={item.category}
+            onPress={() => onPressActivity(item)}
+          />
+        )}
+      />
 
       {/* Float button tu open menu */}
       <AddButton
