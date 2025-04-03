@@ -12,7 +12,17 @@ import { colorsTheme } from '../styles/colorsTheme';
 import { fontsTheme } from '../styles/fontsTheme';
 import CategoryIcon from './CategoryIcon';
 
-const ModalExpense = ({category, name, date, quantity = 0, description, image, userId, expenseId, setIsActiveModalExpense}) => {
+const ModalExpense = ({
+    category = {}, 
+    name, 
+    date, 
+    quantity = 0, 
+    description, 
+    image, 
+    userId, 
+    expenseId,
+    onEdit, 
+    setIsActiveModalExpense}) => {
     const formatNameCategory = category.name ? category.name : 'Categoria no encontrada'; //Validates if there is data in the title, if not, sets a default title
     const formatNameExpense = name ? name : 'Titulo no encontrado';
     const formatDate = date ? format(date, "dd 'de' MMMM yyyy", {locale: es}) : 'fecha no encontrada'; //takes the date and formats it
@@ -48,7 +58,7 @@ const ModalExpense = ({category, name, date, quantity = 0, description, image, u
     }
 
     const handleEdit = (expenseId) => {
-        //agregar logica para editar el gasto
+        onEdit();
     }
 
     const closeModal = () => {
@@ -77,7 +87,7 @@ const ModalExpense = ({category, name, date, quantity = 0, description, image, u
                     </View>
                     <View style={modalExpense.container_details}>
                         <ModalDetail title={'Gasto:'} text={formatNameExpense}/>
-                        <ModalDetail title={'Cantidad:'} text={quantityText} color={modalExpense.red}/>
+                        <ModalDetail title={'Cantidad:'} text={quantityText} color={modalExpense.red.color}/>
                         <ModalDetail title={'Fecha:'} text={formatDate}/>
                     </View>
                     <View style={[modalExpense.container_inputAndImage, heightInputs]}>
