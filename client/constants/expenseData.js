@@ -1,6 +1,6 @@
 export const expenseData = {
   userId: 1,
-  expenseId: 1,
+  id: 1,
   category: {
     id: 2,
     name: "Casa",

@@ -3,7 +3,7 @@ export const incomesData = [
       userId: 9,
       incomeId: 1,
       name: "Salario mensual",
-      date: "2023-02-15T19:15:00",
+      date: "2025-04-04T19:15:00",
       quantity: 2356.30,
       fixed: false
     },
@@ -43,7 +43,7 @@ export const incomesData = [
       userId: 7,
       incomeId: 6,
       name: "Alquiler recibido",
-      date: "2023-10-05T12:31:00",
+      date: "2025-04-05T12:31:00",
       quantity: 1612,
       fixed: false
     },
@@ -83,7 +83,7 @@ export const incomesData = [
       userId: 2,
       incomeId: 11,
       name: "Donación recibida",
-      date: "2023-10-15T03:38:00",
+      date: "2025-03-31T03:38:00",
       quantity: 2612,
       fixed: false
     },
@@ -99,7 +99,7 @@ export const incomesData = [
       userId: 3,
       incomeId: 13,
       name: "Venta de curso",
-      date: "2023-04-14T05:47:00",
+      date: "2025-04-01T05:47:00",
       quantity: 2959,
       fixed: false
     },
@@ -107,7 +107,7 @@ export const incomesData = [
       userId: 4,
       incomeId: 14,
       name: "Trabajo eventual",
-      date: "2023-06-25T17:14:00",
+      date: "2025-03-25T17:14:00",
       quantity: 2166,
       fixed: false
     },
@@ -115,7 +115,7 @@ export const incomesData = [
       userId: 8,
       incomeId: 15,
       name: "Ingreso por consultoría",
-      date: "2023-05-28T19:54:00",
+      date: "2025-03-28T19:54:00",
       quantity: 590,
       fixed: false
     }

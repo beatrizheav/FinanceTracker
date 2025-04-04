@@ -1,8 +1,9 @@
-import { View, FlatList, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import { View, FlatList, Animated, Easing, Pressable } from 'react-native'
+import React, { useState, useRef, useEffect } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { isSameDay, isAfter, isBefore, subDays } from 'date-fns';
 import Header from '../components/Header'
+import CustomTitle from '../components/CustomTitle'
 import ActivityDisplay from '../components/ActivityDisplay'
 import CustomText from '../components/CustomText'
 import AddButton from '../components/AddButton'
@@ -35,6 +36,7 @@ const Incomes = ({ data = incomesData }) => {
         const incomeDate = new Date(item.date);
         return isAfter(incomeDate, twoWeeksAgo) && isBefore(incomeDate, today);
       });
+
 
       const showModalIncome = (income) => {
         setSelectedIncome(income);

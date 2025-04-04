@@ -1,13 +1,13 @@
-import { Alert, View, TouchableWithoutFeedback, Modal } from 'react-native'
-import React from 'react'
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
-import { modalIncome } from '../styles/components/modal-income';
-import ModalDetail from './ModalDetail';
-import CustomButton from './CustomButton';
-import { Ionicons } from '@expo/vector-icons';
-import { colorsTheme } from '../styles/colorsTheme';
-import CategoryIcon from './CategoryIcon';
+import { Alert, View, TouchableWithoutFeedback, Modal } from "react-native";
+import React from "react";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { modalIncome } from "../styles/components/modal-income";
+import ModalDetail from "./ModalDetail";
+import CustomButton from "./CustomButton";
+import { Ionicons } from "@expo/vector-icons";
+import { colorsTheme } from "../styles/colorsTheme";
+import CategoryIcon from "./CategoryIcon";
 
 const ModalIncome = ({
     name, 
@@ -91,11 +91,38 @@ const ModalIncome = ({
                             testID='button-Editar'/>
                     </View>
                 </View>
-            </TouchableWithoutFeedback>
+              </View>
+              <View style={modalIncome.container_details}>
+                <ModalDetail title={"Ingreso:"} text={formatName} />
+                <ModalDetail
+                  title={"Cantidad:"}
+                  text={formatQuantity}
+                  color={color}
+                />
+                <ModalDetail title={"fecha:"} text={formatDate} />
+              </View>
+              <View style={modalIncome.container_buttons}>
+                <CustomButton
+                  onPress={() => handleDelete(userId, incomeId)}
+                  title={"Eliminar"}
+                  background={"white"}
+                  type={"modal"}
+                  testID="button-Eliminar"
+                />
+                <CustomButton
+                  onPress={() => handleEdit(incomeId)}
+                  title={"Editar"}
+                  background={"green"}
+                  type={"modal"}
+                  testID="button-Editar"
+                />
+              </View>
             </View>
-        </TouchableWithoutFeedback>
+          </TouchableWithoutFeedback>
+        </View>
+      </TouchableWithoutFeedback>
     </Modal>
-  )
-}
+  );
+};
 
-export default ModalIncome
+export default ModalIncome;

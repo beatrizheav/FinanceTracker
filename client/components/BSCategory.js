@@ -10,7 +10,7 @@ import CustomButton from "./CustomButton";
 import { sheets } from "../styles/components/bottom-sheets";
 import { bsCategory } from "../styles/components/bs-category";
 
-export default function BSCategory({ edit, visible, setVisible, category }) {
+export default function BSCategory({ visible, setVisible, edit, category }) {
   const [colorModalVisible, setColorModalVisible] = useState(false);
   const [iconModalVisible, setIconModalVisible] = useState(false);
   const refRBSheet = useRef();

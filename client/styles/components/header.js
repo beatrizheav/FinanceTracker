@@ -1,4 +1,4 @@
-import { Platform, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { colorsTheme } from "../colorsTheme";
 
 export const header = StyleSheet.create({
@@ -11,7 +11,8 @@ export const header = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 15,
+    paddingHorizontal: 16,
+    marginHorizontal: -16,
   },
   button: {
     padding: 10,
