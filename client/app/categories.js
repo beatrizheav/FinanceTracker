@@ -9,7 +9,7 @@ import { general } from "../styles/general";
 
 export default function CategoriesScreen() {
   return (
-    <View style={categoriesScreen.container}>
+    <View style={general.safeArea}>
       <Header title={"Categorías"} />
       <View style={categoriesScreen.listContainer}>
         <FlatList
