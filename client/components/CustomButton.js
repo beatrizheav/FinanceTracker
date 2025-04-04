@@ -1,7 +1,7 @@
 import { TouchableOpacity } from "react-native";
 import React from "react";
 import { customButton } from "../styles/components/custom-button";
-import CustomTitle from "./CustomTitle";
+import CustomText from "./CustomText";
 
 const CustomButton = ({ onPress, title, background, type }) => {
   const backgroundStyle =
@@ -15,15 +15,15 @@ const CustomButton = ({ onPress, title, background, type }) => {
 
   const textColor =
     background === "white" || background === undefined
-      ? customButton.green
-      : customButton.white;
+      ? customButton.green.color
+      : customButton.white.color;
 
   return (
     <TouchableOpacity
       onPress={onPress}
       style={[customButton.container, backgroundStyle, typeStyle]}
     >
-      <CustomTitle title={title} type={typeTitle} color={textColor} />
+      <CustomText text={title} type={typeTitle} color={textColor} />
     </TouchableOpacity>
   );
 };

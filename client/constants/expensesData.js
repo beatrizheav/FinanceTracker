@@ -1,182 +1,242 @@
 export const expensesData = [
-  {
-    id: 1,
-    expenseId: 1,
-    category: {
-      id: 2,
-      name: "Casa",
-      color: "#3b6e40",
-      icon: {
-        iconName: "house",
-        iconSet: "MaterialIcons",
+    {
+      userId: 1,
+      expenseId: 1,
+      category: {
+        id: 3,
+        name: "Entretenimiento",
+        color: "#ffb347",
+        icon: { iconName: "movie", iconSet: "MaterialIcons" }
       },
+      name: "Suscripción streaming",
+      date: "2025-04-02T19:49:00",
+      quantity: 188.9,
+      description: "Pago mensual de plataforma de streaming",
+      image: "https://www.aqs.es/wp-content/uploads/2018/02/TICKET-1.jpg",
+      fixed: false
     },
-    name: "Pago de renta",
-    date: "2024-03-01T10:00:00",
-    quantity: 1000,
-    description: "Pago mensual de renta.",
-    image: "https://example.com/renta.png",
-  },
-  {
-    id: 2,
-    expenseId: 2,
-    category: {
-      id: 3,
-      name: "Comida",
-      color: "#d9534f",
-      icon: {
-        iconName: "restaurant",
-        iconSet: "MaterialIcons",
+    {
+      userId: 9,
+      expenseId: 2,
+      category: {
+        id: 5,
+        name: "Mascotas",
+        color: "#8e44ad",
+        icon: { iconName: "pets", iconSet: "MaterialIcons" }
       },
+      name: "Vacuna de mascota",
+      date: "2025-03-31T14:05:00",
+      quantity: 584.2,
+      description: "Visita al veterinario y vacuna anual",
+      image: "https://parzibyte.me/blog/wp-content/uploads/2022/10/Ticket-impreso-con-comandos-ESC-POS-en-impresora-termica-555x1024.jpg",
+      fixed: true
     },
-    name: "Supermercado",
-    date: "2024-03-02T12:30:00",
-    quantity: 150,
-    description: "Compras de la semana en el supermercado.",
-    image: "https://example.com/supermercado.png",
-  },
-  {
-    id: 3,
-    expenseId: 3,
-    category: {
-      id: 4,
-      name: "Transporte",
-      color: "#0275d8",
-      icon: {
-        iconName: "directions_car",
-        iconSet: "MaterialIcons",
+    {
+      userId: 4,
+      expenseId: 3,
+      category: {
+        id: 8,
+        name: "Educacion",
+        color: "#2ecc71",
+        icon: { iconName: "pencil-square-o", iconSet: "FontAwesome" }
       },
+      name: "Curso en línea",
+      date: "2025-04-01T01:09:00",
+      quantity: 1217.0,
+      description: "Curso de especialización en línea",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLIvMLw9Qko9Ov2HgiwuvXsuiMYhvvIQ1Dxo69QPEKngtazn239f6F7FQsKzxZ0Q7APxQ&usqp=CAU",
+      fixed: false
     },
-    name: "Gasolina",
-    date: "2024-03-03T09:15:00",
-    quantity: 80,
-    description: "Llenado de tanque de gasolina.",
-    image: "https://example.com/gasolina.png",
-  },
-  {
-    id: 4,
-    expenseId: 4,
-    category: {
-      id: 5,
-      name: "Entretenimiento",
-      color: "#f0ad4e",
-      icon: {
-        iconName: "theater_comedy",
-        iconSet: "MaterialIcons",
+    {
+      userId: 6,
+      expenseId: 4,
+      category: {
+        id: 8,
+        name: "Mascotas",
+        color: "#8e44ad",
+        icon: { iconName: "pets", iconSet: "MaterialIcons" }
       },
+      name: "Croquetas",
+      date: "2025-03-25T06:45:00",
+      quantity: 1143.1,
+      description: "Compra de croquetas para mi perro",
+      image: "",
+      fixed: true
     },
-    name: "Netflix",
-    date: "2024-03-04T18:00:00",
-    quantity: 10,
-    description: "Suscripción mensual de Netflix.",
-    image: "https://example.com/netflix.png",
-  },
-  {
-    id: 5,
-    expenseId: 5,
-    category: {
-      id: 6,
-      name: "Salud",
-      color: "#d9534f",
-      icon: {
-        iconName: "local_hospital",
-        iconSet: "MaterialIcons",
+    {
+      userId: 2,
+      expenseId: 5,
+      category: {
+        id: 3,
+        name: "Alimentos",
+        color: "#41aa61",
+        icon: { iconName: "shoppingcart", iconSet: "AntDesign" }
       },
+      name: "Despensa",
+      date: "2025-03-31T08:21:00",
+      quantity: 1142.05,
+      description: "Compra de comida para la semana",
+      image: "https://images.sipse.com/Ya7o33a5h-ivP1T9BCcEH_dIhSQ=/724x500/smart/2019/03/31/1554054410291.jpg",
+      fixed: true
     },
-    name: "Consulta médica",
-    date: "2024-03-05T16:00:00",
-    quantity: 50,
-    description: "Consulta con el doctor general.",
-    image: "https://example.com/medico.png",
-  },
-  {
-    id: 6,
-    expenseId: 6,
-    category: {
-      id: 7,
-      name: "Educación",
-      color: "#5bc0de",
-      icon: {
-        iconName: "school",
-        iconSet: "MaterialIcons",
+    {
+      userId: 5,
+      expenseId: 6,
+      category: {
+        id: 3,
+        name: "Transporte",
+        color: "#ffb347",
+        icon: { iconName: "directions-bus", iconSet: "MaterialIcons" }
       },
+      name: "Pasaje",
+      date: "2025-04-03T11:14:00",
+      quantity: 18.00,
+      description: "Gastos en autobús y metro del mes",
+      image: "",
+      fixed: false
     },
-    name: "Curso en línea",
-    date: "2024-03-06T20:00:00",
-    quantity: 30,
-    description: "Pago de un curso en línea.",
-    image: "https://example.com/curso.png",
-  },
-  {
-    id: 7,
-    expenseId: 7,
-    category: {
-      id: 8,
-      name: "Ropa",
-      color: "#795548",
-      icon: {
-        iconName: "shopping_bag",
-        iconSet: "MaterialIcons",
+    {
+      userId: 8,
+      expenseId: 7,
+      category: {
+        id: 2,
+        name: "Shopping",
+        color: "#0c334e",
+        icon: { iconName: "shopping-basket", iconSet: "MaterialIcons" }
       },
+      name: "Ropa nueva",
+      date: "2025-04-03T06:52:00",
+      quantity: 948.93,
+      description: "Compra de ropa de temporada",
+      image: "",
+      fixed: true
     },
-    name: "Compra de ropa",
-    date: "2024-03-07T15:00:00",
-    quantity: 75,
-    description: "Compra de ropa nueva en tienda.",
-    image: "https://example.com/ropa.png",
-  },
-  {
-    id: 8,
-    expenseId: 8,
-    category: {
-      id: 9,
-      name: "Mascotas",
-      color: "#ff9800",
-      icon: {
-        iconName: "pets",
-        iconSet: "MaterialIcons",
+    {
+      userId: 7,
+      expenseId: 8,
+      category: {
+        id: 4,
+        name: "Salud",
+        color: "#76c7c0",
+        icon: { iconName: "healing", iconSet: "MaterialIcons" }
       },
+      name: "Lentes",
+      date: "2025-03-27T19:01:00",
+      quantity: 584.81,
+      description: "",
+      image: "",
+      fixed: false
     },
-    name: "Alimento para perro",
-    date: "2024-03-08T13:00:00",
-    quantity: 40,
-    description: "Saco de alimento para el perro.",
-    image: "https://example.com/mascotas.png",
-  },
-  {
-    id: 9,
-    expenseId: 9,
-    category: {
-      id: 10,
-      name: "Tecnología",
-      color: "#673ab7",
-      icon: {
-        iconName: "devices",
-        iconSet: "MaterialIcons",
+    {
+      userId: 8,
+      expenseId: 9,
+      category: {
+        id: 8,
+        name: "Alquiler",
+        color: "#66350d",
+        icon: { iconName: "house", iconSet: "MaterialIcons" }
       },
+      name: "Pago de renta",
+      date: "2025-03-29T15:04:00",
+      quantity: 1052.69,
+      description: "Pago mensual del alquiler del apartamento",
+      image: "",
+      fixed: true
     },
-    name: "Mouse inalámbrico",
-    date: "2024-03-09T10:30:00",
-    quantity: 25,
-    description: "Compra de mouse para la laptop.",
-    image: "https://example.com/mouse.png",
-  },
-  {
-    id: 10,
-    expenseId: 10,
-    category: {
-      id: 11,
-      name: "Deportes",
-      color: "#4caf50",
-      icon: {
-        iconName: "sports_soccer",
-        iconSet: "MaterialIcons",
+    {
+      userId: 2,
+      expenseId: 10,
+      category: {
+        id: 2,
+        name: "Entretenimiento",
+        color: "#ffb347",
+        icon: { iconName: "movie", iconSet: "MaterialIcons" }
       },
+      name: "Cine con amigos",
+      date: "2025-03-30T01:57:00",
+      quantity: 417.91,
+      description: "Entrada al cine y snacks",
+      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3xiLQfoGEJ4FJILj-nUILAuBhIrisdOWOtQ&s",
+      fixed: true
     },
-    name: "Membresía gimnasio",
-    date: "2024-03-10T07:00:00",
-    quantity: 50,
-    description: "Pago mensual del gimnasio.",
-    image: "https://example.com/gimnasio.png",
-  },
-];
+    {
+      userId: 4,
+      expenseId: 11,
+      category: {
+        id: 4,
+        name: "Salud",
+        color: "#76c7c0",
+        icon: { iconName: "healing", iconSet: "MaterialIcons" }
+      },
+      name: "Medicamento para la gripa",
+      date: "2025-04-02T03:35:00",
+      quantity: 786.01,
+      description: "Me sentia muy mal!!",
+      image: "",
+      fixed: false
+    },
+    {
+      userId: 2,
+      expenseId: 12,
+      category: {
+        id: 2,
+        name: "Casa",
+        color: "#403b6e",
+        icon: { iconName: "house", iconSet: "MaterialIcons" }
+      },
+      name: "Cortinas",
+      date: "2025-03-25T19:27:00",
+      quantity: 1843.4,
+      description: "Nuevas cortinas para mi sala",
+      image: "",
+      fixed: false
+    },
+    {
+        userId: 5,
+        expenseId: 13,
+        category: {
+            id: 3,
+            name: "Transporte",
+            color: "#ffb347",
+            icon: { iconName: "directions-bus", iconSet: "MaterialIcons" }
+        },
+        name: "Pasaje",
+        date: "2025-04-03T11:14:00",
+        quantity: 18.00,
+        description: "Gastos en autobús",
+        image: "",
+        fixed: false
+        },
+    {
+      userId: 4,
+      expenseId: 14,
+      category: {
+        id: 7,
+        name: "Shopping",
+        color: "#0c334e",
+        icon: { iconName: "shopping-basket", iconSet: "MaterialIcons" }
+      },
+      name: "Zapatos",
+      date: "2025-04-03T12:31:00",
+      quantity: 559.43,
+      description: "Zapatos para la fiesta del sabado",
+      image: "",
+      fixed: true
+    },
+    {
+      userId: 1,
+      expenseId: 15,
+      category: {
+        id: 5,
+        name: "Escolar",
+        color: "#8e44ad",
+        icon: { iconName: "pencil", iconSet: "FontAwesome" }
+      },
+      name: "Material escolar",
+      date: "2025-04-01T01:27:00",
+      quantity: 1976.57,
+      description: "Útiles escolares para el semestre",
+      image: "",
+      fixed: true
+    }
+  ];

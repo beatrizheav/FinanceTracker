@@ -1,25 +1,24 @@
-import { View, FlatList, Animated, Easing, Pressable } from 'react-native'
-import React, { useState, useRef, useEffect } from 'react'
+import { View, FlatList, Pressable } from 'react-native'
+import React, { useState } from 'react'
 import { Ionicons } from '@expo/vector-icons';
 import { isSameDay, isAfter, isBefore, subDays } from 'date-fns';
 import Header from '../components/Header'
-import CustomTitle from '../components/CustomTitle'
 import ActivityDisplay from '../components/ActivityDisplay'
 import CustomText from '../components/CustomText'
 import AddButton from '../components/AddButton'
-import { incomesData } from '../constants/incomesData'
+import { expensesData } from '../constants/expensesData'
 import { general } from '../styles/general'
 import { colorsTheme } from '../styles/colorsTheme';
-import { incomes } from '../styles/screens/incomes';
-import ModalIncome from '../components/ModalIncome';
-import BSIncome from "../components/BSIncome";
+import { expense } from '../styles/screens/expense';
+import ModalExpense from '../components/ModalExpense';
+import BSExpense from "../components/BSExpense";
 
-const Incomes = ({ data = incomesData }) => {
-    const [selectedIncome, setSelectedIncome] = useState(null);
-    const [isActiveModalIncome, setIsActiveModalIncome] = useState(false);
-    const [isActiveBSIncome, setIsActiveBSIncome] = useState(false);
+const expenses = ({ data = expensesData }) => {
+    const [selectedExpense, setSelectedExpense] = useState(null);
+    const [isActiveModalExpense, setIsActiveModalExpense] = useState(false);
+    const [isActiveBSExpense, setIsActiveBSExpense] = useState(false);
     const [editMode, setEditMode] = useState(false);
-    const fixedIncomes = data.filter(item => item.fixed === true); //incomes fixed
+    const fixedExpenses = data.filter(item => item.fixed === true); //expenses fixed
     const today = new Date();
     const twoWeeksAgo = subDays(today, 14);
     const [expandedSections, setExpandedSections] = useState({
@@ -28,25 +27,24 @@ const Incomes = ({ data = incomesData }) => {
         last: false
       });
 
-      const todayIncomes = data.filter((item) => //incomes of today
+      const todayExpenses = data.filter((item) => //expenses of today
         isSameDay(new Date(item.date), today)
       );
 
-      const lastTwoWeeksIncomes = data.filter((item) => { //incomes of last two weeks
-        const incomeDate = new Date(item.date);
-        return isAfter(incomeDate, twoWeeksAgo) && isBefore(incomeDate, today);
+      const lastTwoWeeksExpenses = data.filter((item) => { //expenses of last two weeks
+        const expenseDate = new Date(item.date);
+        return isAfter(expenseDate, twoWeeksAgo) && isBefore(expenseDate, today);
       });
 
-
-      const showModalIncome = (income) => {
-        setSelectedIncome(income);
-        setIsActiveModalIncome(true);
+      const showModalExpense = (expense) => {
+        setSelectedExpense(expense);
+        setIsActiveModalExpense(true);
       };
 
       const showBottom = () => {
-        setSelectedIncome(null);
+        setSelectedExpense(null);
         setEditMode(false);
-        setIsActiveBSIncome(true);
+        setIsActiveBSExpense(true);
       }
 
       const toggleSection = (section) => {
@@ -61,15 +59,15 @@ const Incomes = ({ data = incomesData }) => {
 
       const getFixedHeightStyle = () => {
         if (!expandedSections.fixed) return {};
-        if (fixedIncomes.length === 1) return { height: 70 };
-        if (fixedIncomes.length === 2) return { height: 135 };
+        if (fixedExpenses.length === 1) return { height: 70 };
+        if (fixedExpenses.length === 2) return { height: 135 };
         return { height: 200 };
       };
 
       const getTodayHeightStyle = () => {
         if (!expandedSections.today) return {};
-        if (todayIncomes.length === 1) return { height: 70 };
-        if (todayIncomes.length === 2) return { height: 135 };
+        if (todayExpenses.length === 1) return { height: 70 };
+        if (todayExpenses.length === 2) return { height: 135 };
         return { height: 200 };
       };
 
@@ -81,40 +79,40 @@ const Incomes = ({ data = incomesData }) => {
 
   return (
     <View style={general.safeArea}>
-        <Header title={'Ingresos'}/>
+        <Header title={'Gastos'}/>
         <View>
             <View>
                 <Pressable 
                   onPress={() => toggleSection('fixed')}
-                  style={incomes.container_title}>
-                    <CustomText text={'Ingresos fijos'} type={'TitleMedium'}/>
+                  style={expense.container_title}>
+                    <CustomText text={'Gastos fijos'} type={'TitleMedium'}/>
                         <Ionicons
                             onPress={() => toggleSection('fixed')}
                             name={getIcon('fixed')}
                             size={27}
                             color={colorsTheme.black}
-                            style={incomes.icon_chev}
+                            style={expense.icon_chev}
                             testID="chevron-down-outline"
                         />
                 </Pressable>
-                {expandedSections.fixed && fixedIncomes.length === 0
-                    ? ( <View style={incomes.container_text}>
-                            <CustomText text={"No tienes ningún Ingreso fijo todavía"} type={'TextSmall'} numberOfLines={0}/>
+                {expandedSections.fixed && fixedExpenses.length === 0
+                    ? ( <View style={expense.container_text}>
+                            <CustomText text={"No tienes ningún Gasto fijo todavía"} type={'TextSmall'} numberOfLines={0}/>
                         </View>
                       )
                     :   expandedSections.fixed ? 
                       ( 
                       <FlatList
-                            data={fixedIncomes}
-                            keyExtractor={item => item.incomeId.toString()}
+                            data={fixedExpenses}
+                            keyExtractor={item => item.expenseId.toString()}
                             showsVerticalScrollIndicator={false}
                             style={getFixedHeightStyle()}
                             renderItem={({item}) => 
                                 <ActivityDisplay 
                                   {... item}
-                                  onPress={()=> showModalIncome(item)} 
-                                  screen={'income'}
-                                  testID="mock-income-item"/>
+                                  onPress={()=> showModalExpense(item)} 
+                                  screen={'expense'}
+                                  testID="mock-expense-item"/>
                             }
                         />
                       )
@@ -125,34 +123,34 @@ const Incomes = ({ data = incomesData }) => {
             <View>
                 <Pressable
                   onPress={() => toggleSection('today')}
-                  style={incomes.container_title}>
+                  style={expense.container_title}>
                     <CustomText text={'Hoy'} type={'TitleMedium'}/>
                     <Ionicons
                         onPress={() => toggleSection('today')} 
                         name={getIcon('today')} 
                         size={27} 
                         color={colorsTheme.black}
-                        style={incomes.icon_chev}
+                        style={expense.icon_chev}
                         testID='chevron-down-outline'
                     />
                 </Pressable>
-                {expandedSections.today && todayIncomes.length === 0
-                    ? ( <View style={incomes.container_text}>
-                            <CustomText text={"No tienes ningún Ingreso hoy todavía"} type={'TextSmall'} numberOfLines={0}/>
+                {expandedSections.today && todayExpenses.length === 0
+                    ? ( <View style={expense.container_text}>
+                            <CustomText text={"No tienes ningún Gasto hoy todavía"} type={'TextSmall'} numberOfLines={0}/>
                         </View>
                       )
                     :   expandedSections.today ? 
                       ( <FlatList
-                            data={todayIncomes}
-                            keyExtractor={item => item.incomeId.toString()}
+                            data={todayExpenses}
+                            keyExtractor={item => item.expenseId.toString()}
                             showsVerticalScrollIndicator={false}
                             style={getTodayHeightStyle()}
                             renderItem={({item}) => 
                                 <ActivityDisplay 
                                   {... item}
-                                  onPress={()=> showModalIncome(item)} 
-                                  screen={'income'}
-                                  testID="mock-income-item"/>
+                                  onPress={()=> showModalExpense(item)} 
+                                  screen={'expense'}
+                                  testID="mock-expense-item"/>
                             }
                         />
                       )
@@ -162,34 +160,34 @@ const Incomes = ({ data = incomesData }) => {
             <View>
                 <Pressable
                   onPress={() => toggleSection('last')}
-                  style={incomes.container_title}>
+                  style={expense.container_title}>
                     <CustomText text={'Últimas dos semanas'} type={'TitleMedium'}/>
                     <Ionicons
                         onPress={() => toggleSection('last')} 
                         name={getIcon('last')} 
                         size={27} 
                         color={colorsTheme.black}
-                        style={incomes.icon_chev}
+                        style={expense.icon_chev}
                         testID='chevron-down-outline'
                     />
                 </Pressable>
-                {expandedSections.last && lastTwoWeeksIncomes.length === 0
-                    ? ( <View style={incomes.container_text}>
-                            <CustomText text={"No tienes ningún Ingreso en las últimas dos semanas"} type={'TextSmall'} numberOfLines={0}/>
+                {expandedSections.last && lastTwoWeeksExpenses.length === 0
+                    ? ( <View style={expense.container_text}>
+                            <CustomText text={"No tienes ningún Gasto en las últimas dos semanas"} type={'TextSmall'} numberOfLines={0}/>
                         </View>
                       )
                     :   expandedSections.last ? 
                       ( <FlatList
-                            data={lastTwoWeeksIncomes}
-                            keyExtractor={item => item.incomeId.toString()}
+                            data={lastTwoWeeksExpenses}
+                            keyExtractor={item => item.expenseId.toString()}
                             showsVerticalScrollIndicator={false}
                             style={getLastHeightStyle()}
                             renderItem={({item}) => 
                                 <ActivityDisplay 
                                   {... item} 
-                                  onPress={()=> showModalIncome(item)}
-                                  screen={'income'}
-                                  testID="mock-income-item"/>
+                                  onPress={()=> showModalExpense(item)}
+                                  screen={'expense'}
+                                  testID="mock-expense-item"/>
                             }
                         />
                       )
@@ -198,25 +196,25 @@ const Incomes = ({ data = incomesData }) => {
             </View>
         </View>
         <AddButton onPress={showBottom}/>
-        {isActiveModalIncome && selectedIncome && (
-          <ModalIncome
-            {...selectedIncome}
-            setIsActiveModalIncome={setIsActiveModalIncome}
+        {isActiveModalExpense && selectedExpense && (
+          <ModalExpense
+            {...selectedExpense}
+            setIsActiveModalExpense={setIsActiveModalExpense}
             onEdit={() => {
               setEditMode(true);
-              setIsActiveModalIncome(false);
-              setIsActiveBSIncome(true);
+              setIsActiveModalExpense(false);
+              setIsActiveBSExpense(true);
             }}
           />
         )}
-        <BSIncome
-        visible={isActiveBSIncome}
-        setVisible={setIsActiveBSIncome}
+        <BSExpense
+        visible={isActiveBSExpense}
+        setVisible={setIsActiveBSExpense}
         edit={editMode}
-        income={selectedIncome}
+        expense={selectedExpense}
       />
     </View>
   )
 }
 
-export default Incomes
+export default expenses

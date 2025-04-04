@@ -1,7 +1,7 @@
 import { StyleSheet } from "react-native";
 import { colorsTheme } from "../colorsTheme";
 
-export const incomes = StyleSheet.create({
+export const expense = StyleSheet.create({
   container_title: {
     flexDirection: "row",
     alignItems: 'center',

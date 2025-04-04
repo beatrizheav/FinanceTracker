@@ -33,8 +33,15 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
   useEffect(() => {
     if (edit) {
       setIncomeData(income);
+    }else{
+      setIncomeData({
+        name: "",
+        quantity: "",
+        date: new Date(),
+        fixed: false,
+      });
     }
-  }, [edit]);
+  }, [income, edit]);
 
   const ableToDrag = !dateModalVisible;
 
