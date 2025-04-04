@@ -29,7 +29,6 @@ export default function registration() {
     if (!validateForm()) {
       return;
     }
-
     Alert.alert("Able to register");
   };
 

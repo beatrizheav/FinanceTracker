@@ -9,12 +9,19 @@ import { Ionicons } from '@expo/vector-icons';
 import { colorsTheme } from '../styles/colorsTheme';
 import CategoryIcon from './CategoryIcon';
 
-const ModalIncome = ({name, date, quantity = 0, icon, color, incomeId, setIsActiveModalIncome}) => {
+const ModalIncome = ({
+    name, 
+    date, 
+    quantity = 0, 
+    incomeId, 
+    setIsActiveModalIncome,
+    onEdit}) => {
     const userId = 2; //temporal userId
     const formatName = name ? name : 'Nombre no encontrado'; //Validates if there is data in the title, if not, sets a default title
     const formatDate = date ? format(date, "dd 'de' MMMM yyyy", {locale: es}) : 'fecha no encontrada'; //takes the date and formats it
     const formatQuantity = quantity ? ` $ ${quantity.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '$ 0.00'; //Validates if there is data in the quantity, if not, sets a default quantity
-    
+    const icon = {"iconName": "attach-money","iconSet": "MaterialIcons"};
+    const color = colorsTheme.lightGreen
 
     const handleDelete = (userId, incomeId) => {
         //agregar la logica para eliminar el gasto
@@ -37,8 +44,8 @@ const ModalIncome = ({name, date, quantity = 0, icon, color, incomeId, setIsActi
             ],
         )
     }
-    const handleEdit = (incomeId) => {
-        //agregar logica para editar el gasto
+    const handleEdit = () => {
+        onEdit()
     };
 
     const closeModal = () => {
@@ -66,7 +73,7 @@ const ModalIncome = ({name, date, quantity = 0, icon, color, incomeId, setIsActi
                     </View>
                     <View style={modalIncome.container_details}>
                         <ModalDetail title={'Ingreso:'} text={formatName}/>
-                        <ModalDetail title={'Cantidad:'} text={formatQuantity} color={modalIncome.green}/>
+                        <ModalDetail title={'Cantidad:'} text={formatQuantity} color={color}/>
                         <ModalDetail title={'fecha:'} text={formatDate}/>
                     </View>
                     <View style={modalIncome.container_buttons}>
@@ -77,7 +84,7 @@ const ModalIncome = ({name, date, quantity = 0, icon, color, incomeId, setIsActi
                             type={'modal'} 
                             testID='button-Eliminar'/>
                         <CustomButton 
-                            onPress={() => handleEdit(incomeId)} 
+                            onPress={() => handleEdit()} 
                             title={'Editar'} 
                             background={'green'} 
                             type={'modal'} 

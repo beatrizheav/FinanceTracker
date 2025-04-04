@@ -13,11 +13,22 @@ jest.mock('@expo/vector-icons', () => ({
 
 describe('ActivityDisplay Component', () => {
   const mockProps = {
-    title: 'Compra',
+    name: 'Compra',
+    date: new Date(2024, 2, 15),
+    quantity: 150.75,
+    screen: 'expense',
+    category: {
+      icon: { iconName: 'cart', iconSet: 'Ionicons' },
+      color: '#ff0000',
+    }
+  };
+
+  const mockPropsCategory = {
+    name: 'Compra',
     date: new Date(2024, 2, 15),
     quantity: 150.75,
     icon: { iconName: 'cart', iconSet: 'Ionicons' },
-    screen: 'expense',
+    screen: 'category',
     color: '#ff5733',
   };
 
@@ -28,12 +39,23 @@ describe('ActivityDisplay Component', () => {
     expect(getByText('- $ 150.75')).toBeTruthy();
   });
 
+  test('renders correctly with screen "category"', () => {
+    const { queryByText } = render(<ActivityDisplay {...mockPropsCategory} />);
+    
+    expect(queryByText(/de/)).toBeNull();
+  });
+
   test('renders default values when no props are provided', () => {
     const { getByText, getByTestId } = render(<ActivityDisplay />);
     expect(getByText('nombre no encontrado')).toBeTruthy();
     expect(getByText('fecha no encontrada')).toBeTruthy();
     expect(getByTestId('default-icon')).toBeTruthy();
     expect(getByText('$ 0.00')).toBeTruthy();
+  });
+
+  test('renders with default color for unknown screen type', () => {
+    const { getByText } = render(<ActivityDisplay screen="other" name="Otro" quantity={50} />);
+    expect(getByText('$ 50.00')).toBeTruthy();
   });
 
   test('renders correct quantity format for income screen', () => {
