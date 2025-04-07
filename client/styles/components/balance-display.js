@@ -1,5 +1,4 @@
 import { StyleSheet } from "react-native";
-import { colorsTheme } from "../colorsTheme";
 
 export const balanceDisplay = StyleSheet.create({
   container: {
