@@ -3,7 +3,6 @@ import { View, Modal, TouchableOpacity, Platform } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import { format, isToday } from "date-fns";
 import DateTimePicker from "@react-native-community/datetimepicker";
-import CustomTitle from "./CustomTitle";
 import CustomText from "./CustomText";
 import { inputs } from "../styles/components/inputs";
 import { colorsTheme } from "../styles/colorsTheme";
@@ -52,7 +51,7 @@ const DatePicker = ({ date, setDate }) => {
 
   return (
     <View style={inputs.wrapper}>
-      <CustomTitle title={"Fecha"} type={"TitleSmall"} />
+      <CustomText text={"Fecha"} type={"TitleSmall"} />
       <TouchableOpacity
         style={[inputs.container, inputs.directionRow]}
         onPress={() => setShow((prevState) => !prevState)}

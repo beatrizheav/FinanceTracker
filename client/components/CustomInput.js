@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { View, TextInput, TouchableOpacity } from "react-native";
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome6 from "@expo/vector-icons/FontAwesome6";
-import CustomTitle from "./CustomTitle";
 import { inputs } from "../styles/components/inputs";
 import { fontsTheme } from "../styles/fontsTheme";
 import { colorsTheme } from "../styles/colorsTheme";
@@ -77,7 +76,7 @@ export default function CustomInput({
 
   return (
     <View style={inputs.wrapper} testID="input-wrapper">
-      <CustomTitle title={label} type={"TitleSmall"} testID={"input-label"} />
+      <CustomText text={label} type={"TitleSmall"} testID={"input-label"} />
       <View style={inputContainer} testID="input-container">
         {type === "number" && (
           <View style={inputs.inputIcon} testID="input-icon">

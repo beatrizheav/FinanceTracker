@@ -2,7 +2,6 @@ import React from "react";
 import { View, Dimensions } from "react-native";
 import { PieChart } from "react-native-chart-kit";
 import { categories } from "../constants/categories";
-import CustomTitle from "./CustomTitle";
 import CustomText from "./CustomText";
 import { expensesChart } from "../styles/components/expenses-chart";
 
@@ -37,7 +36,7 @@ const ExpensesChart = () => {
 
   return (
     <View style={expensesChart.container} testID="expenses-chart">
-      <CustomTitle title={"Distribución de gastos"} type={"TitleSmall"} />
+      <CustomText title={"Distribución de gastos"} type={"TitleSmall"} />
       <View style={expensesChart.graphContainer}>
         {/* Lista personalizada a la izquierda */}
         <View style={expensesChart.legendContainer}>

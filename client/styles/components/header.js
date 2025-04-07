@@ -20,9 +20,6 @@ export const header = StyleSheet.create({
   buttonPlaceholder: {
     width: 30,
   },
-  black: {
-    color: colorsTheme.black,
-  },
   avatarContainer: {
     width: "45%",
     height: "100%",
