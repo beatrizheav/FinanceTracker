@@ -2,7 +2,6 @@ import { TouchableWithoutFeedback, View, Keyboard } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { handleInputChange } from "../hooks/handleInputChange";
-import CustomTitle from "./CustomTitle";
 import CustomInput from "./CustomInput";
 import ColorPicker from "./ColorPicker";
 import IconPicker from "./IconPicker";
