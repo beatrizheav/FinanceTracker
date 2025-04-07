@@ -9,6 +9,7 @@ import AvatarPicker from "../components/AvatarPicker";
 import CustomButton from "../components/CustomButton";
 import { registrationScreen } from "../styles/screens/registration";
 import { general } from "../styles/general";
+import { useRouter } from "expo-router";
 
 export default function registration() {
   const [registrationData, setRegistrationData] = useState({
@@ -25,11 +26,13 @@ export default function registration() {
 
   const validateForm = useFormValidation(data, "registration");
 
+  const router = useRouter();
+
   const handleSubmit = () => {
     if (!validateForm()) {
       return;
     }
-    Alert.alert("Able to register");
+    router.replace("/home");
   };
 
   return (

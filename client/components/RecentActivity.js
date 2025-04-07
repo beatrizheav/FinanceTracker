@@ -25,13 +25,6 @@ export default function RecentActivity({ onPress }) {
     <View>
       <View style={recentActivity.header}>
         <CustomText text="Actividad Reciente" type="TitleSmall" />
-        <TouchableOpacity>
-          <CustomText
-            text="Ver todo"
-            type="TextSmall"
-            color={colorsTheme.teal}
-          />
-        </TouchableOpacity>
       </View>
       <FlatList
         showsVerticalScrollIndicator={false}
