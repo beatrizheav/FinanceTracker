@@ -1,4 +1,9 @@
-import { View, TouchableOpacity, FlatList } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  FlatList,
+  ImageBackground,
+} from "react-native";
 import React, { useMemo } from "react";
 import { incomesData } from "../constants/incomesData";
 import { expensesData } from "../constants/expensesData";
@@ -22,7 +27,7 @@ export default function RecentActivity({ onPress }) {
   );
 
   return (
-    <View>
+    <View style={recentActivity.container}>
       <View style={recentActivity.header}>
         <CustomText text="Actividad Reciente" type="TitleSmall" />
         <TouchableOpacity>
