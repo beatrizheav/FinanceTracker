@@ -8,15 +8,15 @@ import {
 import React, { useRef, useEffect, useState } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { handleInputChange } from "../hooks/handleInputChange";
-import CustomTitle from "./CustomTitle";
 import CustomInput from "./CustomInput";
 import DatePicker from "./DatePicker";
 import DropdownCategory from "./DropdownCategory";
 import CustomButton from "./CustomButton";
+import CustomCheckbox from "./CustomCheckbox";
+import CustomText from "./CustomText";
 import ImagePickerComponent from "./ImagePicker";
 import { sheets } from "../styles/components/bottom-sheets";
 import { bsExpense } from "../styles/components/bs-expense";
-import CustomCheckbox from "./CustomCheckbox";
 
 export default function BSExpense({ edit, visible, setVisible, expense }) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
@@ -76,7 +76,7 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
     >
       <View testID="BS-Expense">
         <View style={sheets.header}>
-          <CustomTitle title={"Gasto"} type={"TitleMedium"} />
+          <CustomText text={"Gasto"} type={"TitleMedium"} />
         </View>
         <KeyboardAvoidingView>
           <ScrollView
