@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import { colorsTheme } from "../styles/colorsTheme";
 import { offset, SIDE_MENU_WIDTH } from "../constants/sideMenuSizes";
 import CustomText from "./CustomText";
@@ -50,7 +51,7 @@ const SideMenu = ({ visible, setMenuVisible }) => {
               style={sideMenu.closeButton}
               onPress={() => setMenuVisible(false)}
             >
-              <FontAwesome name="close" size={30} color={colorsTheme.white} />
+              <AntDesign name="close" size={30} color={colorsTheme.white} />
             </Pressable>
 
             <View style={sideMenu.avatarSection}>

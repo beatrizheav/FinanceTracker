@@ -34,6 +34,7 @@ export default function HomeScreen() {
   return (
     <View style={general.safeArea}>
       <Header title="Home" />
+
       <DatePickerDropdown onChange={setDate} />
       <BalanceDisplay income={10000} expense={4000} />
       <View style={homeStyles.expensesScrollview}>
