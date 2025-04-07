@@ -52,10 +52,10 @@ const ModalIncome = ({
         setIsActiveModalIncome(false);
     };
     return (
-        <Modal>
-        <TouchableWithoutFeedback onPress={closeModal} testID="modal-overlay">
-            <View style={modalIncome.overlay}>
-            <TouchableWithoutFeedback>
+    <Modal>
+      <TouchableWithoutFeedback onPress={closeModal} testID="modal-overlay">
+        <View style={modalIncome.overlay}>
+          <TouchableWithoutFeedback>
                 <View style={modalIncome.container}>
                     <View style={modalIncome.container_closeIcon}>
                         <Ionicons
@@ -64,7 +64,7 @@ const ModalIncome = ({
                             size={27} 
                             color={colorsTheme.black}
                             testID='close-icon'
-                            />
+                        />
                     </View>
                     <View>
                         <View style={modalIncome.container_icon}>
@@ -90,34 +90,7 @@ const ModalIncome = ({
                             type={'modal'} 
                             testID='button-Editar'/>
                     </View>
-                </View>
-              </View>
-              <View style={modalIncome.container_details}>
-                <ModalDetail title={"Ingreso:"} text={formatName} />
-                <ModalDetail
-                  title={"Cantidad:"}
-                  text={formatQuantity}
-                  color={color}
-                />
-                <ModalDetail title={"fecha:"} text={formatDate} />
-              </View>
-              <View style={modalIncome.container_buttons}>
-                <CustomButton
-                  onPress={() => handleDelete(userId, incomeId)}
-                  title={"Eliminar"}
-                  background={"white"}
-                  type={"modal"}
-                  testID="button-Eliminar"
-                />
-                <CustomButton
-                  onPress={() => handleEdit(incomeId)}
-                  title={"Editar"}
-                  background={"green"}
-                  type={"modal"}
-                  testID="button-Editar"
-                />
-              </View>
-            </View>
+                  </View>
           </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>

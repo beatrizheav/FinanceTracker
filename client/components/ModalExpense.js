@@ -71,38 +71,6 @@ const ModalExpense = ({
     const closeModal = () => {
         setIsActiveModalExpense(false);
     };
-  return (
-    <Modal>
-        <TouchableWithoutFeedback onPress={closeModal} testID="modal-overlay">
-            <View style={modalExpense.overlay}>
-            <TouchableWithoutFeedback>
-                <View style={[modalExpense.container, heightModal]}>
-                    <View style={modalExpense.container_closeIcon}>
-                        <Ionicons
-                            onPress={closeModal} 
-                            name={'close'} 
-                            size={27} 
-                            color={colorsTheme.black}
-                            testID='close-icon'
-                            />
-                    </View>
-                    <View>
-                        <View style={modalExpense.container_icon}>
-                            <CategoryIcon icon={category.icon} type={"big"} color={category.color}/>
-                            <Text style={[fontsTheme.TitleSmall, {color: category.color}]}>{formatNameCategory}</Text>
-                        </View>
-                    </View>
-                    <View style={modalExpense.container_details}>
-                        <ModalDetail title={'Gasto:'} text={formatNameExpense}/>
-                        <ModalDetail title={'Cantidad:'} text={quantityText} color={modalExpense.red.color}/>
-                        <ModalDetail title={'Fecha:'} text={formatDate}/>
-                    </View>
-                    <View style={[modalExpense.container_inputAndImage, heightInputs]}>
-                        <CustomInput 
-                            label={'Descripcion:'}
-                            type={'paragraph'}
-                            value={description}
-                            />
 
   return (
     <Modal transparent={true}>
@@ -141,7 +109,7 @@ const ModalExpense = ({
                 <ModalDetail
                   title={"Cantidad:"}
                   text={quantityText}
-                  color={modalExpense.red}
+                  color={modalExpense.red.color}
                 />
                 <ModalDetail title={"Fecha:"} text={formatDate} />
               </View>
@@ -183,3 +151,36 @@ const ModalExpense = ({
 };
 
 export default ModalExpense;
+
+/*  return (
+    <Modal>
+        <TouchableWithoutFeedback onPress={closeModal} testID="modal-overlay">
+            <View style={modalExpense.overlay}>
+            <TouchableWithoutFeedback>
+                <View style={[modalExpense.container, heightModal]}>
+                    <View style={modalExpense.container_closeIcon}>
+                        <Ionicons
+                            onPress={closeModal} 
+                            name={'close'} 
+                            size={27} 
+                            color={colorsTheme.black}
+                            testID='close-icon'
+                            />
+                    </View>
+                    <View>
+                        <View style={modalExpense.container_icon}>
+                            <CategoryIcon icon={category.icon} type={"big"} color={category.color}/>
+                            <Text style={[fontsTheme.TitleSmall, {color: category.color}]}>{formatNameCategory}</Text>
+                        </View>
+                    </View>
+                    <View style={modalExpense.container_details}>
+                        <ModalDetail title={'Gasto:'} text={formatNameExpense}/>
+                        <ModalDetail title={'Cantidad:'} text={quantityText} color={modalExpense.red.color}/>
+                        <ModalDetail title={'Fecha:'} text={formatDate}/>
+                    </View>
+                    <View style={[modalExpense.container_inputAndImage, heightInputs]}>
+                        <CustomInput 
+                            label={'Descripcion:'}
+                            type={'paragraph'}
+                            value={description}
+                            />*/
