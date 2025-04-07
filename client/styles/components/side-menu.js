@@ -7,7 +7,7 @@ import {
 } from "../../constants/sideMenuSizes";
 import { colorsTheme } from "../colorsTheme";
 
-const { width, height: screenHeight } = Dimensions.get("window");
+const { height: screenHeight } = Dimensions.get("window");
 
 export const sideMenu = StyleSheet.create({
   backdrop: {
@@ -48,15 +48,6 @@ export const sideMenu = StyleSheet.create({
     marginBottom: 10,
     backgroundColor: colorsTheme.white,
   },
-  name: {
-    fontSize: 18,
-    fontWeight: "bold",
-    color: colorsTheme.white,
-  },
-  email: {
-    fontSize: 14,
-    color: colorsTheme.white,
-  },
   menuButton: {
     flexDirection: "row",
     alignItems: "center",
@@ -67,10 +58,6 @@ export const sideMenu = StyleSheet.create({
   },
   icon: {
     marginRight: 15,
-    color: colorsTheme.white,
-  },
-  buttonText: {
-    fontSize: 16,
     color: colorsTheme.white,
   },
   logoutSection: {
@@ -91,10 +78,6 @@ export const sideMenu = StyleSheet.create({
     color: colorsTheme.darkGreen,
     position: "absolute",
     left: 15,
-  },
-  logoutButtonText: {
-    fontSize: 16,
-    color: colorsTheme.darkGreen,
   },
   iconContainer: {
     width: 40,
