@@ -1,19 +1,12 @@
 import React, { useState } from "react";
-import {
-  Modal,
-  TouchableOpacity,
-  View,
-  Text,
-  FlatList,
-  Image,
-} from "react-native";
+import { Modal, TouchableOpacity, View, FlatList, Image } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import { avatars } from "../constants/avatars";
+import CustomButton from "./CustomButton";
+import CustomText from "./CustomText";
 import { avatarPicker } from "../styles/components/avatar-picker";
-import { fontsTheme } from "../styles/fontsTheme";
 import { inputs } from "../styles/components/inputs";
 import { colorsTheme } from "../styles/colorsTheme";
-import CustomButton from "./CustomButton";
 
 const AvatarPicker = ({ avatarSelected, setAvatar }) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
@@ -28,7 +21,10 @@ const AvatarPicker = ({ avatarSelected, setAvatar }) => {
 
   return (
     <View style={inputs.wrapper}>
-      <Text style={fontsTheme.TitleSmall}>Selecciona un avatar</Text>
+      <CustomText
+        text={"Selecciona un avatar para tu perfil"}
+        type={"TitleSmall"}
+      />
       <TouchableOpacity
         onPress={() => setIsModalVisible(true)}
         style={[inputs.container, inputs.containerSquare]}
@@ -51,7 +47,7 @@ const AvatarPicker = ({ avatarSelected, setAvatar }) => {
       >
         <View style={inputs.modalBackground}>
           <View style={inputs.modalContainer}>
-            <Text style={fontsTheme.TitleSmall}>Choose an Avatar</Text>
+            <CustomText text={"Selecciona un avatar"} type={"TitleSmall"} />
             <FlatList
               data={avatars}
               keyExtractor={(item) => item.key}
