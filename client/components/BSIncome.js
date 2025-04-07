@@ -2,12 +2,12 @@ import { TouchableWithoutFeedback, View, Keyboard } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { handleInputChange } from "../hooks/handleInputChange";
-import CustomTitle from "./CustomTitle";
 import CustomInput from "./CustomInput";
 import DatePicker from "./DatePicker";
 import CustomButton from "./CustomButton";
 import { sheets } from "../styles/components/bottom-sheets";
 import CustomCheckbox from "./CustomCheckbox";
+import CustomText from "./CustomText";
 
 export default function BSExpense({ edit, visible, setVisible, income }) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
@@ -33,7 +33,7 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
   useEffect(() => {
     if (edit) {
       setIncomeData(income);
-    }else{
+    } else {
       setIncomeData({
         name: "",
         quantity: "",
@@ -70,7 +70,7 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
     >
       <View testID="BS-Income">
         <View style={sheets.header}>
-          <CustomTitle title={"Ingreso"} type={"TitleMedium"} />
+          <CustomText text={"Ingreso"} type={"TitleMedium"} />
         </View>
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <View>
