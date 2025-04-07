@@ -1,18 +1,11 @@
-import { StyleSheet, Platform } from "react-native";
+import { StyleSheet } from "react-native";
 import { colorsTheme } from "../colorsTheme";
 
 export const loginScreen = StyleSheet.create({
-  screenContainer: {
-    display: "flex",
-    width: "100%",
-    height: "100%",
+  container: {
     justifyContent: "space-evenly",
     alignItems: "center",
-  },
-  itemsContainer: {
-    width: "100%",
-    height: "80%",
-    justifyContent: "space-evenly",
+    flex: 1,
   },
   titleContainer: {
     width: "100%",
@@ -22,8 +15,8 @@ export const loginScreen = StyleSheet.create({
     marginBottom: 20,
   },
   buttonContainer: {
-    justifyContent: "center",
     alignItems: "center",
+    width: "100%",
   },
   labelsContainer: {
     flexDirection: "row",
