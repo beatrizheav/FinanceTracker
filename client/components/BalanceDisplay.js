@@ -2,7 +2,6 @@ import { View } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import CustomTitle from "./CustomTitle";
 import CustomText from "./CustomText";
 import { balanceDisplay } from "../styles/components/balance-display";
 import { colorsTheme } from "../styles/colorsTheme";
