@@ -2,13 +2,13 @@ import { TouchableWithoutFeedback, View, Keyboard } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { handleInputChange } from "../hooks/handleInputChange";
-import CustomTitle from "./CustomTitle";
 import CustomInput from "./CustomInput";
 import ColorPicker from "./ColorPicker";
 import IconPicker from "./IconPicker";
 import CustomButton from "./CustomButton";
 import { sheets } from "../styles/components/bottom-sheets";
 import { bsCategory } from "../styles/components/bs-category";
+import CustomText from "./CustomText";
 
 export default function BSCategory({ visible, setVisible, edit, category }) {
   const [colorModalVisible, setColorModalVisible] = useState(false);
@@ -67,7 +67,7 @@ export default function BSCategory({ visible, setVisible, edit, category }) {
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
         <View>
           <View style={sheets.header}>
-            <CustomTitle title={"Categoría"} type={"TitleMedium"} />
+            <CustomText text={"Categoría"} type={"TitleMedium"} />
           </View>
           <View>
             <CustomInput

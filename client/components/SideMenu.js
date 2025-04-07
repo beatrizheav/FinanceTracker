@@ -1,11 +1,8 @@
 import React, { useRef, useEffect } from "react";
 import {
   View,
-  Text,
-  StyleSheet,
   Image,
   Pressable,
-  Dimensions,
   FlatList,
   Animated,
   TouchableWithoutFeedback,
@@ -13,6 +10,7 @@ import {
 import { FontAwesome } from "@expo/vector-icons";
 import { colorsTheme } from "../styles/colorsTheme";
 import { offset, SIDE_MENU_WIDTH } from "../constants/sideMenuSizes";
+import CustomText from "./CustomText";
 import { sideMenu } from "../styles/components/side-menu";
 
 const menuItems = [
@@ -60,8 +58,16 @@ const SideMenu = ({ visible, setMenuVisible }) => {
                 source={require("../assets/avatars/3.png")}
                 style={sideMenu.avatar}
               />
-              <Text style={sideMenu.name}>Nombre de Usuario</Text>
-              <Text style={sideMenu.email}>correo@ejemplo.com</Text>
+              <CustomText
+                text={"Nombre de Usuario"}
+                type={"TitleMedium"}
+                color={colorsTheme.white}
+              />
+              <CustomText
+                text={"correo@ejemplo.com"}
+                type={"TextBig"}
+                color={colorsTheme.white}
+              />
             </View>
 
             <FlatList
@@ -88,14 +94,13 @@ const SideMenu = ({ visible, setMenuVisible }) => {
                           ]}
                         />
                       </View>
-                      <Text
-                        style={[
-                          sideMenu.buttonText,
-                          pressed && { color: colorsTheme.darkGreen },
-                        ]}
-                      >
-                        {item.label}
-                      </Text>
+                      <CustomText
+                        text={item.label}
+                        type={"TextBig"}
+                        color={
+                          pressed ? colorsTheme.darkGreen : colorsTheme.white
+                        }
+                      />
                     </>
                   )}
                 </Pressable>
@@ -119,14 +124,13 @@ const SideMenu = ({ visible, setMenuVisible }) => {
                         pressed && { color: colorsTheme.white },
                       ]}
                     />
-                    <Text
-                      style={[
-                        sideMenu.logoutButtonText,
-                        pressed && { color: colorsTheme.white },
-                      ]}
-                    >
-                      Cerrar sesión
-                    </Text>
+                    <CustomText
+                      text={"Cerrar sesión"}
+                      type={"TextBig"}
+                      color={
+                        pressed ? colorsTheme.white : colorsTheme.darkGreen
+                      }
+                    />
                   </>
                 )}
               </Pressable>

@@ -3,7 +3,7 @@ import { View, TouchableOpacity, Text, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { usePathname, useRouter } from "expo-router";
 import { header } from "../styles/components/header";
-import CustomTitle from "./CustomTitle";
+import CustomText from "./CustomText";
 import { colorsTheme } from "../styles/colorsTheme";
 import SideMenu from "./SideMenu";
 
@@ -27,8 +27,8 @@ const Header = ({ title, username }) => {
             style={header.avatar}
           />
           <View>
-            <CustomTitle title={"Buenos dias!"} />
-            <CustomTitle title={testUsername} type={"TitleSmall"} />
+            <CustomText text={"Buenos días!"} type={"TextBig"} />
+            <CustomText text={testUsername} type={"TitleSmall"} />
           </View>
         </View>
       ) : (
@@ -39,10 +39,10 @@ const Header = ({ title, username }) => {
           </TouchableOpacity>
 
           {/* Option 1 & 3: Show title */}
-          <CustomTitle
-            title={title}
+          <CustomText
+            text={title}
             type={"TitleMedium"}
-            color={header.black}
+            color={colorsTheme.black}
           />
         </>
       )}

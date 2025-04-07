@@ -1,10 +1,6 @@
 import React from "react";
 import { render } from "@testing-library/react-native";
 import CategoryExpense from "../CategoryExpense";
-import CustomTitle from "../CustomTitle";
-import CustomText from "../CustomText";
-import CategoryIcon from "../CategoryIcon";
-import * as Progress from "react-native-progress";
 
 describe("CategoryExpense Component", () => {
   const props = {
@@ -18,7 +14,7 @@ describe("CategoryExpense Component", () => {
   it("renders correctly with provided props", () => {
     const { getByText, getByTestId } = render(<CategoryExpense {...props} />);
 
-    expect(getByText("Food")).toBeTruthy(); // CustomTitle
+    expect(getByText("Food")).toBeTruthy();
     expect(getByText("$500 de $1000")).toBeTruthy(); // CustomText
 
     const progressBar = getByTestId("progress-bar");

@@ -3,7 +3,6 @@ import { View, TouchableOpacity, Modal } from "react-native";
 import { IconPicker } from "@grassper/react-native-icon-picker";
 import * as Icon from "@expo/vector-icons";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import CustomTitle from "./CustomTitle";
 import { colorsTheme } from "../styles/colorsTheme";
 import { inputs } from "../styles/components/inputs";
 import { iconPicker } from "../styles/components/icon-picker";
@@ -78,8 +77,8 @@ const IconPickerComponent = ({ icon, setIcon, show, setShow }) => {
 
   return (
     <View style={inputs.wrapper}>
-      <CustomTitle
-        title={"Selecciona un icono"}
+      <CustomText
+        text={"Selecciona un icono"}
         type={"TitleSmall"}
         testID={"input-label"}
       />

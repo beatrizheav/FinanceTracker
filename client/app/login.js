@@ -1,13 +1,13 @@
-import { View, Text } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
-import CustomTitle from "../components/CustomTitle";
-import CustomInput from "../components/CustomInput";
-import { colorsTheme } from "../styles/colorsTheme";
-import CustomButton from "../components/CustomButton";
-import { loginScreen } from "../styles/screens/login-screen";
-import { handleInputChange } from "../hooks/handleInputChange";
 import { Link } from "expo-router";
 import useFormValidation from "../hooks/useFormValidation";
+import { handleInputChange } from "../hooks/handleInputChange";
+import CustomText from "../components/CustomText";
+import CustomInput from "../components/CustomInput";
+import CustomButton from "../components/CustomButton";
+import { loginScreen } from "../styles/screens/login-screen";
+import { colorsTheme } from "../styles/colorsTheme";
 
 export default function login() {
   const [loginData, setLoginData] = useState({
@@ -31,15 +31,15 @@ export default function login() {
     <View style={loginScreen.screenContainer}>
       <View style={loginScreen.itemsContainer}>
         <View style={loginScreen.titleContainer}>
-          <CustomTitle
-            title={"Bienvenido a \nFinance Tracker!"}
+          <CustomText
             type={"TitleBig"}
             numberOfLines={2}
+            text={"Bienvenido a \nFinance Tracker!"}
           />
-          <CustomTitle
-            title={"Lleva el control de tus finanzas desde tu celular"}
-            type={"TextSmall"}
-            color={{ color: colorsTheme.darkGray }}
+          <CustomText
+            type={"TexSmall"}
+            color={colorsTheme.darkGray}
+            text={"Lleva el control de tus finanzas desde tu celular"}
           />
         </View>
 
@@ -70,10 +70,10 @@ export default function login() {
             onPress={() => handleSubmit()}
           />
           <View style={loginScreen.labelsContainer}>
-            <CustomTitle
-              title={"Aun no tienes una cuenta? "}
-              type={"ButtonSmall"}
-              color={{ color: colorsTheme.darkGray }}
+            <CustomText
+              text={"Aún no tienes una cuenta? "}
+              type={"TextBig"}
+              color={colorsTheme.darkGray}
             />
             <Link href="/" style={loginScreen.registerLink}>
               Registrate
