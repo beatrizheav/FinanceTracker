@@ -9,7 +9,6 @@ import AntDesign from "@expo/vector-icons/AntDesign";
 import { colorsTheme } from "../styles/colorsTheme";
 import CustomButton from "./CustomButton";
 import CustomText from "./CustomText";
-import CustomTitle from "./CustomTitle";
 import { imagePicker } from "../styles/components/image-picker";
 import { inputs } from "../styles/components/inputs";
 
@@ -209,8 +208,8 @@ const ImagePickerComponent = ({ image, setImage }) => {
 
   return (
     <View style={inputs.wrapper}>
-      <CustomTitle
-        title={"Recibo (Opcional)"}
+      <CustomText
+        text={"Recibo (Opcional)"}
         type={"TitleSmall"}
         testID={"input-label"}
       />
