@@ -3,7 +3,7 @@ import { colorsTheme } from "../colorsTheme";
 
 export const expense = StyleSheet.create({
   container_sections: {
-    paddingTop: 20,
+    flex: 1,
   },
   container_title: {
     flexDirection: "row",

@@ -60,32 +60,36 @@ const expenses = ({ data = expensesData }) => {
   const getIcon = (section) =>
     expandedSections[section] ? "chevron-up-outline" : "chevron-down-outline";
 
-  const getFixedHeightStyle = () => {
-    if (!expandedSections.fixed) return {};
-    if (fixedExpenses.length === 1) return { height: 70 };
-    if (fixedExpenses.length === 2) return { height: 135 };
-    return { height: 200 };
-  };
+  const getSectionHeight = (section) => {
+    const sectionsOpenCount =
+      Object.values(expandedSections).filter(Boolean).length;
 
-  const getTodayHeightStyle = () => {
-    if (!expandedSections.today) return {};
-    if (todayExpenses.length === 1) return { height: 70 };
-    if (todayExpenses.length === 2) return { height: 135 };
-    return { height: 200 };
-  };
+    const data = {
+      fixed: fixedExpenses,
+      today: todayExpenses,
+      last: lastTwoWeeksExpenses,
+    };
 
-  const getLastHeightStyle = () => {
-    if (!expandedSections.last) return {};
-    if (expandedSections.today || expandedSections.fixed)
-      return { height: 200 };
-    return { height: "86%" };
+    if (sectionsOpenCount === 1) {
+      return {
+        maxHeight: "90%",
+      };
+    } else if (sectionsOpenCount === 2) {
+      return {
+        maxHeight: "45%",
+      };
+    } else {
+      return {
+        maxHeight: "32%",
+      };
+    }
   };
 
   return (
     <View style={general.safeArea}>
       <Header title={"Gastos"} />
       <View style={expense.container_sections}>
-        <View>
+        <View style={getSectionHeight("fixed")}>
           <Pressable
             onPress={() => toggleSection("fixed")}
             style={expense.container_title}
@@ -113,7 +117,7 @@ const expenses = ({ data = expensesData }) => {
               data={fixedExpenses}
               keyExtractor={(item) => item.expenseId.toString()}
               showsVerticalScrollIndicator={false}
-              style={getFixedHeightStyle()}
+              // style={getFixedHeightStyle()}
               renderItem={({ item }) => (
                 <ActivityDisplay
                   {...item}
@@ -125,7 +129,7 @@ const expenses = ({ data = expensesData }) => {
             />
           ) : null}
         </View>
-        <View>
+        <View style={getSectionHeight("today")}>
           <Pressable
             onPress={() => toggleSection("today")}
             style={expense.container_title}
@@ -153,7 +157,7 @@ const expenses = ({ data = expensesData }) => {
               data={todayExpenses}
               keyExtractor={(item) => item.expenseId.toString()}
               showsVerticalScrollIndicator={false}
-              style={getTodayHeightStyle()}
+              // style={getTodayHeightStyle()}
               renderItem={({ item }) => (
                 <ActivityDisplay
                   {...item}
@@ -165,7 +169,7 @@ const expenses = ({ data = expensesData }) => {
             />
           ) : null}
         </View>
-        <View>
+        <View style={getSectionHeight("last")}>
           <Pressable
             onPress={() => toggleSection("last")}
             style={expense.container_title}
@@ -193,7 +197,7 @@ const expenses = ({ data = expensesData }) => {
               data={lastTwoWeeksExpenses}
               keyExtractor={(item) => item.expenseId.toString()}
               showsVerticalScrollIndicator={false}
-              style={getLastHeightStyle()}
+              // style={getLastHeightStyle()}
               renderItem={({ item }) => (
                 <ActivityDisplay
                   {...item}
