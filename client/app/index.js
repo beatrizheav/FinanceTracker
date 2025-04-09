@@ -53,7 +53,7 @@ export default function App() {
   useEffect(() => {
     if (fontsLoaded && assetsLoaded) {
       SplashScreen.hideAsync();
-      router.replace("/main");
+      router.replace("/login");
     }
   }, [fontsLoaded, router, assetsLoaded]);
 

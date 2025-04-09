@@ -1,6 +1,6 @@
 import { View } from "react-native";
 import React, { useState } from "react";
-import { Link } from "expo-router";
+import { Link, useRouter } from "expo-router";
 import useFormValidation from "../hooks/useFormValidation";
 import { handleInputChange } from "../hooks/handleInputChange";
 import CustomText from "../components/CustomText";
@@ -18,13 +18,13 @@ export default function login() {
   const data = { ...loginData };
 
   const validateForm = useFormValidation(data, "login");
+  const router = useRouter();
 
   const handleSubmit = () => {
     if (!validateForm()) {
       return;
     }
-
-    alert("Able to log in");
+    router.replace("/home");
   };
 
   return (
@@ -75,7 +75,7 @@ export default function login() {
               type={"TextBig"}
               color={colorsTheme.darkGray}
             />
-            <Link href="/" style={loginScreen.registerLink}>
+            <Link href="/registration" style={loginScreen.registerLink}>
               Registrate
             </Link>
           </View>
