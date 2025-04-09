@@ -14,6 +14,7 @@ const ModalCategory = ({
   icon,
   color,
   categoryId,
+  onEdit,
   setIsActiveModalCategory,
 }) => {
   const userId = 2; //temporal userId
@@ -53,7 +54,7 @@ const ModalCategory = ({
     );
   };
   const handleEdit = (categoryId) => {
-    //agregar logica para editar el gasto
+    onEdit()
   };
 
   const closeModal = () => {
@@ -84,12 +85,12 @@ const ModalCategory = ({
                 <ModalDetail
                   title={"Presupuesto:"}
                   text={formatBudget}
-                  color={modalCategory.teal}
+                  color={modalCategory.teal.color}
                 />
                 <ModalDetail
                   title={"Gastos totales:"}
                   text={formatTotalExpenses}
-                  color={modalCategory.red}
+                  color={modalCategory.red.color}
                 />
               </View>
               <View style={modalCategory.container_buttons}>

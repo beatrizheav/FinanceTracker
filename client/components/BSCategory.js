@@ -35,8 +35,15 @@ export default function BSCategory({ visible, setVisible, edit, category }) {
   useEffect(() => {
     if (edit) {
       setCategoryData(category);
+    }else{
+      setCategoryData({
+        name: "",
+        budget: "",
+        color: null,
+        icon: null,
+      })
     }
-  }, [edit]);
+  }, [edit, category]);
 
   const ableToDrag = !colorModalVisible && !iconModalVisible;
 
