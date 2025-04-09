@@ -13,16 +13,45 @@ import { colorsTheme } from "../styles/colorsTheme";
 import { offset, SIDE_MENU_WIDTH } from "../constants/sideMenuSizes";
 import CustomText from "./CustomText";
 import { sideMenu } from "../styles/components/side-menu";
+import { useRouter } from "expo-router";
+import { Alert } from "react-native";
 
 const menuItems = [
-  { key: "1", icon: "home", label: "Inicio" },
-  { key: "2", icon: "credit-card", label: "Gastos" },
-  { key: "3", icon: "dollar", label: "Ingresos" },
-  { key: "4", icon: "folder-o", label: "Categorias" },
+  { key: "1", icon: "home", label: "Inicio", route: "/home" },
+  { key: "2", icon: "credit-card", label: "Gastos", route: "/expenses" },
+  { key: "3", icon: "dollar", label: "Ingresos", route: "/Incomes" },
+  { key: "4", icon: "folder-o", label: "Categorias", route: "/categories" },
 ];
 
 const SideMenu = ({ visible, setMenuVisible }) => {
   const slideAnim = useRef(new Animated.Value(-SIDE_MENU_WIDTH)).current;
+  const router = useRouter();
+
+  const handleMenuNavigation = (route) => {
+    setMenuVisible(false);
+    router.push(route);
+  };
+
+  const handleLogout = () => {
+    Alert.alert(
+      "Cerrar sesión",
+      "¿Estás seguro de que quieres cerrar sesión?",
+      [
+        {
+          text: "Cancelar",
+          style: "cancel",
+        },
+        {
+          text: "Sí",
+          onPress: () => {
+            router.replace("/login");
+          },
+          style: "destructive",
+        },
+      ],
+      { cancelable: true }
+    );
+  };
 
   useEffect(() => {
     if (visible) {
@@ -78,6 +107,7 @@ const SideMenu = ({ visible, setMenuVisible }) => {
               keyExtractor={(item) => item.key}
               renderItem={({ item }) => (
                 <Pressable
+                  onPress={() => handleMenuNavigation(item.route)}
                   style={({ pressed }) => [
                     sideMenu.menuButton,
                     pressed && { backgroundColor: colorsTheme.white },
@@ -110,6 +140,7 @@ const SideMenu = ({ visible, setMenuVisible }) => {
 
             <View style={sideMenu.logoutSection}>
               <Pressable
+                onPress={handleLogout}
                 style={({ pressed }) => [
                   sideMenu.logoutButton,
                   pressed && { backgroundColor: colorsTheme.darkGreen },
