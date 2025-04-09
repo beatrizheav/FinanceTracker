@@ -14,7 +14,7 @@ const Header = ({ title, username }) => {
 
   // Determine the header mode based on the current route
   const isHome = pathname === "/home"; //Replace with route for HOME
-  const hideMenu = pathname === "/testNoMenu"; // Replace with route where the menu button is hidden
+  const hideMenu = pathname === "/registration"; // Replace with route where the menu button is hidden
   const testUsername = "Sophie!";
 
   return (
@@ -34,7 +34,7 @@ const Header = ({ title, username }) => {
       ) : (
         <>
           {/* Option 3: Show back button if not on the Home screen */}
-          <TouchableOpacity style={header.button} onPress={() => router.back()}>
+          <TouchableOpacity onPress={() => router.back()}>
             <Ionicons name="chevron-back" size={30} color={colorsTheme.black} />
           </TouchableOpacity>
 

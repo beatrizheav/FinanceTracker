@@ -6,4 +6,7 @@ export const recentActivity = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 8,
   },
+  container: {
+    flex: 1,
+  },
 });
