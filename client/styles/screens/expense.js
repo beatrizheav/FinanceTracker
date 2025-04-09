@@ -2,6 +2,14 @@ import { StyleSheet } from "react-native";
 import { colorsTheme } from "../colorsTheme";
 
 export const expense = StyleSheet.create({
+  containerIos: {
+    height: '89%',
+    marginTop: 35,
+  },
+  containerAnd: {
+    height: '84%',
+    marginTop: 40,
+  },
   container_title: {
     flexDirection: "row",
     alignItems: 'center',
