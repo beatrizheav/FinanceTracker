@@ -1,4 +1,4 @@
-export const categoriesData = [
+export const categories = [
   {
     name: "Alimentación",
     description: "Gastos relacionados con comida y bebidas.",

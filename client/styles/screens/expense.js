@@ -9,10 +9,12 @@ export const expense = StyleSheet.create({
   containerAnd: {
     height: '84%',
     marginTop: 40,
+  container_sections: {
+    flex: 1,
   },
   container_title: {
     flexDirection: "row",
-    alignItems: 'center',
+    alignItems: "center",
     justifyContent: "flex-start",
   },
   icon_chev: {
@@ -24,6 +26,6 @@ export const expense = StyleSheet.create({
     marginBottom: 20,
   },
   black: {
-    color: colorsTheme.black
-  }
+    color: colorsTheme.black,
+  },
 });

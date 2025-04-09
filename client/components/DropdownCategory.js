@@ -1,13 +1,13 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import { View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import Entypo from "@expo/vector-icons/Entypo";
-import CustomTitle from "./CustomTitle";
 import { inputs } from "../styles/components/inputs";
 import { dropdownCategory } from "../styles/components/dropdown-category";
 import { colorsTheme } from "../styles/colorsTheme";
 import { fontsTheme } from "../styles/fontsTheme";
 import { data } from "../constants/categoryData";
+import CustomText from "./CustomText";
 
 const DropdownCategory = ({ value, setValue, show, setShow }) => {
   const renderChevronIcon = useCallback(
@@ -29,8 +29,8 @@ const DropdownCategory = ({ value, setValue, show, setShow }) => {
 
   return (
     <View style={inputs.wrapper}>
-      <CustomTitle
-        title={"Categoría"}
+      <CustomText
+        text={"Categoría"}
         type={"TitleSmall"}
         testID={"input-label"}
       />

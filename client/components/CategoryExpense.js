@@ -1,7 +1,6 @@
 import { View } from "react-native";
 import React from "react";
 import * as Progress from "react-native-progress";
-import CustomTitle from "./CustomTitle";
 import CustomText from "./CustomText";
 import CategoryIcon from "./CategoryIcon";
 import { categoryExpense } from "../styles/components/category-expense";
@@ -19,7 +18,7 @@ export default function CategoryExpense({
   return (
     <View style={categoryExpense.container}>
       <CategoryIcon icon={icon} type={"big"} color={color} />
-      <CustomTitle title={name} type={"TitleMedium"} />
+      <CustomText text={name} type={"TextMedium"} />
       <View>
         <CustomText text={"$" + totalExpenses + " de $" + budget} />
         <View style={categoryExpense.progressBarContainer}>

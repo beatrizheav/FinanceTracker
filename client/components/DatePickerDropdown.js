@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, FlatList } from "react-native";
-import { datepickerDropdown } from "../styles/components/date-picker-dropdown";
-import { fontsTheme } from "../styles/fontsTheme";
+import { View, TouchableOpacity, FlatList } from "react-native";
 import { currentMonth, currentYear, months } from "../constants/getDate";
+import CustomText from "./CustomText";
+import { datepickerDropdown } from "../styles/components/date-picker-dropdown";
 import { colorsTheme } from "../styles/colorsTheme";
 
 const DatePickerDropdown = ({ onChange }) => {
@@ -39,14 +39,14 @@ const DatePickerDropdown = ({ onChange }) => {
           onPress={() => toggleDropdown("month")}
           style={datepickerDropdown.dropdownButton}
         >
-          <Text style={fontsTheme.TitleMedium}>{selectedMonth} ▾</Text>
+          <CustomText text={selectedMonth + " ▾"} type={"TitleMedium"} />
         </TouchableOpacity>
 
         <TouchableOpacity
           onPress={() => toggleDropdown("year")}
           style={datepickerDropdown.dropdownButton}
         >
-          <Text style={fontsTheme.TitleMedium}>{selectedYear} ▾</Text>
+          <CustomText text={selectedYear + " ▾"} type={"TitleMedium"} />
         </TouchableOpacity>
       </View>
 
@@ -64,14 +64,11 @@ const DatePickerDropdown = ({ onChange }) => {
                 ]}
                 onPress={() => handleMonthSelect(item)}
               >
-                <Text
-                  style={[
-                    fontsTheme.TitleSmall,
-                    selectedMonth === item && { color: colorsTheme.white },
-                  ]}
-                >
-                  {item}
-                </Text>
+                <CustomText
+                  text={item}
+                  type={"TitleSmall"}
+                  color={selectedMonth === item && colorsTheme.white}
+                />
               </TouchableOpacity>
             )}
             contentContainerStyle={datepickerDropdown.dropdownList}
@@ -93,14 +90,11 @@ const DatePickerDropdown = ({ onChange }) => {
                 ]}
                 onPress={() => handleYearSelect(item)}
               >
-                <Text
-                  style={[
-                    fontsTheme.TitleSmall,
-                    selectedYear === item && { color: colorsTheme.white },
-                  ]}
-                >
-                  {item}
-                </Text>
+                <CustomText
+                  text={item}
+                  type={"TitleSmall"}
+                  color={selectedYear === item && colorsTheme.white}
+                />
               </TouchableOpacity>
             )}
             contentContainerStyle={datepickerDropdown.dropdownList}

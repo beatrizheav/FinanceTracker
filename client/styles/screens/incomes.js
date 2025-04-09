@@ -9,10 +9,12 @@ export const incomes = StyleSheet.create({
   containerAnd: {
     height: '84%',
     marginTop: 40,
+  container_sections: {
+    paddingTop: 20,
   },
   container_title: {
     flexDirection: "row",
-    alignItems: 'center',
+    alignItems: "center",
     justifyContent: "flex-start",
   },
   icon_chev: {
@@ -24,6 +26,6 @@ export const incomes = StyleSheet.create({
     marginBottom: 20,
   },
   black: {
-    color: colorsTheme.black
-  }
+    color: colorsTheme.black,
+  },
 });

@@ -13,13 +13,3 @@ jest.mock("@expo/vector-icons", () => ({
     return <Text {...props}>Icon: {name}</Text>;
   },
 }));
-
-// Mock de tu componente CustomTitle
-jest.mock("./components/CustomTitle.js", () => {
-  const React = require("react");
-  const { Text } = require("react-native");
-  return {
-    __esModule: true,
-    default: ({ title }) => <Text>{title}</Text>,
-  };
-});

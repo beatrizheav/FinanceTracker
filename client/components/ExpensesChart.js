@@ -1,9 +1,9 @@
 import React from "react";
-import { View, Text, Dimensions } from "react-native";
+import { View, Dimensions } from "react-native";
 import { PieChart } from "react-native-chart-kit";
-import CustomTitle from "./CustomTitle";
-import { expensesChart } from "../styles/components/expenses-chart";
 import { categories } from "../constants/categories";
+import CustomText from "./CustomText";
+import { expensesChart } from "../styles/components/expenses-chart";
 
 // Obtener el ancho de la pantalla
 const screenWidth = Dimensions.get("window").width;
@@ -36,7 +36,7 @@ const ExpensesChart = () => {
 
   return (
     <View style={expensesChart.container} testID="expenses-chart">
-      <CustomTitle title={"Distribución de gastos"} type={"TitleSmall"} />
+      <CustomText title={"Distribución de gastos"} type={"TitleSmall"} />
       <View style={expensesChart.graphContainer}>
         {/* Lista personalizada a la izquierda */}
         <View style={expensesChart.legendContainer}>
@@ -48,7 +48,7 @@ const ExpensesChart = () => {
                   { backgroundColor: item.color },
                 ]}
               />
-              <Text>{item.name}</Text>
+              <CustomText type={"TextBig"} text={item.name} />
             </View>
           ))}
         </View>
