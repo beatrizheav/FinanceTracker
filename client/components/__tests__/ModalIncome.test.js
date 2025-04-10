@@ -35,6 +35,7 @@ describe('ModalIncome Component', () => {
         "iconSet": "MaterialIcons"
         },
     quantity: 1000,
+    onEdit: jest.fn(),
     setIsActiveModalIncome: jest.fn()
   }
 

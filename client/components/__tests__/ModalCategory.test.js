@@ -35,6 +35,7 @@ describe('ModalCategory Component', () => {
       iconName: "fast-food-outline",
       iconSet: "Ionicons",
     },
+    onEdit: jest.fn(),
     setIsActiveModalCategory: jest.fn()
   };
 

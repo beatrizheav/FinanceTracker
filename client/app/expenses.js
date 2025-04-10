@@ -1,4 +1,4 @@
-import { View, FlatList, Pressable } from "react-native";
+import { View, FlatList, Pressable, Platform } from "react-native";
 import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { isSameDay, isAfter, isBefore, subDays } from "date-fns";
@@ -14,6 +14,8 @@ import ModalExpense from "../components/ModalExpense";
 import BSExpense from "../components/BSExpense";
 
 const expenses = ({ data = expensesData }) => {
+  const height =
+    Platform.OS === "android" ? expense.containerAnd : expense.containerIos;
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [isActiveModalExpense, setIsActiveModalExpense] = useState(false);
   const [isActiveBSExpense, setIsActiveBSExpense] = useState(false);
@@ -51,45 +53,34 @@ const expenses = ({ data = expensesData }) => {
   };
 
   const toggleSection = (section) => {
-    setExpandedSections((prev) => ({
-      ...prev,
-      [section]: !prev[section],
-    }));
+    setExpandedSections((prev) => {
+      const isCurrentlyOpen = prev[section];
+      // Si ya está abierta, solo ciérrala (permitiendo que ninguna esté abierta)
+      if (isCurrentlyOpen) {
+        return {
+          fixed: false,
+          today: false,
+          last: false,
+        };
+      }
+      // Si está cerrada, ábrela y cierra las demás
+      return {
+        fixed: false,
+        today: false,
+        last: false,
+        [section]: true,
+      };
+    });
   };
 
   const getIcon = (section) =>
     expandedSections[section] ? "chevron-up-outline" : "chevron-down-outline";
 
-  const getSectionHeight = (section) => {
-    const sectionsOpenCount =
-      Object.values(expandedSections).filter(Boolean).length;
-
-    const data = {
-      fixed: fixedExpenses,
-      today: todayExpenses,
-      last: lastTwoWeeksExpenses,
-    };
-
-    if (sectionsOpenCount === 1) {
-      return {
-        maxHeight: "90%",
-      };
-    } else if (sectionsOpenCount === 2) {
-      return {
-        maxHeight: "45%",
-      };
-    } else {
-      return {
-        maxHeight: "32%",
-      };
-    }
-  };
-
   return (
     <View style={general.safeArea}>
       <Header title={"Gastos"} />
-      <View style={expense.container_sections}>
-        <View style={getSectionHeight("fixed")}>
+      <View style={height}>
+        <View style={{ maxHeight: "90%" }}>
           <Pressable
             onPress={() => toggleSection("fixed")}
             style={expense.container_title}
@@ -117,7 +108,6 @@ const expenses = ({ data = expensesData }) => {
               data={fixedExpenses}
               keyExtractor={(item) => item.expenseId.toString()}
               showsVerticalScrollIndicator={false}
-              // style={getFixedHeightStyle()}
               renderItem={({ item }) => (
                 <ActivityDisplay
                   {...item}
@@ -129,7 +119,7 @@ const expenses = ({ data = expensesData }) => {
             />
           ) : null}
         </View>
-        <View style={getSectionHeight("today")}>
+        <View style={{ maxHeight: "90%" }}>
           <Pressable
             onPress={() => toggleSection("today")}
             style={expense.container_title}
@@ -157,7 +147,6 @@ const expenses = ({ data = expensesData }) => {
               data={todayExpenses}
               keyExtractor={(item) => item.expenseId.toString()}
               showsVerticalScrollIndicator={false}
-              // style={getTodayHeightStyle()}
               renderItem={({ item }) => (
                 <ActivityDisplay
                   {...item}
@@ -169,7 +158,7 @@ const expenses = ({ data = expensesData }) => {
             />
           ) : null}
         </View>
-        <View style={getSectionHeight("last")}>
+        <View style={{ maxHeight: "90%" }}>
           <Pressable
             onPress={() => toggleSection("last")}
             style={expense.container_title}
@@ -197,7 +186,6 @@ const expenses = ({ data = expensesData }) => {
               data={lastTwoWeeksExpenses}
               keyExtractor={(item) => item.expenseId.toString()}
               showsVerticalScrollIndicator={false}
-              // style={getLastHeightStyle()}
               renderItem={({ item }) => (
                 <ActivityDisplay
                   {...item}

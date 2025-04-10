@@ -89,10 +89,7 @@ const ModalExpense = ({
         <View style={modalExpense.overlay}>
           <TouchableWithoutFeedback>
             <View style={[modalExpense.container, heightModal]}>
-              <View
-                style={modalExpense.container_closeIcon}
-                testID="close-icon"
-              >
+              <View style={modalExpense.container_closeIcon}>
                 <Ionicons
                   onPress={closeModal}
                   name={"close"}
@@ -120,7 +117,7 @@ const ModalExpense = ({
                 <ModalDetail
                   title={"Cantidad:"}
                   text={quantityText}
-                  color={modalExpense.red}
+                  color={modalExpense.red.color}
                 />
                 <ModalDetail title={"Fecha:"} text={formatDate} />
               </View>
