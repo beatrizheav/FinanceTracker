@@ -1,11 +1,11 @@
 import { StyleSheet } from "react-native";
 
-export const categories = StyleSheet.create({
+export const categoriesStyles = StyleSheet.create({
   containerIos: {
-    height: '93%'
+    height: "93%",
   },
   containerAnd: {
-    height: '88%',
+    height: "88%",
     marginTop: 25,
-  }
+  },
 });

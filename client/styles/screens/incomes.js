@@ -3,14 +3,18 @@ import { colorsTheme } from "../colorsTheme";
 
 export const incomes = StyleSheet.create({
   containerIos: {
-    height: '89%',
+    height: "89%",
     marginTop: 35,
   },
   containerAnd: {
-    height: '84%',
+    height: "84%",
     marginTop: 40,
+  },
   container_sections: {
     paddingTop: 20,
+  },
+  section: {
+    maxHeight: "93%",
   },
   container_title: {
     flexDirection: "row",

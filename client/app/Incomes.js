@@ -1,25 +1,17 @@
-import {
-  View,
-  FlatList,
-  Animated,
-  Easing,
-  Pressable,
-  Platform,
-} from "react-native";
-import React, { useState, useRef, useEffect } from "react";
+import { View, FlatList, Pressable, Platform } from "react-native";
+import React, { useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { isSameDay, isAfter, isBefore, subDays } from "date-fns";
 import Header from "../components/Header";
-import CustomTitle from "../components/CustomTitle";
 import ActivityDisplay from "../components/ActivityDisplay";
 import CustomText from "../components/CustomText";
 import AddButton from "../components/AddButton";
+import BSIncome from "../components/BSIncome";
+import ModalIncome from "../components/ModalIncome";
 import { incomesData } from "../constants/incomesData";
 import { general } from "../styles/general";
 import { colorsTheme } from "../styles/colorsTheme";
 import { incomes } from "../styles/screens/incomes";
-import ModalIncome from "../components/ModalIncome";
-import BSIncome from "../components/BSIncome";
 
 const Incomes = ({ data = incomesData }) => {
   const height =
@@ -88,7 +80,7 @@ const Incomes = ({ data = incomesData }) => {
     <View style={general.safeArea}>
       <Header title={"Ingresos"} />
       <View style={height}>
-        <View style={{ maxHeight: "90%" }}>
+        <View style={incomes.section}>
           <Pressable
             onPress={() => toggleSection("fixed")}
             style={incomes.container_title}
@@ -127,7 +119,7 @@ const Incomes = ({ data = incomesData }) => {
             />
           ) : null}
         </View>
-        <View style={{ maxHeight: "90%" }}>
+        <View style={incomes.section}>
           <Pressable
             onPress={() => toggleSection("today")}
             style={incomes.container_title}
@@ -166,7 +158,7 @@ const Incomes = ({ data = incomesData }) => {
             />
           ) : null}
         </View>
-        <View style={{ maxHeight: "90%" }}>
+        <View style={incomes.section}>
           <Pressable
             onPress={() => toggleSection("last")}
             style={incomes.container_title}

@@ -1,24 +1,24 @@
 import { View, FlatList, Platform } from "react-native";
 import React, { useState } from "react";
-import { categories } from "../styles/screens/categories";
 import Header from "../components/Header";
 import ActivityDisplay from "../components/ActivityDisplay";
-import { categories } from "../constants/categories";
 import AddButton from "../components/AddButton";
-import { general } from "../styles/general";
 import ModalCategory from "../components/ModalCategory";
 import BSCategory from "../components/BSCategory";
 import CustomText from "../components/CustomText";
+import { general } from "../styles/general";
+import { categories } from "../constants/categories";
+import { categoriesStyles } from "../styles/screens/categories";
 
-const categoriesScreen = ({ data = categoriesData }) => {
+const categoriesScreen = ({ data = categories }) => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isActiveModalCategory, setIsActiveModalCategory] = useState(false);
   const [isActiveBSCategory, setIsActiveBSCategory] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const height =
     Platform.OS === "android"
-      ? categories.containerAnd
-      : categories.containerIos;
+      ? categoriesStyles.containerAnd
+      : categoriesStyles.containerIos;
 
   const showModalCategory = (category) => {
     setSelectedCategory(category);
@@ -30,6 +30,7 @@ const categoriesScreen = ({ data = categoriesData }) => {
     setEditMode(false);
     setIsActiveBSCategory(true);
   };
+
   return (
     <View style={general.safeArea}>
       <Header title={"Categorías"} />
@@ -45,7 +46,7 @@ const categoriesScreen = ({ data = categoriesData }) => {
         ) : (
           <FlatList
             data={data}
-            keyExtractor={(item) => item.categoryId.toString()}
+            keyExtractor={(item, index) => index.toString()}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <ActivityDisplay
@@ -79,20 +80,6 @@ const categoriesScreen = ({ data = categoriesData }) => {
         edit={editMode}
         category={selectedCategory}
       />
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={categories}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => (
-          <ActivityDisplay
-            name={item.name}
-            category={item}
-            screen={"category"}
-            quantity={item.budget}
-          />
-        )}
-      />
-      <AddButton />
     </View>
   );
 };

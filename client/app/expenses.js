@@ -6,12 +6,12 @@ import Header from "../components/Header";
 import ActivityDisplay from "../components/ActivityDisplay";
 import CustomText from "../components/CustomText";
 import AddButton from "../components/AddButton";
+import ModalExpense from "../components/ModalExpense";
+import BSExpense from "../components/BSExpense";
 import { expensesData } from "../constants/expensesData";
 import { general } from "../styles/general";
 import { colorsTheme } from "../styles/colorsTheme";
 import { expense } from "../styles/screens/expense";
-import ModalExpense from "../components/ModalExpense";
-import BSExpense from "../components/BSExpense";
 
 const expenses = ({ data = expensesData }) => {
   const height =
@@ -80,7 +80,7 @@ const expenses = ({ data = expensesData }) => {
     <View style={general.safeArea}>
       <Header title={"Gastos"} />
       <View style={height}>
-        <View style={{ maxHeight: "90%" }}>
+        <View style={expense.section}>
           <Pressable
             onPress={() => toggleSection("fixed")}
             style={expense.container_title}
@@ -119,7 +119,7 @@ const expenses = ({ data = expensesData }) => {
             />
           ) : null}
         </View>
-        <View style={{ maxHeight: "90%" }}>
+        <View style={expense.section}>
           <Pressable
             onPress={() => toggleSection("today")}
             style={expense.container_title}
@@ -158,7 +158,7 @@ const expenses = ({ data = expensesData }) => {
             />
           ) : null}
         </View>
-        <View style={{ maxHeight: "90%" }}>
+        <View style={expense.section}>
           <Pressable
             onPress={() => toggleSection("last")}
             style={expense.container_title}
