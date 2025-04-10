@@ -6,7 +6,6 @@ import CustomText from "./CustomText";
 import { inputs } from "../styles/components/inputs";
 import { fontsTheme } from "../styles/fontsTheme";
 import { colorsTheme } from "../styles/colorsTheme";
-import CustomText from "./CustomText";
 
 export default function CustomInput({
   type,
