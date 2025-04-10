@@ -14,9 +14,6 @@ export const header = StyleSheet.create({
     paddingHorizontal: 16,
     marginHorizontal: -16,
   },
-  button: {
-    padding: 10,
-  },
   buttonPlaceholder: {
     width: 30,
   },
@@ -24,7 +21,7 @@ export const header = StyleSheet.create({
     width: "45%",
     height: "100%",
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   avatar: {

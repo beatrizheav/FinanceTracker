@@ -3,12 +3,19 @@ import { Alert } from 'react-native';
 import { render, fireEvent } from '@testing-library/react-native';
 import ModalExpense from '../ModalExpense';
 
-jest.mock('@expo/vector-icons', () => ({
-    Ionicons: (props) => <div {...props} />,
+jest.mock('@expo/vector-icons', () => {
+  const { TouchableOpacity, Text } = require('react-native');
+  return {
+    Ionicons: ({ onPress, name, testID }) => (
+      <TouchableOpacity onPress={onPress} testID={testID}>
+        <Text>{name}</Text>
+      </TouchableOpacity>
+    ),
   AntDesign: jest.fn().mockReturnValue(null),
   FontAwesome: jest.fn().mockReturnValue(null),
   MaterialIcons: jest.fn().mockReturnValue(null),
-}));
+  }
+});
 
 jest.mock('../ImagePicker', () => 'ImagePickerComponent');
 jest.mock('../CustomButton', () => {
@@ -34,6 +41,7 @@ describe('ModalExpense Component', () => {
     image: 'fake-image-uri',
     userId: '1234',
     expenseId: '5678',
+    onEdit: jest.fn(),
     setIsActiveModalExpense: jest.fn(),
   };
 
@@ -86,7 +94,7 @@ describe('ModalExpense Component', () => {
   });
 
   it('calls close Modal when pressing overlay or close icon', () => {
-    const { getByTestId } = render(<ModalExpense {...mockProps} />);
+    const { getAllByTestId, getByTestId } = render(<ModalExpense {...mockProps} />);
 
     fireEvent.press(getByTestId('close-icon'));
     expect(mockProps.setIsActiveModalExpense).toHaveBeenCalledWith(false);

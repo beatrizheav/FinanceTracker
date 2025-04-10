@@ -82,7 +82,7 @@ const mockExpensesData = [
               icon: { iconName: "directions-bus", iconSet: "MaterialIcons" }
           },
           name: "Pasaje",
-          date: "2025-04-03T11:14:00",
+          date: "2025-04-09T11:14:00",
           quantity: 18.00,
           description: "Gastos en autobús",
           image: "",
