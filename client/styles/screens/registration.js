@@ -1,10 +1,8 @@
 import { StyleSheet } from "react-native";
 export const registrationScreen = StyleSheet.create({
-  container: {
-    justifyContent: "space-between",
-  },
+  container: {},
   title: {
-    paddingBottom: 20,
+    paddingVertical: 30,
   },
   namesContainer: {
     flexDirection: "row",
