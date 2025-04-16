@@ -56,7 +56,7 @@ const createUser = (req, res) => {
           const token = jwt.sign(
             { userId: results.insertId, email }, // Payload: userId and email
             process.env.JWT_SECRET_KEY, // environment variable for the secret key
-            { expiresIn: "1h" } // Expiration time (e.g., 1 hour)
+            { expiresIn: "365d" } // Expiration time (e.g., 1 hour)
           );
 
           // Return the JWT in the response
