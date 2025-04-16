@@ -10,6 +10,8 @@ import CustomButton from "../components/CustomButton";
 import { registrationScreen } from "../styles/screens/registration";
 import { general } from "../styles/general";
 import { useRouter } from "expo-router";
+import apiClient from "../api/apiClient";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function registration() {
   const [registrationData, setRegistrationData] = useState({
@@ -28,11 +30,18 @@ export default function registration() {
 
   const router = useRouter();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validateForm()) {
       return;
     }
-    router.replace("/home");
+    try {
+      const data = await apiClient.post("/user", registrationData);
+      console.log("✅ Usuario creado:", data.user);
+      AsyncStorage.setItem("token", data.token);
+      router.replace("/home");
+    } catch (error) {
+      alert("Registro fallido: " + error.message);
+    }
   };
 
   return (
