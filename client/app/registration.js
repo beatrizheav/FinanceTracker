@@ -1,7 +1,10 @@
-import { View, Alert } from "react-native";
+import { View } from "react-native";
 import React, { useState } from "react";
+import { useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { handleInputChange } from "../hooks/handleInputChange";
 import useFormValidation from "../hooks/useFormValidation";
+import apiClient from "../api/apiClient";
 import Header from "../components/Header";
 import CustomText from "../components/CustomText";
 import CustomInput from "../components/CustomInput";
@@ -9,9 +12,6 @@ import AvatarPicker from "../components/AvatarPicker";
 import CustomButton from "../components/CustomButton";
 import { registrationScreen } from "../styles/screens/registration";
 import { general } from "../styles/general";
-import { useRouter } from "expo-router";
-import apiClient from "../api/apiClient";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function registration() {
   const [registrationData, setRegistrationData] = useState({
@@ -36,8 +36,8 @@ export default function registration() {
     }
     try {
       const data = await apiClient.post("/user", registrationData);
-      console.log("✅ Usuario creado:", data.user);
       AsyncStorage.setItem("token", data.token);
+      AsyncStorage.setItem("user", JSON.stringify(data.user));
       router.replace("/home");
     } catch (error) {
       alert("Registro fallido: " + error.message);

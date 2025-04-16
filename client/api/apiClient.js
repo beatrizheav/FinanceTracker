@@ -1,4 +1,4 @@
-const BASE_URL = "http://192.168.0.146:5001";
+const BASE_URL = "http://192.168.0.147:5001";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // Recupera el token si existe
