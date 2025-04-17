@@ -10,10 +10,10 @@ app.use(cors());
 app.use(express.json());
 
 // Routes Users
+
+app.get("/test", userController.getAllUsers);
+app.post("/user", userController.createUser);
 app.post("/user/login", userController.loginUser);
-app.get("/testok", (req, res) => {
-  res.send("GET test ok");
-});
 
 const PORT = process.env.PORT || 5001;
 app.listen(5001, '0.0.0.0',() => {

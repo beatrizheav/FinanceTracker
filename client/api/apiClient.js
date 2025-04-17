@@ -2,6 +2,7 @@ import {BASE_URL} from '@env'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // Recupera el token si existe
 const getToken = () => AsyncStorage.getItem("token");
+
 const defaultHeaders = () => ({
   "Content-Type": "application/json",
   ...(getToken() && { Authorization: `Bearer ${getToken()}` }),
@@ -19,18 +20,22 @@ const request = async (
     },
     ...(body && { body: JSON.stringify(body) }),
   };
+
   try {
     const res = await fetch(`${BASE_URL}${endpoint}`, config);
     const data = await res.json();
+
     if (!res.ok) {
       throw new Error(data.message || "Error en la solicitud");
     }
+
     return data;
   } catch (error) {
-    console.error(":x: API error:", error.message);
+    console.error("❌ API error:", error.message);
     throw error; // para manejarlo donde se use
   }
 };
+
 // Métodos predefinidos
 const apiClient = {
   get: (endpoint, headers) => request(endpoint, { method: "GET", headers }),
@@ -41,4 +46,5 @@ const apiClient = {
   delete: (endpoint, headers) =>
     request(endpoint, { method: "DELETE", headers }),
 };
+
 export default apiClient;
