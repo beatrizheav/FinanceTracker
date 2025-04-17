@@ -7,8 +7,10 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Link, useRouter } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import useFormValidation from "../hooks/useFormValidation";
 import { handleInputChange } from "../hooks/handleInputChange";
+import apiClient from "../api/apiClient";
 import CustomText from "../components/CustomText";
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
@@ -27,11 +29,18 @@ export default function login() {
   const validateForm = useFormValidation(data, "login");
   const router = useRouter();
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!validateForm()) {
       return;
     }
-    router.replace("/home");
+    try {
+      const data = await apiClient.post("/user/login", loginData)
+      AsyncStorage.setItem("token", data.token);
+      AsyncStorage.setItem("user", JSON.stringify(data.user));
+      router.replace("/home");
+    } catch (error) {
+      alert("Error al iniciar sesion:" + error.message)
+    }
   };
 
   return (
