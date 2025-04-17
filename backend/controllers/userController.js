@@ -1,6 +1,7 @@
 const db = require("../config/db");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 const getAllUsers = (req, res) => {
   db.query("SELECT * FROM users", (err, results) => {
@@ -95,15 +96,27 @@ const loginUser = (req, res) => {
       return res.status(404).json({message: "User not found"});
     };
 
+
+
     const user = results[0]
     bcrypt.compare(password, user.password)
     .then((passwordMatch) => {
+
       if(passwordMatch){
+        const token = jwt.sign(
+          { userId: results.insertId, email }, // Payload: userId and email
+          process.env.JWT_SECRET_KEY, // environment variable for the secret key
+          { expiresIn: "365d" } // Expiration time (e.g., 1 hour)
+        );
         res.status(200).json({
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          avatar: user.avatar,
+          message: "Login successfully",
+          token,
+          user: {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            avatar: user.avatar,
+          }
         })
       }else{
         return res.status(400).json({message: "Invalid email or password"})
