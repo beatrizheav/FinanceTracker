@@ -1,6 +1,5 @@
-const BASE_URL = "http://192.168.0.147:5001";
+import {BASE_URL} from '@env'
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 // Recupera el token si existe
 const getToken = () => AsyncStorage.getItem("token");
 
@@ -8,7 +7,6 @@ const defaultHeaders = () => ({
   "Content-Type": "application/json",
   ...(getToken() && { Authorization: `Bearer ${getToken()}` }),
 });
-
 // Función base
 const request = async (
   endpoint,

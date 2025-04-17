@@ -10,10 +10,12 @@ app.use(cors());
 app.use(express.json());
 
 // Routes Users
+
 app.get("/test", userController.getAllUsers);
 app.post("/user", userController.createUser);
+app.post("/user/login", userController.loginUser);
 
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => {
+app.listen(5001, '0.0.0.0',() => {
   console.log(`Server is running on port ${PORT}`);
 });
