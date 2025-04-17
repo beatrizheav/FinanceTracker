@@ -1,21 +1,30 @@
-import {BASE_URL} from '@env'
+import { BASE_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-// Recupera el token si existe
-const getToken = () => AsyncStorage.getItem("token");
 
-const defaultHeaders = () => ({
-  "Content-Type": "application/json",
-  ...(getToken() && { Authorization: `Bearer ${getToken()}` }),
-});
+const getToken = async () => {
+  return await AsyncStorage.getItem("token");
+};
+
+const defaultHeaders = async () => {
+  const token = await getToken();
+
+  return {
+    "Content-Type": "application/json",
+    ...(token && { Authorization: `Bearer ${token}` }),
+  };
+};
+
 // Función base
 const request = async (
   endpoint,
   { method = "GET", body, headers = {} } = {}
 ) => {
+  const headersBase = await defaultHeaders();
+
   const config = {
     method,
     headers: {
-      ...defaultHeaders(),
+      ...headersBase,
       ...headers,
     },
     ...(body && { body: JSON.stringify(body) }),

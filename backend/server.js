@@ -1,7 +1,9 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
+const authenticate = require("./middleware/authenticate");
 const userController = require("./controllers/userController");
+const categoriesController = require("./controllers/categoriesController");
 
 require("dotenv").config();
 
@@ -14,6 +16,12 @@ app.use(express.json());
 app.get("/test", userController.getAllUsers);
 app.post("/user", userController.createUser);
 app.post("/user/login", userController.loginUser);
+
+app.get(
+  "/categories/get",
+  authenticate,
+  categoriesController.getUserCategories
+);
 
 const PORT = process.env.PORT || 5001;
 app.listen(5001, '0.0.0.0',() => {
