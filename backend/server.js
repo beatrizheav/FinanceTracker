@@ -14,6 +14,7 @@ app.use(express.json());
 // Routes Users
 app.get("/test", userController.getAllUsers);
 app.post("/user", userController.createUser);
+
 app.get(
   "/categories/get",
   authenticate,
