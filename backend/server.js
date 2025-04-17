@@ -10,7 +10,8 @@ app.use(cors());
 app.use(express.json());
 
 // Routes Users
-app.get("/users", userController.getAllUsers);
+app.get("/test", userController.getAllUsers);
+app.post("/user", userController.createUser);
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, () => {
