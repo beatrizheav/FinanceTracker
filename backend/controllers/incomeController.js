@@ -14,7 +14,8 @@ const getAllIncomes = (req, res) => {
 const createIncome = (req, res) => {
   const { user_id, name, amount, date, fixed } = req.body;
 
-  // Validación básica
+  console.log("Datos recibidos:", { user_id, name, amount, date, fixed });
+
   if (!user_id || !name || !amount || !date) {
     return res.status(400).json({ error: "Missing required fields" });
   }
@@ -35,7 +36,7 @@ const createIncome = (req, res) => {
 
       res.status(201).json({
         message: "Income created successfully",
-        incomeId: result.insertId,
+        incomeId: result,
       });
     }
   );

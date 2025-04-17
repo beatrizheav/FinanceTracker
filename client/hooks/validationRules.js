@@ -26,3 +26,9 @@ export const signInValidationRules = [
   { check: (data) => !data.email, message: "Email is required." },
   { check: (data) => !data.password, message: "Password is required." },
 ];
+
+export const addIncomeValidationRules = [
+  { check: (data) => !data.name, message: "El nombre es obligatorio." },
+  { check: (data) => !data.quantity, message: "La cantidad es obligatoria." },
+  { check: (data) => !data.date, message: "La fecha es obligatoria." },
+];
