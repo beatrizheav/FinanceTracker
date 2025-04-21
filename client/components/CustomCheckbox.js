@@ -5,15 +5,14 @@ import CustomText from "./CustomText";
 import { colorsTheme } from "../styles/colorsTheme";
 import { customCheckbox } from "../styles/components/custom-checkbox";
 
-export default function CustomCheckbox({ text, fixed }) {
-  const [selected, setSelected] = useState(fixed);
+export default function CustomCheckbox({ text, fixed, onChange }) {
   return (
     <View style={customCheckbox.container}>
       <View style={customCheckbox.checkbox}>
         <Checkbox
-          value={selected}
-          onValueChange={setSelected}
-          color={selected ? colorsTheme.darkGreen : undefined}
+          value={fixed}
+          onValueChange={onChange}
+          color={fixed ? colorsTheme.darkGreen : undefined}
         />
       </View>
       <CustomText text={text} type={"TextBig"} />

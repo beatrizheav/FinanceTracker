@@ -8,6 +8,8 @@ import CustomButton from "./CustomButton";
 import { sheets } from "../styles/components/bottom-sheets";
 import CustomCheckbox from "./CustomCheckbox";
 import CustomText from "./CustomText";
+import { BASE_URL } from "@env";
+import { validateIncomeData } from "../hooks/validateIncomeData";
 
 export default function BSExpense({ edit, visible, setVisible, income }) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
@@ -20,6 +22,7 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
   }, [visible]);
 
   const handleClose = () => {
+    refRBSheet.current?.close();
     setVisible(false);
   };
 
@@ -47,10 +50,47 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
 
   const titleButton = edit ? "Guardar cambios" : "Agregar ingreso";
 
+  const handleSubmit = async () => {
+    if (edit) {
+      return;
+    }
+    if (!validateIncomeData(incomeData)) return;
+
+    const newIncome = {
+      user_id: 1,
+      name: incomeData.name,
+      amount: incomeData.quantity,
+      date: incomeData.date.toISOString().slice(0, 19).replace("T", " "),
+      fixed: incomeData.fixed,
+    };
+
+    try {
+      const response = await fetch(`${BASE_URL}/incomes/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newIncome),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        alert("Ocurrió un error al guardar el ingreso.");
+        return;
+      }
+
+      alert("Ingreso agregado correctamente.");
+      handleClose();
+    } catch (error) {
+      alert("No se pudo conectar con el servidor.");
+    }
+  };
+
   return (
     <RBSheet
       closeOnPressMask={true}
-      closeOnPressBack={true} //Android only
+      closeOnPressBack={true}
       draggable={ableToDrag}
       onClose={handleClose}
       ref={refRBSheet}
@@ -101,8 +141,15 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
             <CustomCheckbox
               text={"Ingreso fijo mensual"}
               fixed={incomeData.fixed}
+              onChange={(value) =>
+                handleInputChange(setIncomeData, "fixed", value)
+              }
             />
-            <CustomButton title={titleButton} background={"green"} />
+            <CustomButton
+              title={titleButton}
+              background={"green"}
+              onPress={handleSubmit}
+            />
           </View>
         </TouchableWithoutFeedback>
       </View>

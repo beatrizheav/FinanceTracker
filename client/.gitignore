@@ -3,6 +3,12 @@
 # dependencies
 node_modules/
 
+#environment variables
+.env
+#instalaciones:
+#npx expo install react-native-dotenv
+
+
 ## Tests coverage
 coverage/
 
@@ -42,3 +48,5 @@ yarn-error.*
 *.tsbuildinfo
 
 app-example
+
+.env

@@ -40,6 +40,10 @@ And run the frontend application with
   cd client
   npx expo start
 ```
+
+## Database ER Diagram
+![Finance Tracker](https://github.com/user-attachments/assets/e009d831-bd7f-4a8c-83a5-992469cb6faf)
+
 ## Contributing Guidelines
 ### How to Contribute:
 1. Fork the repository.

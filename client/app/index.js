@@ -8,6 +8,7 @@ import {
 } from "@expo-google-fonts/inter";
 import * as SplashScreen from "expo-splash-screen";
 import { Asset } from "expo-asset";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -53,7 +54,10 @@ export default function App() {
   useEffect(() => {
     if (fontsLoaded && assetsLoaded) {
       SplashScreen.hideAsync();
-      router.replace("/login");
+      const token = AsyncStorage.getItem("token");
+      if (token) {
+        router.replace("/home");
+      } else router.replace("/login");
     }
   }, [fontsLoaded, router, assetsLoaded]);
 
