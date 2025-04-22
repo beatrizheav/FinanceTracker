@@ -3,12 +3,32 @@ const firebaseAdmin = require("../config/firebaseConfig"); // Ruta a la configur
 const { v4: uuidv4 } = require("uuid"); // Para generar un nombre único para la imagen
 
 const createExpense = async (req, res) => {
-  const { user_id, name, amount, date, fixed } = req.body;
+  const userId = req.user.userId; // Extract userId from the JWT payload
+  const { category_id, name, description, amount, date, image, fixed } =
+    req.body;
   const receiptFile = req.file;
 
-  console.log("Datos recibidos:", { user_id, name, amount, date, fixed });
+  console.log("Datos recibidos:", {
+    userId,
+    category_id,
+    name,
+    description,
+    amount,
+    date,
+    image,
+    fixed,
+  });
 
-  if (!user_id || !name || !amount || !date) {
+  if (
+    !userId ||
+    !category_id ||
+    !name ||
+    !description ||
+    !amount ||
+    !date ||
+    !image ||
+    !fixed
+  ) {
     return res.status(400).json({ error: "Missing required fields" });
   }
 
@@ -29,13 +49,22 @@ const createExpense = async (req, res) => {
     }
 
     const query = `
-      INSERT INTO expenses (user_id, name, amount, date, fixed, receipt_url)
-      VALUES (?, ?, ?, ?, ?, ?)
+      INSERT INTO expenses (user_id, category_id, name, descritpion, amount, date, receipt_url, fixed)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
     db.query(
       query,
-      [user_id, name, amount, date, fixed ?? false, receiptUrl],
+      [
+        userId,
+        category_id,
+        name,
+        description,
+        amount,
+        date,
+        receiptUrl,
+        fixed ?? false,
+      ],
       (err, result) => {
         if (err) {
           console.error("Error inserting expense:", err);
@@ -45,7 +74,16 @@ const createExpense = async (req, res) => {
         res.status(201).json({
           message: "Expense created successfully",
           expenseId: result.insertId,
-          receiptUrl,
+          expense: {
+            user_id: userId,
+            category_id,
+            name,
+            description,
+            amount,
+            date,
+            receiptUrl,
+            fixed: fixed ?? false,
+          },
         });
       }
     );

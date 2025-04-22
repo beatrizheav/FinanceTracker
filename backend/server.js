@@ -38,6 +38,7 @@ app.get(
 //Routes Expenses
 app.post(
   "/expenses/add",
+  authenticate,
   upload.single("receipt"),
   expenseController.createExpense
 );
