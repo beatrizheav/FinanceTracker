@@ -3,5 +3,5 @@ node_modules/
 
 .env
 
-
+# Credentials for Firebase
 financetracker-45f8f-firebase-adminsdk-fbsvc-2d74c05347.json
