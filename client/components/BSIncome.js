@@ -10,6 +10,7 @@ import CustomCheckbox from "./CustomCheckbox";
 import CustomText from "./CustomText";
 import { BASE_URL } from "@env";
 import { validateIncomeData } from "../hooks/validateIncomeData";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function BSExpense({ edit, visible, setVisible, income }) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
@@ -27,17 +28,37 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
   };
 
   const [incomeData, setIncomeData] = useState({
+    userId: "",
     name: "",
     quantity: "",
     date: new Date(),
     fixed: false,
   });
+  useEffect(() => {
+    const loadUserId = async () => {
+      try {
+        const userJson = await AsyncStorage.getItem("user");
+        const user = JSON.parse(userJson);
+        if (user?.id) {
+          setIncomeData((prev) => ({
+            ...prev,
+            userId: user.id,
+          }));
+        }
+      } catch (err) {
+        console.error("Error loading user ID:", err);
+      }
+    };
+
+    loadUserId();
+  }, []);
 
   useEffect(() => {
     if (edit) {
       setIncomeData(income);
     } else {
       setIncomeData({
+        userId: "",
         name: "",
         quantity: "",
         date: new Date(),
@@ -57,7 +78,7 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
     if (!validateIncomeData(incomeData)) return;
 
     const newIncome = {
-      user_id: 1,
+      user_id: incomeData.userId,
       name: incomeData.name,
       amount: incomeData.quantity,
       date: incomeData.date.toISOString().slice(0, 19).replace("T", " "),
