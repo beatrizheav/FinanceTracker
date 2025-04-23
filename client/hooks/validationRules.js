@@ -32,3 +32,10 @@ export const addIncomeValidationRules = [
   { check: (data) => !data.quantity, message: "La cantidad es obligatoria." },
   { check: (data) => !data.date, message: "La fecha es obligatoria." },
 ];
+
+export const addCategoryValidationRules = [
+  { check: (data) => !data.name, message: "El nombre es obligatorio." },
+  { check: (data) => !data.budget, message: "El presupuesto es obligatorio." },
+  { check: (data) => !data.color, message: "El color es obligatorio." },
+  { check: (data) => !data.icon, message: "El icono es obligatorio." },
+];

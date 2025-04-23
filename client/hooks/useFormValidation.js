@@ -1,12 +1,15 @@
 import {
   signUpValidationRules,
   signInValidationRules,
+  addCategoryValidationRules
 } from "./validationRules";
 
 const useFormValidation = (data, screen) => {
   let validations;
   if (screen === "registration") {
     validations = signUpValidationRules;
+  }else if(screen === "categories"){
+    validations = addCategoryValidationRules;
   } else {
     validations = signInValidationRules;
   }
