@@ -20,16 +20,14 @@ const createCategory = (req, res) => {
   const {
     name,
     budget,
-    expense,
+    expense = 0,
     color,
     icon
   } = req.body;
 
-  if (!name || !budget || !expense || !color || !icon) {
+  if (!name || !budget || !color || !icon) {
     return res.status(400).json({message: "Missing required category fields."});
   }
-
-  
 
   const query = `INSERT INTO categories (user_id, name, budget, expense, color, icon)
                   VALUES (?,?,?,?,?,?)`;

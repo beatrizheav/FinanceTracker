@@ -104,7 +104,7 @@ const loginUser = (req, res) => {
 
       if(passwordMatch){
         const token = jwt.sign(
-          { userId: results.insertId, email }, // Payload: userId and email
+          { userId: results[0].id, email }, // Payload: userId and email
           process.env.JWT_SECRET_KEY, // environment variable for the secret key
           { expiresIn: "365d" } // Expiration time (e.g., 1 hour)
         );
