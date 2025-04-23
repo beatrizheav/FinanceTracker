@@ -9,8 +9,8 @@ import { sheets } from "../styles/components/bottom-sheets";
 import CustomCheckbox from "./CustomCheckbox";
 import CustomText from "./CustomText";
 import { BASE_URL } from "@env";
-import { validateIncomeData } from "../hooks/validateIncomeData";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import useFormValidation from "../hooks/useFormValidation";
 
 export default function BSExpense({ edit, visible, setVisible, income }) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
@@ -72,10 +72,12 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
   const titleButton = edit ? "Guardar cambios" : "Agregar ingreso";
 
   const handleSubmit = async () => {
+    const validateForm = useFormValidation(incomeData, "BSIncome");
+
     if (edit) {
       return;
     }
-    if (!validateIncomeData(incomeData)) return;
+    if (!validateForm()) return;
 
     const newIncome = {
       user_id: incomeData.userId,
