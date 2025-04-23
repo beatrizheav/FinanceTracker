@@ -8,9 +8,9 @@ import CustomButton from "./CustomButton";
 import { sheets } from "../styles/components/bottom-sheets";
 import CustomCheckbox from "./CustomCheckbox";
 import CustomText from "./CustomText";
-import { BASE_URL } from "@env";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import useFormValidation from "../hooks/useFormValidation";
+import apiClient from "../api/apiClient";
 
 export default function BSExpense({ edit, visible, setVisible, income }) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
@@ -88,20 +88,7 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
     };
 
     try {
-      const response = await fetch(`${BASE_URL}/incomes/add`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newIncome),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        alert("Ocurrió un error al guardar el ingreso.");
-        return;
-      }
+      const response = await apiClient.post("/incomes/add", newIncome);
 
       alert("Ingreso agregado correctamente.");
       handleClose();
