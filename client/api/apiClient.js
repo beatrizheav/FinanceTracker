@@ -20,7 +20,7 @@ const request = async (
   { method = "GET", body, headers = {} } = {}
 ) => {
   const headersBase = await defaultHeaders();
-  console.log(headersBase);
+
   const config = {
     method,
     headers: {
