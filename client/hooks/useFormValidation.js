@@ -1,12 +1,15 @@
 import {
   signUpValidationRules,
   signInValidationRules,
+  bsExpenseValidationRules,
 } from "./validationRules";
 
 const useFormValidation = (data, screen) => {
   let validations;
   if (screen === "registration") {
     validations = signUpValidationRules;
+  } else if (screen === "bsExpense") {
+    validations = bsExpenseValidationRules;
   } else {
     validations = signInValidationRules;
   }
