@@ -4,9 +4,9 @@ import {
   Keyboard,
   ScrollView,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
-import * as FileSystem from "expo-file-system";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { handleInputChange } from "../hooks/handleInputChange";
 import useFormValidation from "../hooks/useFormValidation";
@@ -20,11 +20,13 @@ import CustomText from "./CustomText";
 import ImagePickerComponent from "./ImagePicker";
 import { sheets } from "../styles/components/bottom-sheets";
 import { bsExpense } from "../styles/components/bs-expense";
+import { colorsTheme } from "../styles/colorsTheme";
 
 export default function BSExpense({ edit, visible, setVisible, expense }) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [dropdownModalVisible, setDropdownModalVisible] = useState(false);
   const refRBSheet = useRef();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (visible && refRBSheet.current) {
@@ -72,6 +74,8 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
+    setIsLoading(true); // ⏳ Inicia la carga
+
     const formData = new FormData();
 
     // Solo procesamos imagen si existe
@@ -108,9 +112,6 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
       alert("Error al crear el gasto: " + error.message);
     }
   };
-
-  console.log(expenseData);
-
   return (
     <RBSheet
       closeOnPressMask={true}
@@ -199,11 +200,15 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
                     handleInputChange(setExpenseData, "fixed", value)
                   }
                 />
-                <CustomButton
-                  title={titleButton}
-                  background={"green"}
-                  onPress={handleSubmit}
-                />
+                {isLoading ? (
+                  <ActivityIndicator size="medium" color={colorsTheme.black} />
+                ) : (
+                  <CustomButton
+                    title={titleButton}
+                    background={"green"}
+                    onPress={handleSubmit}
+                  />
+                )}
               </View>
             </TouchableWithoutFeedback>
           </ScrollView>
