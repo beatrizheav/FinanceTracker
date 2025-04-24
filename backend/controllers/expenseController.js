@@ -4,30 +4,16 @@ const { v4: uuidv4 } = require("uuid"); // Para generar un nombre único para la
 
 const createExpense = async (req, res) => {
   const userId = req.user.userId; // Extract userId from the JWT payload
-  const { category_id, name, description, amount, date, image, fixed } =
-    req.body;
+  const { category, name, description, quantity, date, fixed } = req.body;
   const receiptFile = req.file;
 
-  console.log("Datos recibidos:", {
-    userId,
-    category_id,
-    name,
-    description,
-    amount,
-    date,
-    image,
-    fixed,
-  });
-
   if (
-    !userId ||
-    !category_id ||
-    !name ||
-    !description ||
-    !amount ||
-    !date ||
-    !image ||
-    !fixed
+    userId == null ||
+    category == null ||
+    name == null ||
+    quantity == null ||
+    date == null ||
+    fixed == null
   ) {
     return res.status(400).json({ error: "Missing required fields" });
   }
@@ -49,7 +35,7 @@ const createExpense = async (req, res) => {
     }
 
     const query = `
-      INSERT INTO expenses (user_id, category_id, name, descritpion, amount, date, receipt_url, fixed)
+      INSERT INTO expenses (user_id, category_id, name, description, amount, date, image, fixed)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `;
 
@@ -57,13 +43,13 @@ const createExpense = async (req, res) => {
       query,
       [
         userId,
-        category_id,
+        category,
         name,
         description,
-        amount,
+        quantity,
         date,
         receiptUrl,
-        fixed ?? false,
+        fixed ? 1 : 0,
       ],
       (err, result) => {
         if (err) {
@@ -76,10 +62,10 @@ const createExpense = async (req, res) => {
           expenseId: result.insertId,
           expense: {
             user_id: userId,
-            category_id,
+            category_id: category,
             name,
             description,
-            amount,
+            amount: quantity,
             date,
             receiptUrl,
             fixed: fixed ?? false,

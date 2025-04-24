@@ -6,8 +6,11 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
+import * as FileSystem from "expo-file-system";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { handleInputChange } from "../hooks/handleInputChange";
+import useFormValidation from "../hooks/useFormValidation";
+import apiClient from "../api/apiClient";
 import CustomInput from "./CustomInput";
 import DatePicker from "./DatePicker";
 import DropdownCategory from "./DropdownCategory";
@@ -52,6 +55,57 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
   const ableToDrag = !dateModalVisible && !dropdownModalVisible;
 
   const titleButton = edit ? "Guardar cambios" : "Agregar categoría";
+
+  const validateForm = useFormValidation(expenseData, "bsExpense");
+
+  const createFileFromUri = (uri, name = "image.jpg", type = "image/jpeg") => {
+    return {
+      blob: {
+        uri,
+        name,
+        type,
+      },
+      name,
+    };
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      return;
+    }
+
+    const getFileInfo = (uri) => {
+      const parts = uri.split("/");
+      const name = parts[parts.length - 1];
+      const ext = name.split(".").pop();
+      const type = `image/${ext === "jpg" ? "jpeg" : ext}`;
+      return { name, type };
+    };
+
+    const { name, type } = getFileInfo(expenseData.image);
+    const imageFile = createFileFromUri(expenseData.image, name, type);
+
+    const formData = new FormData();
+    formData.append("image", imageFile.blob, imageFile.name);
+    formData.append("category", expenseData.category);
+    formData.append("name", expenseData.name);
+    formData.append("description", expenseData.description);
+    formData.append("quantity", expenseData.quantity);
+    formData.append(
+      "date",
+      expenseData.date.toISOString().slice(0, 19).replace("T", " ")
+    );
+    formData.append("fixed", expenseData.fixed);
+
+    try {
+      const data = await apiClient.post("/expenses/add", formData);
+      console.log("Gasto creado:", data);
+    } catch (error) {
+      alert("Error al iniciar sesion:" + error.message);
+    }
+  };
+
+  console.log(expenseData);
 
   return (
     <RBSheet
@@ -137,8 +191,15 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
                 <CustomCheckbox
                   text={"Gasto fijo mensual"}
                   fixed={expenseData.fixed}
+                  onChange={(value) =>
+                    handleInputChange(setExpenseData, "fixed", value)
+                  }
                 />
-                <CustomButton title={titleButton} background={"green"} />
+                <CustomButton
+                  title={titleButton}
+                  background={"green"}
+                  onPress={handleSubmit}
+                />
               </View>
             </TouchableWithoutFeedback>
           </ScrollView>

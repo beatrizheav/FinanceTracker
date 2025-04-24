@@ -39,7 +39,7 @@ app.get(
 app.post(
   "/expenses/add",
   authenticate,
-  upload.single("receipt"),
+  upload.single("image"),
   expenseController.createExpense
 );
 
