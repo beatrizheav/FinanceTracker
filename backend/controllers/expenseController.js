@@ -2,6 +2,17 @@ const db = require("../config/db");
 const firebaseAdmin = require("../config/firebaseConfig"); // Ruta a la configuración de Firebase
 const { v4: uuidv4 } = require("uuid"); // Para generar un nombre único para la imagen
 
+const getAllExpenses = (req, res) => {
+  db.query("SELECT * FROM expenses", (err, results) => {
+    if (err) {
+      console.error("Error fetching incomes:", err);
+      return res.status(500).json({ error: "Failed to retrieve incomes" });
+    }
+
+    res.json(results);
+  });
+};
+
 const createExpense = async (req, res) => {
   const userId = req.user.userId; // Extract userId from the JWT payload
   const { category, name, description, quantity, date, fixed } = req.body;
@@ -59,8 +70,8 @@ const createExpense = async (req, res) => {
 
         res.status(201).json({
           message: "Expense created successfully",
-          expenseId: result.insertId,
           expense: {
+            id: result.insertId,
             user_id: userId,
             category_id: category,
             name,
@@ -79,4 +90,4 @@ const createExpense = async (req, res) => {
   }
 };
 
-module.exports = { createExpense };
+module.exports = { createExpense, getAllExpenses };

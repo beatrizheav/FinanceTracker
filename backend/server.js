@@ -36,6 +36,7 @@ app.get(
 );
 
 //Routes Expenses
+app.get("/expenses/get", expenseController.getAllExpenses);
 app.post(
   "/expenses/add",
   authenticate,

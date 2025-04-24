@@ -70,23 +70,26 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) {
-      return;
-    }
-
-    const getFileInfo = (uri) => {
-      const parts = uri.split("/");
-      const name = parts[parts.length - 1];
-      const ext = name.split(".").pop();
-      const type = `image/${ext === "jpg" ? "jpeg" : ext}`;
-      return { name, type };
-    };
-
-    const { name, type } = getFileInfo(expenseData.image);
-    const imageFile = createFileFromUri(expenseData.image, name, type);
+    if (!validateForm()) return;
 
     const formData = new FormData();
-    formData.append("image", imageFile.blob, imageFile.name);
+
+    // Solo procesamos imagen si existe
+    if (expenseData.image) {
+      const getFileInfo = (uri) => {
+        const parts = uri.split("/");
+        const name = parts[parts.length - 1];
+        const ext = name.split(".").pop();
+        const type = `image/${ext === "jpg" ? "jpeg" : ext}`;
+        return { name, type };
+      };
+
+      const { name, type } = getFileInfo(expenseData.image);
+      const imageFile = createFileFromUri(expenseData.image, name, type);
+
+      formData.append("image", imageFile.blob, imageFile.name);
+    }
+
     formData.append("category", expenseData.category);
     formData.append("name", expenseData.name);
     formData.append("description", expenseData.description);
@@ -95,13 +98,14 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
       "date",
       expenseData.date.toISOString().slice(0, 19).replace("T", " ")
     );
-    formData.append("fixed", expenseData.fixed);
+    formData.append("fixed", expenseData.fixed ? 1 : 0); // 👈 importante también
 
     try {
       const data = await apiClient.post("/expenses/add", formData);
-      console.log("Gasto creado:", data);
+      alert("Gasto '" + data.expense.name + "' creado");
+      handleClose();
     } catch (error) {
-      alert("Error al iniciar sesion:" + error.message);
+      alert("Error al crear el gasto: " + error.message);
     }
   };
 
