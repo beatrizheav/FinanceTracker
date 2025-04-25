@@ -29,10 +29,16 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    // Open the bottom sheet when visible is true
     if (visible && refRBSheet.current) {
       refRBSheet.current.open();
     }
-  }, [visible]);
+
+    // Set the initial state of the form when edit is true
+    if (edit) {
+      setExpenseData(expense);
+    }
+  }, [visible, edit]);
 
   const handleClose = () => {
     setVisible(false);
@@ -47,12 +53,6 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
     image: "",
     fixed: false,
   });
-
-  useEffect(() => {
-    if (edit) {
-      setExpenseData(expense);
-    }
-  }, [edit]);
 
   const ableToDrag = !dateModalVisible && !dropdownModalVisible;
 
@@ -71,47 +71,47 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
     };
   };
 
+  const buildFormData = () => {
+    const formData = new FormData();
+
+    const append = (key, value) => formData.append(key, value);
+
+    // if image is added and converted to file
+    if (expenseData.image) {
+      const { blob, name } = createFileFromUri(expenseData.image);
+      append("image", blob, name);
+    }
+
+    const fields = {
+      category: expenseData.category,
+      name: expenseData.name,
+      description: expenseData.description,
+      quantity: expenseData.quantity,
+      date: expenseData.date.toISOString().slice(0, 19).replace("T", " "),
+      fixed: expenseData.fixed ? 1 : 0,
+    };
+
+    Object.entries(fields).forEach(([key, value]) => append(key, value));
+
+    return formData;
+  };
+
   const handleSubmit = async () => {
     if (!validateForm()) return;
 
-    setIsLoading(true); // ⏳ Inicia la carga
+    setIsLoading(true);
 
-    const formData = new FormData();
-
-    // Solo procesamos imagen si existe
-    if (expenseData.image) {
-      const getFileInfo = (uri) => {
-        const parts = uri.split("/");
-        const name = parts[parts.length - 1];
-        const ext = name.split(".").pop();
-        const type = `image/${ext === "jpg" ? "jpeg" : ext}`;
-        return { name, type };
-      };
-
-      const { name, type } = getFileInfo(expenseData.image);
-      const imageFile = createFileFromUri(expenseData.image, name, type);
-
-      formData.append("image", imageFile.blob, imageFile.name);
-    }
-
-    formData.append("category", expenseData.category);
-    formData.append("name", expenseData.name);
-    formData.append("description", expenseData.description);
-    formData.append("quantity", expenseData.quantity);
-    formData.append(
-      "date",
-      expenseData.date.toISOString().slice(0, 19).replace("T", " ")
-    );
-    formData.append("fixed", expenseData.fixed ? 1 : 0); // 👈 importante también
+    const formData = buildFormData();
 
     try {
-      const data = await apiClient.post("/expenses/add", formData);
-      alert("Gasto '" + data.expense.name + "' creado");
+      const { expense } = await apiClient.post("/expenses/add", formData);
+      alert(`Gasto '${expense.name}' creado`);
       handleClose();
     } catch (error) {
       alert("Error al crear el gasto: " + error.message);
     }
   };
+
   return (
     <RBSheet
       closeOnPressMask={true}
