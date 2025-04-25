@@ -74,12 +74,13 @@ const categoriesScreen = ({ data = categories }) => {
           }}
         />
       )}
+      {isActiveBSCategory &&
       <BSCategory
         visible={isActiveBSCategory}
         setVisible={setIsActiveBSCategory}
         edit={editMode}
         category={selectedCategory}
-      />
+      />}
     </View>
   );
 };
