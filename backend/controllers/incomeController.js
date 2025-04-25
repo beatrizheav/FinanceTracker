@@ -1,14 +1,20 @@
 const db = require("../config/db");
 
 const getAllIncomes = (req, res) => {
-  db.query("SELECT * FROM incomes", (err, results) => {
-    if (err) {
-      console.error("Error fetching incomes:", err);
-      return res.status(500).json({ error: "Failed to retrieve incomes" });
-    }
+  const userId = req.user.userId;
 
-    res.json(results);
-  });
+  db.query(
+    "SELECT * FROM incomes WHERE user_id = ?",
+    [userId],
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching incomes:", err);
+        return res.status(500).json({ error: "Failed to retrieve incomes" });
+      }
+
+      res.json(results);
+    }
+  );
 };
 
 const createIncome = (req, res) => {
@@ -34,10 +40,34 @@ const createIncome = (req, res) => {
 
       res.status(201).json({
         message: "Income created successfully",
-        incomeId: result,
+        incomeId: result.insertId,
       });
     }
   );
 };
 
-module.exports = { createIncome, getAllIncomes };
+const getBalance = (req, res) => {
+  const userId = req.user.userId;
+
+  const query = `
+    SELECT
+      (SELECT IFNULL(SUM(amount), 0) FROM incomes WHERE user_id = ?) AS totalIncome,
+      (SELECT IFNULL(SUM(amount), 0) FROM expenses WHERE user_id = ?) AS totalExpenses
+  `;
+
+  db.query(query, [userId, userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching balance:", err);
+      return res.status(500).json({ error: "Failed to fetch balance" });
+    }
+
+    const { totalIncome, totalExpenses } = results[0];
+    res.json({ totalIncome, totalExpenses });
+  });
+};
+
+module.exports = {
+  createIncome,
+  getAllIncomes,
+  getBalance,
+};

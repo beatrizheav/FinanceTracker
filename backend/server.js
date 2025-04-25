@@ -25,8 +25,9 @@ app.post("/user", userController.createUser);
 app.post("/user/login", userController.loginUser);
 
 // Routes Incomes
+app.get("/incomes", authenticate, incomeController.getAllIncomes);
 app.post("/incomes/add", incomeController.createIncome);
-app.get("/incomes", incomeController.getAllIncomes);
+app.get("/incomes/balance", authenticate, incomeController.getBalance);
 
 // Routes Categories
 app.get(
@@ -34,6 +35,7 @@ app.get(
   authenticate,
   categoriesController.getUserCategories
 );
+app.post("/category/add", authenticate, categoriesController.createCategory);
 
 //Routes Expenses
 app.get("/expenses/get", expenseController.getAllExpenses);
