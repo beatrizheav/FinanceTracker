@@ -56,7 +56,7 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
 
   const ableToDrag = !dateModalVisible && !dropdownModalVisible;
 
-  const titleButton = edit ? "Guardar cambios" : "Agregar categoría";
+  const titleButton = edit ? "Guardar cambios" : "Agregar gasto";
 
   const validateForm = useFormValidation(expenseData, "bsExpense");
 
