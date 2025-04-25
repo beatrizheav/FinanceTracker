@@ -4,10 +4,13 @@ import {
   Keyboard,
   ScrollView,
   KeyboardAvoidingView,
+  ActivityIndicator,
 } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { handleInputChange } from "../hooks/handleInputChange";
+import useFormValidation from "../hooks/useFormValidation";
+import apiClient from "../api/apiClient";
 import CustomInput from "./CustomInput";
 import DatePicker from "./DatePicker";
 import DropdownCategory from "./DropdownCategory";
@@ -17,17 +20,25 @@ import CustomText from "./CustomText";
 import ImagePickerComponent from "./ImagePicker";
 import { sheets } from "../styles/components/bottom-sheets";
 import { bsExpense } from "../styles/components/bs-expense";
+import { colorsTheme } from "../styles/colorsTheme";
 
 export default function BSExpense({ edit, visible, setVisible, expense }) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [dropdownModalVisible, setDropdownModalVisible] = useState(false);
   const refRBSheet = useRef();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    // Open the bottom sheet when visible is true
     if (visible && refRBSheet.current) {
       refRBSheet.current.open();
     }
-  }, [visible]);
+
+    // Set the initial state of the form when edit is true
+    if (edit) {
+      setExpenseData(expense);
+    }
+  }, [visible, edit]);
 
   const handleClose = () => {
     setVisible(false);
@@ -43,15 +54,63 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
     fixed: false,
   });
 
-  useEffect(() => {
-    if (edit) {
-      setExpenseData(expense);
-    }
-  }, [edit]);
-
   const ableToDrag = !dateModalVisible && !dropdownModalVisible;
 
-  const titleButton = edit ? "Guardar cambios" : "Agregar categoría";
+  const titleButton = edit ? "Guardar cambios" : "Agregar gasto";
+
+  const validateForm = useFormValidation(expenseData, "bsExpense");
+
+  const createFileFromUri = (uri, name = "image.jpg", type = "image/jpeg") => {
+    return {
+      blob: {
+        uri,
+        name,
+        type,
+      },
+      name,
+    };
+  };
+
+  const buildFormData = () => {
+    const formData = new FormData();
+
+    const append = (key, value) => formData.append(key, value);
+
+    // if image is added and converted to file
+    if (expenseData.image) {
+      const { blob, name } = createFileFromUri(expenseData.image);
+      append("image", blob, name);
+    }
+
+    const fields = {
+      category: expenseData.category,
+      name: expenseData.name,
+      description: expenseData.description,
+      quantity: expenseData.quantity,
+      date: expenseData.date.toISOString().slice(0, 19).replace("T", " "),
+      fixed: expenseData.fixed ? 1 : 0,
+    };
+
+    Object.entries(fields).forEach(([key, value]) => append(key, value));
+
+    return formData;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
+
+    setIsLoading(true);
+
+    const formData = buildFormData();
+
+    try {
+      const { expense } = await apiClient.post("/expenses/add", formData);
+      alert(`Gasto '${expense.name}' creado`);
+      handleClose();
+    } catch (error) {
+      alert("Error al crear el gasto: " + error.message);
+    }
+  };
 
   return (
     <RBSheet
@@ -137,8 +196,19 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
                 <CustomCheckbox
                   text={"Gasto fijo mensual"}
                   fixed={expenseData.fixed}
+                  onChange={(value) =>
+                    handleInputChange(setExpenseData, "fixed", value)
+                  }
                 />
-                <CustomButton title={titleButton} background={"green"} />
+                {isLoading ? (
+                  <ActivityIndicator size="medium" color={colorsTheme.black} />
+                ) : (
+                  <CustomButton
+                    title={titleButton}
+                    background={"green"}
+                    onPress={handleSubmit}
+                  />
+                )}
               </View>
             </TouchableWithoutFeedback>
           </ScrollView>

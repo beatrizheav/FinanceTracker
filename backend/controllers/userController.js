@@ -104,6 +104,7 @@ const loginUser = (req, res) => {
             process.env.JWT_SECRET_KEY, // environment variable for the secret key
             { expiresIn: "365d" } // Expiration time (e.g., 1 hour)
           );
+
           res.status(200).json({
             message: "Login successfully",
             token,

@@ -9,25 +9,26 @@ const defaultHeaders = async () => {
   const token = await getToken();
 
   return {
-    "Content-Type": "application/json",
-    ...(token && { Authorization: `Bearer ${token}` }),
+    ...(token && { Authorization: `Bearer ${token}` }), // Siempre agregar el token
   };
 };
 
-// Función base
 const request = async (
   endpoint,
   { method = "GET", body, headers = {} } = {}
 ) => {
   const headersBase = await defaultHeaders();
 
+  const isFormData = body instanceof FormData;
+
   const config = {
     method,
     headers: {
-      ...headersBase,
+      ...headersBase, // Siempre agregamos el token aquí
       ...headers,
+      ...(isFormData ? {} : { "Content-Type": "application/json" }), // 👈 Solo si no es FormData
     },
-    ...(body && { body: JSON.stringify(body) }),
+    ...(body && { body: isFormData ? body : JSON.stringify(body) }), // No tocamos el Content-Type para FormData
   };
 
   try {
@@ -41,7 +42,7 @@ const request = async (
     return data;
   } catch (error) {
     console.error("❌ API error:", error.message);
-    throw error; // para manejarlo donde se use
+    throw error;
   }
 };
 
