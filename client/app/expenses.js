@@ -12,7 +12,6 @@ import { expensesData } from "../constants/expensesData";
 import { general } from "../styles/general";
 import { colorsTheme } from "../styles/colorsTheme";
 import { expense } from "../styles/screens/expense";
-import { is } from "date-fns/locale";
 
 const expenses = ({ data = expensesData }) => {
   const height =
@@ -76,8 +75,6 @@ const expenses = ({ data = expensesData }) => {
 
   const getIcon = (section) =>
     expandedSections[section] ? "chevron-up-outline" : "chevron-down-outline";
-
-  console.log(isActiveBSExpense);
 
   return (
     <View style={general.safeArea}>
