@@ -78,55 +78,51 @@ const createUser = (req, res) => {
 };
 
 const loginUser = (req, res) => {
-  const {email, password} = req.body;
+  const { email, password } = req.body;
 
-  if(!email || !password){
-    return res
-      .status(400)
-      .json({message: "Email and password are required"});
+  if (!email || !password) {
+    return res.status(400).json({ message: "Email and password are required" });
   }
 
   db.execute("SELECT * FROM users WHERE email = ?", [email], (err, results) => {
-    if(err){
+    if (err) {
       console.error(err);
-      return res.status(500).json({message: "Interval server error"});
+      return res.status(500).json({ message: "Interval server error" });
     }
 
     if (results.length === 0) {
-      return res.status(404).json({message: "User not found"});
-    };
+      return res.status(404).json({ message: "User not found" });
+    }
 
-
-
-    const user = results[0]
-    bcrypt.compare(password, user.password)
-    .then((passwordMatch) => {
-
-      if(passwordMatch){
-        const token = jwt.sign(
-          { userId: results[0].id, email }, // Payload: userId and email
-          process.env.JWT_SECRET_KEY, // environment variable for the secret key
-          { expiresIn: "365d" } // Expiration time (e.g., 1 hour)
-        );
-        res.status(200).json({
-          message: "Login successfully",
-          token,
-          user: {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-            avatar: user.avatar,
-          }
-        })
-      }else{
-        return res.status(400).json({message: "Invalid email or password"})
-      }
-    })
-    .catch((compareErr) => {
+    const user = results[0];
+    bcrypt
+      .compare(password, user.password)
+      .then((passwordMatch) => {
+        if (passwordMatch) {
+          const token = jwt.sign(
+            { userId: results[0].id, email }, // Payload: userId and email
+            process.env.JWT_SECRET_KEY, // environment variable for the secret key
+            { expiresIn: "365d" } // Expiration time (e.g., 1 hour)
+          );
+          res.status(200).json({
+            message: "Login successfully",
+            token,
+            user: {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              avatar: user.avatar,
+            },
+          });
+        } else {
+          return res.status(400).json({ message: "Invalid email or password" });
+        }
+      })
+      .catch((compareErr) => {
         console.error(compareErr);
         return res.status(500).json({ message: "Error validating password" });
-    })
-  })
-}
+      });
+  });
+};
 
 module.exports = { getAllUsers, createUser, loginUser };
