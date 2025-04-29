@@ -15,39 +15,48 @@ const getUserCategories = (req, res) => {
   });
 };
 
+const getCategory = (req, res) => {
+  const userId = req.user.userId;
+  const id = req.body.id; // Extract category ID from the request body
+
+  const query = "SELECT * FROM categories WHERE id = ? AND user_id = ?";
+
+  db.query(query, [id, userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching category info:", err);
+      return res
+        .status(500)
+        .json({ message: "Failed to fetch category info." });
+    }
+
+    res.status(200).json(results);
+  });
+};
+
 const createCategory = (req, res) => {
   const userId = req.user.userId; // Extract userId from the JWT payload
-  const {
-    name,
-    budget,
-    expense = 0,
-    color,
-    icon
-  } = req.body;
+  const { name, budget, expense = 0, color, icon } = req.body;
 
   if (!name || !budget || !color || !icon) {
-    return res.status(400).json({message: "Missing required category fields."});
+    return res
+      .status(400)
+      .json({ message: "Missing required category fields." });
   }
 
   const query = `INSERT INTO categories (user_id, name, budget, expense, color, icon)
                   VALUES (?,?,?,?,?,?)`;
 
-  const values = [
-    userId,
-    name,
-    budget,
-    expense,
-    color,
-    JSON.stringify(icon)
-  ];
+  const values = [userId, name, budget, expense, color, JSON.stringify(icon)];
   db.query(query, values, (err, results) => {
     if (err) {
       console.error("Error adding category:", err);
       return res.status(500).json({ message: "Failed to add category." });
     }
 
-    res.status(200).json({ message: "Category created successfully.", results});
+    res
+      .status(200)
+      .json({ message: "Category created successfully.", results });
   });
 };
 
-module.exports = { getUserCategories, createCategory };
+module.exports = { getUserCategories, createCategory, getCategory };
