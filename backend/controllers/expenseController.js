@@ -1,16 +1,33 @@
 const db = require("../config/db");
-const firebaseAdmin = require("../config/firebaseConfig"); // Ruta a la configuración de Firebase
-const { v4: uuidv4 } = require("uuid"); // Para generar un nombre único para la imagen
+const firebaseAdmin = require("../config/firebaseConfig"); // Firebase config
+const { v4: uuidv4 } = require("uuid"); // To generate unic name for the image
 
 const getAllExpenses = (req, res) => {
   db.query("SELECT * FROM expenses", (err, results) => {
     if (err) {
-      console.error("Error fetching incomes:", err);
-      return res.status(500).json({ error: "Failed to retrieve incomes" });
+      console.error("Error fetching expenses:", err);
+      return res.status(500).json({ error: "Failed to retrieve expenses" });
     }
 
     res.json(results);
   });
+};
+
+const getUserExpenses = (req, res) => {
+  const userId = req.user.userId;
+
+  db.query(
+    "SELECT * FROM expenses where user_id = ?",
+    [userId],
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching user expenses:", err);
+        return res.status(500).json({ error: "Failed to retrieve expenses" });
+      }
+
+      res.json(results);
+    }
+  );
 };
 
 const createExpense = async (req, res) => {
@@ -90,4 +107,4 @@ const createExpense = async (req, res) => {
   }
 };
 
-module.exports = { createExpense, getAllExpenses };
+module.exports = { createExpense, getAllExpenses, getUserExpenses };
