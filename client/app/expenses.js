@@ -9,24 +9,22 @@ import CustomText from "../components/CustomText";
 import AddButton from "../components/AddButton";
 import ModalExpense from "../components/ModalExpense";
 import BSExpense from "../components/BSExpense";
-// import { expensesData } from "../constants/expensesData";
 import { general } from "../styles/general";
 import { colorsTheme } from "../styles/colorsTheme";
 import { expense } from "../styles/screens/expense";
-import { id } from "date-fns/locale";
 
 const expenses = () => {
-  useEffect(() => {
-    const fetchExpenses = async () => {
-      try {
-        const data = await apiClient.get("/expenses/get");
-        setData(data);
-      } catch (error) {
-        setError("Registro fallido: " + error.message);
-        alert("Registro fallido: " + error.message);
-      }
-    };
+  const fetchExpenses = async () => {
+    try {
+      const data = await apiClient.get("/expenses/get");
+      setData(data);
+    } catch (error) {
+      setError("Registro fallido: " + error.message);
+      alert("Registro fallido: " + error.message);
+    }
+  };
 
+  useEffect(() => {
     fetchExpenses();
   }, []);
 
@@ -37,7 +35,7 @@ const expenses = () => {
   const [isActiveModalExpense, setIsActiveModalExpense] = useState(false);
   const [isActiveBSExpense, setIsActiveBSExpense] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const fixedExpenses = data.filter((item) => item.fixed === true); //expenses fixed
+  const fixedExpenses = data.filter((item) => item.fixed === 1); //expenses fixed
   const today = new Date();
   const twoWeeksAgo = subDays(today, 14);
   const [expandedSections, setExpandedSections] = useState({
@@ -242,6 +240,7 @@ const expenses = () => {
           setVisible={setIsActiveBSExpense}
           edit={editMode}
           expense={selectedExpense}
+          onSaved={fetchExpenses}
         />
       )}
     </View>

@@ -25,22 +25,20 @@ const ActivityDisplay = ({
 
   const [categoryData, setCategoryData] = useState(null);
 
+  const fetchCategory = async () => {
+    const body = { id: category };
+    try {
+      const data = await apiClient.post("/categories/info", body);
+      setCategoryData(data[0]);
+    } catch (error) {
+      setError("Registro fallido: " + error.message);
+      alert("Registro fallido: " + error.message);
+    }
+  };
+
   useEffect(() => {
-    if (!category) return; // espera a que category tenga valor
-
-    const fetchExpenses = async () => {
-      const body = { id: category };
-      try {
-        const data = await apiClient.post("/categories/info", body);
-        setCategoryData(data[0]);
-      } catch (error) {
-        setError("Registro fallido: " + error.message);
-        alert("Registro fallido: " + error.message);
-      }
-    };
-
     if (screen === "expense") {
-      fetchExpenses();
+      fetchCategory();
     }
   }, []);
 
