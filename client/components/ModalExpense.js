@@ -5,10 +5,11 @@ import {
   Platform,
   TouchableWithoutFeedback,
 } from "react-native";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
+import apiClient from "../api/apiClient";
 import CustomButton from "./CustomButton";
 import ModalDetail from "./ModalDetail";
 import CustomInput from "./CustomInput";
@@ -19,7 +20,7 @@ import { modalExpense } from "../styles/components/modal-expense";
 import { colorsTheme } from "../styles/colorsTheme";
 
 const ModalExpense = ({
-  category = {},
+  category,
   name,
   date,
   quantity = 0,
@@ -30,8 +31,25 @@ const ModalExpense = ({
   onEdit,
   setIsActiveModalExpense,
 }) => {
-  const formatNameCategory = category.name
-    ? category.name
+  const [categoryData, setCategoryData] = useState(null);
+
+  useEffect(() => {
+    const fetchCategory = async () => {
+      const body = { id: category };
+      try {
+        const data = await apiClient.post("/categories/info", body);
+        setCategoryData(data[0]);
+      } catch (error) {
+        setError("Registro fallido: " + error.message);
+        alert("Registro fallido: " + error.message);
+      }
+    };
+
+    fetchCategory();
+  }, []);
+
+  const formatNameCategory = categoryData
+    ? categoryData.name
     : "Categoria no encontrada"; //Validates if there is data in the title, if not, sets a default title
   const formatNameExpense = name ? name : "Titulo no encontrado";
   const formatDate = date
@@ -83,6 +101,7 @@ const ModalExpense = ({
   const closeModal = () => {
     setIsActiveModalExpense(false);
   };
+
   return (
     <Modal transparent={true}>
       <TouchableWithoutFeedback onPress={closeModal} testID="modal-overlay">
@@ -100,11 +119,15 @@ const ModalExpense = ({
               </View>
               <View>
                 <View style={modalExpense.container_icon}>
-                  <CategoryIcon
-                    icon={category.icon}
-                    type={"big"}
-                    color={category.color}
-                  />
+                  {categoryData ? (
+                    <CategoryIcon
+                      icon={categoryData.icon}
+                      type="big"
+                      color={categoryData.color}
+                    />
+                  ) : (
+                    <CustomText text={"Cargando categoria..."} />
+                  )}
                   <CustomText
                     text={formatNameCategory}
                     type={"TitleSmall"}

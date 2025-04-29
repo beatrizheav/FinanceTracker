@@ -9,10 +9,11 @@ import CustomText from "../components/CustomText";
 import AddButton from "../components/AddButton";
 import ModalExpense from "../components/ModalExpense";
 import BSExpense from "../components/BSExpense";
-import { expensesData } from "../constants/expensesData";
+// import { expensesData } from "../constants/expensesData";
 import { general } from "../styles/general";
 import { colorsTheme } from "../styles/colorsTheme";
 import { expense } from "../styles/screens/expense";
+import { id } from "date-fns/locale";
 
 const expenses = () => {
   useEffect(() => {
@@ -92,8 +93,6 @@ const expenses = () => {
   const getIcon = (section) =>
     expandedSections[section] ? "chevron-up-outline" : "chevron-down-outline";
 
-  console.log("DATA: ", data);
-
   return (
     <View style={general.safeArea}>
       <Header title={"Gastos"} />
@@ -129,6 +128,8 @@ const expenses = () => {
               renderItem={({ item }) => (
                 <ActivityDisplay
                   {...item}
+                  quantity={item.amount}
+                  category={item.category_id}
                   onPress={() => showModalExpense(item)}
                   screen={"expense"}
                   testID="mock-expense-item"
@@ -163,11 +164,13 @@ const expenses = () => {
           ) : expandedSections.today ? (
             <FlatList
               data={todayExpenses}
-              keyExtractor={(item) => item.expenseId.toString()}
+              keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
                 <ActivityDisplay
                   {...item}
+                  quantity={item.amount}
+                  category={item.category_id}
                   onPress={() => showModalExpense(item)}
                   screen={"expense"}
                   testID="mock-expense-item"
@@ -208,6 +211,7 @@ const expenses = () => {
                 <ActivityDisplay
                   {...item}
                   quantity={item.amount}
+                  category={item.category_id}
                   onPress={() => showModalExpense(item)}
                   screen={"expense"}
                   testID="mock-expense-item"
@@ -224,6 +228,7 @@ const expenses = () => {
           {...selectedExpense}
           setIsActiveModalExpense={setIsActiveModalExpense}
           quantity={selectedExpense.amount}
+          category={selectedExpense.category_id}
           onEdit={() => {
             setEditMode(true);
             setIsActiveModalExpense(false);
