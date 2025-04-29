@@ -4,7 +4,6 @@ import {
   Keyboard,
   ScrollView,
   KeyboardAvoidingView,
-  ActivityIndicator,
 } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -201,7 +200,13 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
                   }
                 />
                 {isLoading ? (
-                  <ActivityIndicator size="medium" color={colorsTheme.black} />
+                  <View style={bsExpense.loading}>
+                    <CustomText
+                      text={"Cargando..."}
+                      type={"TitleMedium"}
+                      color={colorsTheme.darkGreen}
+                    />
+                  </View>
                 ) : (
                   <CustomButton
                     title={titleButton}
