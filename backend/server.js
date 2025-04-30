@@ -35,7 +35,6 @@ app.get(
   authenticate,
   categoriesController.getUserCategories
 );
-app.post("/categories/info", authenticate, categoriesController.getCategory);
 app.post("/category/add", authenticate, categoriesController.createCategory);
 
 //Routes Expenses

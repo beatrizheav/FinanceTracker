@@ -1,9 +1,8 @@
 import { TouchableOpacity, View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
-import apiClient from "../api/apiClient";
 import { activityDisplay } from "../styles/components/activity-display";
 import CustomText from "./CustomText";
 import { colorsTheme } from "../styles/colorsTheme";
@@ -12,10 +11,10 @@ import CategoryIcon from "./CategoryIcon";
 const ActivityDisplay = ({
   name,
   date,
-  quantity = 0,
+  amount = 0,
   color,
   onPress,
-  category,
+  category = {},
   screen,
 }) => {
   const formatName = name ? name : "nombre no encontrado"; //Validates if there is data in the title, if not, sets a default title
@@ -23,32 +22,11 @@ const ActivityDisplay = ({
     ? format(date, "dd 'de' MMMM yyyy", { locale: es })
     : "fecha no encontrada"; //takes the date and formats it
 
-  const [categoryData, setCategoryData] = useState(null);
-
-  const fetchCategory = async () => {
-    const body = { id: category };
-    try {
-      const data = await apiClient.post("/categories/info", body);
-      setCategoryData(data[0]);
-    } catch (error) {
-      setError("Registro fallido: " + error.message);
-      alert("Registro fallido: " + error.message);
-    }
-  };
-
-  useEffect(() => {
-    if (screen === "expense") {
-      fetchCategory();
-    }
-  }, []);
-
   const icon =
     screen === "income"
       ? { iconName: "attach-money", iconSet: "MaterialIcons" }
       : screen === "category"
       ? category
-      : screen === "expense"
-      ? categoryData?.icon
       : category?.icon;
 
   const colorIcon =
@@ -56,23 +34,23 @@ const ActivityDisplay = ({
       ? activityDisplay.green.color
       : screen === "category"
       ? color
-      : categoryData?.color;
+      : category.color;
 
-  const quantityColor =
+  const amountColor =
     screen === "income" //changes the text color depending on the screen
       ? activityDisplay.green.color
       : screen === "expense"
       ? activityDisplay.red.color
       : activityDisplay.teal.color;
 
-  const validQuantity = Number(quantity) || 0; //Validates if the quantity is a number and if not, adds 0 by default.
+  const validAmount = Number(amount) || 0; //Validates if the amount is a number and if not, adds 0 by default.
 
-  const quantityText = quantity
-    ? `${screen === "expense" ? "-" : ""} $ ${validQuantity.toLocaleString(
+  const amountText = amount
+    ? `${screen === "expense" ? "-" : ""} $ ${validAmount.toLocaleString(
         "en-US",
         { minimumFractionDigits: 2, maximumFractionDigits: 2 }
       )}`
-    : "$ 0.00"; //Validates if there is data in the quantity, if not, sets a default quantity
+    : "$ 0.00"; //Validates if there is data in the amount, if not, sets a default amount
   return (
     <TouchableOpacity
       onPress={onPress}
@@ -92,11 +70,7 @@ const ActivityDisplay = ({
         </View>
       </View>
       <View style={activityDisplay.format}>
-        <CustomText
-          text={quantityText}
-          type={"TextBig"}
-          color={quantityColor}
-        />
+        <CustomText text={amountText} type={"TextBig"} color={amountColor} />
         <Ionicons
           testID="chevron-forward"
           name={"chevron-forward"}

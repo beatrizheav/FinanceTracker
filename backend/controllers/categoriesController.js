@@ -15,24 +15,6 @@ const getUserCategories = (req, res) => {
   });
 };
 
-const getCategory = (req, res) => {
-  const userId = req.user.userId;
-  const id = req.body.id; // Extract category ID from the request body
-
-  const query = "SELECT * FROM categories WHERE id = ? AND user_id = ?";
-
-  db.query(query, [id, userId], (err, results) => {
-    if (err) {
-      console.error("Error fetching category info:", err);
-      return res
-        .status(500)
-        .json({ message: "Failed to fetch category info." });
-    }
-
-    res.status(200).json(results);
-  });
-};
-
 const createCategory = (req, res) => {
   const userId = req.user.userId; // Extract userId from the JWT payload
   const { name, budget, expense = 0, color, icon } = req.body;
@@ -59,4 +41,4 @@ const createCategory = (req, res) => {
   });
 };
 
-module.exports = { getUserCategories, createCategory, getCategory };
+module.exports = { getUserCategories, createCategory };

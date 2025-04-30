@@ -16,18 +16,45 @@ const getAllExpenses = (req, res) => {
 const getUserExpenses = (req, res) => {
   const userId = req.user.userId;
 
-  db.query(
-    "SELECT * FROM expenses where user_id = ?",
-    [userId],
-    (err, results) => {
-      if (err) {
-        console.error("Error fetching user expenses:", err);
-        return res.status(500).json({ error: "Failed to retrieve expenses" });
-      }
+  const query = `
+    SELECT 
+      expenses.*, 
+      categories.id AS category_id,
+      categories.name AS category_name, 
+      categories.color AS category_color,
+      categories.icon AS category_icon
+    FROM expenses
+    JOIN categories ON expenses.category_id = categories.id
+    WHERE expenses.user_id = ?
+  `;
 
-      res.json(results);
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching user expenses with categories:", err);
+      return res.status(500).json({ error: "Failed to retrieve expenses" });
     }
-  );
+
+    const formattedResults = results.map((expense) => {
+      return {
+        id: expense.id,
+        name: expense.name,
+        user_id: expense.user_id,
+        amount: expense.amount,
+        description: expense.description,
+        date: expense.date,
+        fixed: expense.fixed,
+        image: expense.image,
+        category: {
+          id: expense.category_id, // Agregado el id de la categoría
+          name: expense.category_name,
+          color: expense.category_color,
+          icon: expense.category_icon,
+        },
+      };
+    });
+
+    res.json(formattedResults);
+  });
 };
 
 const createExpense = async (req, res) => {

@@ -29,6 +29,7 @@ const expenses = () => {
   }, []);
 
   const [data, setData] = useState([]);
+
   const height =
     Platform.OS === "android" ? expense.containerAnd : expense.containerIos;
   const [selectedExpense, setSelectedExpense] = useState(null);
@@ -126,8 +127,6 @@ const expenses = () => {
               renderItem={({ item }) => (
                 <ActivityDisplay
                   {...item}
-                  quantity={item.amount}
-                  category={item.category_id}
                   onPress={() => showModalExpense(item)}
                   screen={"expense"}
                   testID="mock-expense-item"
@@ -167,8 +166,6 @@ const expenses = () => {
               renderItem={({ item }) => (
                 <ActivityDisplay
                   {...item}
-                  quantity={item.amount}
-                  category={item.category_id}
                   onPress={() => showModalExpense(item)}
                   screen={"expense"}
                   testID="mock-expense-item"
@@ -208,8 +205,6 @@ const expenses = () => {
               renderItem={({ item }) => (
                 <ActivityDisplay
                   {...item}
-                  quantity={item.amount}
-                  category={item.category_id}
                   onPress={() => showModalExpense(item)}
                   screen={"expense"}
                   testID="mock-expense-item"
@@ -225,8 +220,6 @@ const expenses = () => {
         <ModalExpense
           {...selectedExpense}
           setIsActiveModalExpense={setIsActiveModalExpense}
-          quantity={selectedExpense.amount}
-          category={selectedExpense.category_id}
           onEdit={() => {
             setEditMode(true);
             setIsActiveModalExpense(false);
