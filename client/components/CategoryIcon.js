@@ -14,7 +14,10 @@ export default function CategoryIcon({ type, icon, color }) {
     const iconSets = {
       AntDesign: Icon.AntDesign,
       FontAwesome: Icon.FontAwesome,
+      FontAwesome5: Icon.FontAwesome5,
+      MaterialCommunityIcons: Icon.MaterialCommunityIcons,
       MaterialIcons: Icon.MaterialIcons,
+      Fontisto: Icon.Fontisto,
       Ionicons: Icon.Ionicons,
     };
 
