@@ -69,6 +69,7 @@ const createUser = (req, res) => {
               name,
               lastName,
               email,
+              avatar,
             },
           });
         }
@@ -111,6 +112,7 @@ const loginUser = (req, res) => {
             user: {
               id: user.id,
               name: user.name,
+              lastName: user.lastName,
               email: user.email,
               avatar: user.avatar,
             },
