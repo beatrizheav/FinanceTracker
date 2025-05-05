@@ -28,11 +28,6 @@ export default function HomeScreen() {
     setActiveSheet(item.category ? "ModalGasto" : "ModalIngreso");
   };
 
-  const handleCloseSheet = () => {
-    setActiveSheet(null);
-    setActivity(null);
-  };
-
   const fetchBalance = async () => {
     try {
       const response = await apiClient.get("/incomes/balance");
@@ -40,6 +35,12 @@ export default function HomeScreen() {
     } catch (error) {
       console.error("❌ Error al obtener el balance:", error.message);
     }
+  };
+
+  const handleCloseSheet = () => {
+    setActiveSheet(null);
+    setActivity(null);
+    fetchBalance();
   };
 
   useEffect(() => {
