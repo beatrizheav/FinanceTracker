@@ -21,7 +21,13 @@ import { sheets } from "../styles/components/bottom-sheets";
 import { bsExpense } from "../styles/components/bs-expense";
 import { colorsTheme } from "../styles/colorsTheme";
 
-export default function BSExpense({ edit, visible, setVisible, expense }) {
+export default function BSExpense({
+  edit,
+  visible,
+  setVisible,
+  expense,
+  onSaved,
+}) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [dropdownModalVisible, setDropdownModalVisible] = useState(false);
   const refRBSheet = useRef();
@@ -105,6 +111,7 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
     try {
       const { expense } = await apiClient.post("/expenses/add", formData);
       alert(`Gasto '${expense.name}' creado`);
+      if (onSaved) onSaved(); //  Charge the list of expenses
       handleClose();
     } catch (error) {
       alert("Error al crear el gasto: " + error.message);

@@ -22,7 +22,7 @@ const ModalExpense = ({
   category = {},
   name,
   date,
-  quantity = 0,
+  amount = 0,
   description,
   image,
   userId,
@@ -37,13 +37,13 @@ const ModalExpense = ({
   const formatDate = date
     ? format(date, "dd 'de' MMMM yyyy", { locale: es })
     : "fecha no encontrada"; //takes the date and formats it
-  const validQuantity = Number(quantity) || 0;
-  const quantityText = quantity
+  const validQuantity = Number(amount) || 0;
+  const amountText = amount
     ? `- $ ${validQuantity.toLocaleString("en-US", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`
-    : "$ 0.00"; //Validates if there is data in the quantity, if not, sets a default quantity
+    : "$ 0.00"; //Validates if there is data in the amount, if not, sets a default amount
   const validImage = image ? image : false;
   const heightModal = image
     ? Platform.OS === "android"
@@ -116,7 +116,7 @@ const ModalExpense = ({
                 <ModalDetail title={"Gasto:"} text={formatNameExpense} />
                 <ModalDetail
                   title={"Cantidad:"}
-                  text={quantityText}
+                  text={amountText}
                   color={modalExpense.red.color}
                 />
                 <ModalDetail title={"Fecha:"} text={formatDate} />
