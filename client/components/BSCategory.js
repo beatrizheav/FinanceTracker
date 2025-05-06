@@ -12,7 +12,7 @@ import { sheets } from "../styles/components/bottom-sheets";
 import { bsCategory } from "../styles/components/bs-category";
 import CustomText from "./CustomText";
 
-export default function BSCategory({ visible, setVisible, edit, category }) {
+export default function BSCategory({ visible, setVisible, edit, category, onCreate }) {
   const [colorModalVisible, setColorModalVisible] = useState(false);
   const [iconModalVisible, setIconModalVisible] = useState(false);
   const [categoryData, setCategoryData] = useState({
@@ -58,6 +58,9 @@ export default function BSCategory({ visible, setVisible, edit, category }) {
     }
     try {
       await apiClient.post("/category/add", categoryData);
+      if (typeof onCreate === "function" && !edit) {
+        onCreate();
+      }
       alert("Categoría creada");
       handleClose();
     }catch{

@@ -13,7 +13,7 @@ const ModalCategory = ({
   totalExpenses = 0,
   icon,
   color,
-  categoryId,
+  id,
   onEdit,
   setIsActiveModalCategory,
 }) => {
@@ -95,14 +95,14 @@ const ModalCategory = ({
               </View>
               <View style={modalCategory.container_buttons}>
                 <CustomButton
-                  onPress={() => handleDelete(userId, categoryId)}
+                  onPress={() => handleDelete(userId, id)}
                   title={"Eliminar"}
                   background={"white"}
                   type={"modal"}
                   testID="button-Eliminar"
                 />
                 <CustomButton
-                  onPress={() => handleEdit(categoryId)}
+                  onPress={() => handleEdit(id)}
                   title={"Editar"}
                   background={"green"}
                   type={"modal"}
