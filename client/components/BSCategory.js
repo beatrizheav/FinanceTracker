@@ -1,7 +1,9 @@
 import { TouchableWithoutFeedback, View, Keyboard } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
+import apiClient from "../api/apiClient";
 import { handleInputChange } from "../hooks/handleInputChange";
+import useFormValidation from "../hooks/useFormValidation";
 import CustomInput from "./CustomInput";
 import ColorPicker from "./ColorPicker";
 import IconPicker from "./IconPicker";
@@ -10,9 +12,16 @@ import { sheets } from "../styles/components/bottom-sheets";
 import { bsCategory } from "../styles/components/bs-category";
 import CustomText from "./CustomText";
 
-export default function BSCategory({ visible, setVisible, edit, category }) {
+export default function BSCategory({ visible, setVisible, edit, category, onCreate }) {
   const [colorModalVisible, setColorModalVisible] = useState(false);
   const [iconModalVisible, setIconModalVisible] = useState(false);
+  const [categoryData, setCategoryData] = useState({
+    name: "",
+    budget: 0,
+    expense: 0,
+    color: null,
+    icon: null,
+  });
   const refRBSheet = useRef();
 
   useEffect(() => {
@@ -21,17 +30,6 @@ export default function BSCategory({ visible, setVisible, edit, category }) {
     }
   }, [visible]);
 
-  const handleClose = () => {
-    setVisible(false);
-  };
-
-  const [categoryData, setCategoryData] = useState({
-    name: "",
-    budget: "",
-    color: null,
-    icon: null,
-  });
-
   useEffect(() => {
     if (edit) {
       setCategoryData(category);
@@ -39,11 +37,36 @@ export default function BSCategory({ visible, setVisible, edit, category }) {
       setCategoryData({
         name: "",
         budget: "",
+        expense: 0,
         color: null,
         icon: null,
       })
     }
   }, [edit, category]);
+
+
+
+  const validateForm = useFormValidation(categoryData, "categories");
+
+  const handleClose = () => {
+    setVisible(false);
+  };
+
+  const handleCreateCategory = async () => {
+    if (!validateForm()) {
+      return;
+    }
+    try {
+      await apiClient.post("/category/add", categoryData);
+      if (typeof onCreate === "function" && !edit) {
+        onCreate();
+      }
+      alert("Categoría creada");
+      handleClose();
+    }catch{
+      alert("Error al agregar la categoría: " + error.message);
+    }
+  }
 
   const ableToDrag = !colorModalVisible && !iconModalVisible;
 
@@ -118,7 +141,10 @@ export default function BSCategory({ visible, setVisible, edit, category }) {
               </View>
             </View>
           </View>
-          <CustomButton title={titleButton} background={"green"} />
+          <CustomButton 
+            title={titleButton}
+            onPress={handleCreateCategory} 
+            background={"green"} />
         </View>
       </TouchableWithoutFeedback>
     </RBSheet>

@@ -8,4 +8,9 @@ export const categoriesStyles = StyleSheet.create({
     height: "88%",
     marginTop: 25,
   },
+  loader: {
+    flex: 1,
+    alignContent: 'center',
+    justifyContent: 'center'
+  }
 });

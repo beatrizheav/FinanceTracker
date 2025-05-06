@@ -1,5 +1,6 @@
-import { View, FlatList, Platform } from "react-native";
-import React, { useState } from "react";
+import { ActivityIndicator, View, FlatList, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
+import apiClient from "../api/apiClient";
 import Header from "../components/Header";
 import ActivityDisplay from "../components/ActivityDisplay";
 import AddButton from "../components/AddButton";
@@ -7,14 +8,14 @@ import ModalCategory from "../components/ModalCategory";
 import BSCategory from "../components/BSCategory";
 import CustomText from "../components/CustomText";
 import { general } from "../styles/general";
-import { categories } from "../constants/categories";
 import { categoriesStyles } from "../styles/screens/categories";
-
-const categoriesScreen = ({ data = categories }) => {
+const categoriesScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isActiveModalCategory, setIsActiveModalCategory] = useState(false);
   const [isActiveBSCategory, setIsActiveBSCategory] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
   const height =
     Platform.OS === "android"
       ? categoriesStyles.containerAnd
@@ -31,11 +32,36 @@ const categoriesScreen = ({ data = categories }) => {
     setIsActiveBSCategory(true);
   };
 
+  const getCategories = async () => {
+    try {
+      const response = await apiClient.get("/categories/get");
+      setCategories(response)
+    }catch{
+      alert("Error al obtener las categorías del usuario: " + error.message);
+    } finally {
+      setLoading(false)
+    }
+  };
+
+  useEffect(() => {
+    getCategories();
+  }, []);
+  
+  const handleCategoryCreated = () => {
+    getCategories();
+    setIsActiveBSCategory(false);
+  };
+
+
   return (
     <View style={general.safeArea}>
       <Header title={"Categorías"} />
       <View style={height}>
-        {data.length === 0 ? (
+        {loading ? (
+          <View style={categoriesStyles.loader}>
+            <ActivityIndicator size='large' color='#466146'/>
+          </View>
+        ) : categories.length === 0 ? (
           <View>
             <CustomText
               text={"No tienes ninguna Categoría creada todavía"}
@@ -45,8 +71,8 @@ const categoriesScreen = ({ data = categories }) => {
           </View>
         ) : (
           <FlatList
-            data={data}
-            keyExtractor={(item, index) => index.toString()}
+            data={categories}
+            keyExtractor={(item) => item.id.toString()}
             showsVerticalScrollIndicator={false}
             renderItem={({ item }) => (
               <ActivityDisplay
@@ -74,14 +100,17 @@ const categoriesScreen = ({ data = categories }) => {
           }}
         />
       )}
+      {isActiveBSCategory &&
       <BSCategory
         visible={isActiveBSCategory}
         setVisible={setIsActiveBSCategory}
         edit={editMode}
         category={selectedCategory}
-      />
+        onCreate={handleCategoryCreated}
+      />}
     </View>
   );
 };
 
 export default categoriesScreen;
+

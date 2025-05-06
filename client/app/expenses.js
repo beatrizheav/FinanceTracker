@@ -211,12 +211,14 @@ const expenses = ({ data = expensesData }) => {
           }}
         />
       )}
-      <BSExpense
-        visible={isActiveBSExpense}
-        setVisible={setIsActiveBSExpense}
-        edit={editMode}
-        expense={selectedExpense}
-      />
+      {isActiveBSExpense && (
+        <BSExpense
+          visible={isActiveBSExpense}
+          setVisible={setIsActiveBSExpense}
+          edit={editMode}
+          expense={selectedExpense}
+        />
+      )}
     </View>
   );
 };
