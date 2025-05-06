@@ -80,9 +80,6 @@ export default function BSExpense({
   const handleSubmit = async () => {
     const validateForm = useFormValidation(incomeData, "BSIncome");
 
-    if (edit) {
-      return;
-    }
     if (!validateForm()) return;
 
     const newIncome = {
@@ -91,13 +88,18 @@ export default function BSExpense({
       amount: incomeData.quantity,
       date: incomeData.date.toISOString().slice(0, 19).replace("T", " "),
       fixed: incomeData.fixed,
+      ...AsyncStorage(edit && {id: incomeData.id})
     };
 
     try {
-      const response = await apiClient.post("/incomes/add", newIncome);
-
-      alert("Ingreso agregado correctamente.");
-      onSave && onSave();
+      if(edit){
+        await apiClient.put("/incomes/edit", newIncome);
+        alert("Ingreso editado correctamente");
+      }else{
+        await apiClient.post("/incomes/add", newIncome);
+        alert("Ingreso agregado correctamente.");
+        handleClose();
+      }
       handleClose();
     } catch (error) {
       alert("No se pudo conectar con el servidor.");

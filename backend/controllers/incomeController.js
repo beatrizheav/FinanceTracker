@@ -46,6 +46,60 @@ const createIncome = (req, res) => {
   );
 };
 
+const editIncome = (req, res) => {
+  const { id, user_id, name, amount, date, fixed } = req.body;
+
+  if (!user_id || !id) {
+    return res.status(400).json({ error: "id and user_id are required" });
+  };
+
+  const fields = [];
+  const values = [];
+
+  if (name !== undefined) {
+    fields.push("name = ?");
+    values.push(name);
+  }
+
+  if (amount !== undefined) {
+    fields.push("amount = ?");
+    values.push(amount);
+  }
+
+  if (date !== undefined) {
+    fields.push("date = ?");
+    values.push(date);
+  }
+
+  if (fixed !== undefined) {
+    fields.push("fixed = ?");
+    values.push(fixed);
+  }
+
+  const query = `
+    UPDATE incomes 
+    SET ${fields.join(', ')}
+    WHERE id = ? AND user_id = ?
+  `;
+
+  values.push(id, user_id);
+
+  db.query(
+    query,
+    values,
+    (err, result) => {
+      if (err) {
+        console.error("Error editing income:", err);
+        return res.status(500).json({ error: "Failed to edit income" });
+      }
+
+      res.status(201).json({
+        message: "Income edited successfully",
+      });
+    }
+  );
+};
+
 const getBalance = (req, res) => {
   const userId = req.user.userId;
 
@@ -86,6 +140,7 @@ const getIncomesByUser = (req, res) => {
 module.exports = {
   createIncome,
   getAllIncomes,
+  editIncome,
   getBalance,
   getIncomesByUser,
 };
