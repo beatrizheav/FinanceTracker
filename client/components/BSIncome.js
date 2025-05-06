@@ -12,7 +12,13 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import useFormValidation from "../hooks/useFormValidation";
 import apiClient from "../api/apiClient";
 
-export default function BSExpense({ edit, visible, setVisible, income }) {
+export default function BSExpense({
+  edit,
+  visible,
+  setVisible,
+  income,
+  onSave,
+}) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const refRBSheet = useRef();
 
@@ -91,6 +97,7 @@ export default function BSExpense({ edit, visible, setVisible, income }) {
       const response = await apiClient.post("/incomes/add", newIncome);
 
       alert("Ingreso agregado correctamente.");
+      onSave && onSave();
       handleClose();
     } catch (error) {
       alert("No se pudo conectar con el servidor.");

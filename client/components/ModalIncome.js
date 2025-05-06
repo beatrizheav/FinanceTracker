@@ -12,7 +12,7 @@ import CategoryIcon from "./CategoryIcon";
 const ModalIncome = ({
   name,
   date,
-  quantity = 0,
+  amount,
   incomeId,
   setIsActiveModalIncome,
   onEdit,
@@ -22,12 +22,12 @@ const ModalIncome = ({
   const formatDate = date
     ? format(date, "dd 'de' MMMM yyyy", { locale: es })
     : "fecha no encontrada"; //takes the date and formats it
-  const formatQuantity = quantity
-    ? ` $ ${quantity.toLocaleString("en-US", {
+  const formatQuantity = amount
+    ? ` $ ${amount.toLocaleString("en-US", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`
-    : "$ 0.00"; //Validates if there is data in the quantity, if not, sets a default quantity
+    : "$ 0.00"; //Validates if there is data in the amount, if not, sets a default amount
   const icon = { iconName: "attach-money", iconSet: "MaterialIcons" };
   const color = colorsTheme.lightGreen;
 

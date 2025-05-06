@@ -66,8 +66,26 @@ const getBalance = (req, res) => {
   });
 };
 
+const getIncomesByUser = (req, res) => {
+  const userId = req.user.userId;
+
+  db.query(
+    "SELECT * FROM incomes WHERE user_id = ?",
+    [userId],
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching incomes:", err);
+        return res.status(500).json({ error: "Failed to retrieve incomes" });
+      }
+
+      res.json(results);
+    }
+  );
+};
+
 module.exports = {
   createIncome,
   getAllIncomes,
   getBalance,
+  getIncomesByUser,
 };
