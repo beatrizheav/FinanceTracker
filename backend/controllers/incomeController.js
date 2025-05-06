@@ -48,22 +48,44 @@ const createIncome = (req, res) => {
 
 const getBalance = (req, res) => {
   const userId = req.user.userId;
+  const { month, year } = req.query;
+
+  if (!month || !year) {
+    return res.status(400).json({ error: "month and year are required" });
+  }
+
+  // Aseguramos formato '01', '02', ..., '12'
+  const formattedMonth = month.toString().padStart(2, "0");
+
+  // Obtenemos el último día del mes
+  const getLastDayOfMonth = (year, month) => {
+    return new Date(year, month, 0).getDate(); // month aquí es 1-based
+  };
+  const lastDay = getLastDayOfMonth(year, parseInt(formattedMonth));
+
+  // Fechas en formato 'YYYY-MM-DD'
+  const startDate = `${year}-${formattedMonth}-01`;
+  const endDate = `${year}-${formattedMonth}-${lastDay}`;
 
   const query = `
     SELECT
-      (SELECT IFNULL(SUM(amount), 0) FROM incomes WHERE user_id = ?) AS totalIncome,
-      (SELECT IFNULL(SUM(amount), 0) FROM expenses WHERE user_id = ?) AS totalExpenses
+      (SELECT IFNULL(SUM(amount), 0) FROM incomes WHERE user_id = ? AND date BETWEEN ? AND ?) AS totalIncome,
+      (SELECT IFNULL(SUM(amount), 0) FROM expenses WHERE user_id = ? AND date BETWEEN ? AND ?) AS totalExpenses
   `;
 
-  db.query(query, [userId, userId], (err, results) => {
-    if (err) {
-      console.error("Error fetching balance:", err);
-      return res.status(500).json({ error: "Failed to fetch balance" });
-    }
+  db.query(
+    query,
+    [userId, startDate, endDate, userId, startDate, endDate],
+    (err, results) => {
+      if (err) {
+        console.error("Error fetching balance:", err);
+        return res.status(500).json({ error: "Failed to fetch balance" });
+      }
 
-    const { totalIncome, totalExpenses } = results[0];
-    res.json({ totalIncome, totalExpenses });
-  });
+      const { totalIncome, totalExpenses } = results[0];
+      res.json({ totalIncome, totalExpenses });
+    }
+  );
 };
 
 module.exports = {
