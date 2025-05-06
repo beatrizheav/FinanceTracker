@@ -1,15 +1,59 @@
 const db = require("../config/db");
-const firebaseAdmin = require("../config/firebaseConfig"); // Ruta a la configuración de Firebase
-const { v4: uuidv4 } = require("uuid"); // Para generar un nombre único para la imagen
+const firebaseAdmin = require("../config/firebaseConfig"); // Firebase config
+const { v4: uuidv4 } = require("uuid"); // To generate unic name for the image
 
 const getAllExpenses = (req, res) => {
   db.query("SELECT * FROM expenses", (err, results) => {
     if (err) {
-      console.error("Error fetching incomes:", err);
-      return res.status(500).json({ error: "Failed to retrieve incomes" });
+      console.error("Error fetching expenses:", err);
+      return res.status(500).json({ error: "Failed to retrieve expenses" });
     }
 
     res.json(results);
+  });
+};
+
+const getUserExpenses = (req, res) => {
+  const userId = req.user.userId;
+
+  const query = `
+    SELECT 
+      expenses.*, 
+      categories.id AS category_id,
+      categories.name AS category_name, 
+      categories.color AS category_color,
+      categories.icon AS category_icon
+    FROM expenses
+    JOIN categories ON expenses.category_id = categories.id
+    WHERE expenses.user_id = ?
+  `;
+
+  db.query(query, [userId], (err, results) => {
+    if (err) {
+      console.error("Error fetching user expenses with categories:", err);
+      return res.status(500).json({ error: "Failed to retrieve expenses" });
+    }
+
+    const formattedResults = results.map((expense) => {
+      return {
+        id: expense.id,
+        name: expense.name,
+        user_id: expense.user_id,
+        amount: expense.amount,
+        description: expense.description,
+        date: expense.date,
+        fixed: expense.fixed,
+        image: expense.image,
+        category: {
+          id: expense.category_id, // Agregado el id de la categoría
+          name: expense.category_name,
+          color: expense.category_color,
+          icon: expense.category_icon,
+        },
+      };
+    });
+
+    res.json(formattedResults);
   });
 };
 
@@ -90,4 +134,4 @@ const createExpense = async (req, res) => {
   }
 };
 
-module.exports = { createExpense, getAllExpenses };
+module.exports = { createExpense, getAllExpenses, getUserExpenses };

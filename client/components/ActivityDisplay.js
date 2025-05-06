@@ -11,8 +11,7 @@ import CategoryIcon from "./CategoryIcon";
 const ActivityDisplay = ({
   name,
   date,
-  amount,
-  fixed,
+  amount = 0,
   color,
   onPress,
   category = {},
@@ -37,17 +36,17 @@ const ActivityDisplay = ({
       ? color
       : category.color;
 
-  const quantityColor =
+  const amountColor =
     screen === "income" //changes the text color depending on the screen
       ? activityDisplay.green.color
       : screen === "expense"
       ? activityDisplay.red.color
       : activityDisplay.teal.color;
 
-  const validQuantity = Number(amount) || 0; //Validates if the amount is a number and if not, adds 0 by default.
+  const validAmount = Number(amount) || 0; //Validates if the amount is a number and if not, adds 0 by default.
 
-  const quantityText = amount
-    ? `${screen === "expense" ? "-" : ""} $ ${validQuantity.toLocaleString(
+  const amountText = amount
+    ? `${screen === "expense" ? "-" : ""} $ ${validAmount.toLocaleString(
         "en-US",
         { minimumFractionDigits: 2, maximumFractionDigits: 2 }
       )}`
@@ -71,11 +70,7 @@ const ActivityDisplay = ({
         </View>
       </View>
       <View style={activityDisplay.format}>
-        <CustomText
-          text={quantityText}
-          type={"TextBig"}
-          color={quantityColor}
-        />
+        <CustomText text={amountText} type={"TextBig"} color={amountColor} />
         <Ionicons
           testID="chevron-forward"
           name={"chevron-forward"}

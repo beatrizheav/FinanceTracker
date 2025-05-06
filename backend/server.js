@@ -39,7 +39,8 @@ app.get(
 app.post("/category/add", authenticate, categoriesController.createCategory);
 
 //Routes Expenses
-app.get("/expenses/get", expenseController.getAllExpenses);
+app.get("/expenses", expenseController.getAllExpenses);
+app.get("/expenses/get", authenticate, expenseController.getUserExpenses);
 app.post(
   "/expenses/add",
   authenticate,
