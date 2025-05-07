@@ -70,9 +70,9 @@ const Incomes = () => {
   };
 
   const showBottom = () => {
-    setSelectedIncome(null);
-    setEditMode(false);
-    setIsActiveBSIncome(true);
+     setSelectedIncome(null);
+     setEditMode(false);
+     setIsActiveBSIncome(true);
   };
 
   const toggleSection = (section) => {
