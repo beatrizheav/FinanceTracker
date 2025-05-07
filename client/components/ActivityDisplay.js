@@ -51,11 +51,13 @@ const ActivityDisplay = ({
         { minimumFractionDigits: 2, maximumFractionDigits: 2 }
       )}`
     : "$ 0.00"; //Validates if there is data in the amount, if not, sets a default amount
+
   return (
     <TouchableOpacity
       onPress={onPress}
       disabled={formatName === "Sin categoría"}
       style={[activityDisplay.container, activityDisplay.format]}
+      disabled={formatName === "Sin categoría" ? true : false}
     >
       <View style={activityDisplay.format}>
         <CategoryIcon icon={icon} type={"small"} color={colorIcon} />

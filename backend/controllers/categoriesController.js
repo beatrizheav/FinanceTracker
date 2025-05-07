@@ -50,4 +50,38 @@ const createCategory = (req, res) => {
   });
 };
 
-module.exports = { getUserCategories, createCategory };
+const editCategory = (req, res) => {
+  const userId = req.user.userId; // From JWT
+  const { name, budget, color, icon, id } = req.body;
+
+  if (!name || !budget || !color || !icon) {
+    return res
+      .status(400)
+      .json({ message: "Missing required fields to update category." });
+  }
+
+  const query = `
+    UPDATE categories 
+    SET name = ?, budget = ?, color = ?, icon = ?
+    WHERE id = ? AND user_id = ?
+  `;
+
+  const values = [name, budget, color, JSON.stringify(icon), id, userId];
+
+  db.query(query, values, (err, results) => {
+    if (err) {
+      console.error("Error updating category:", err);
+      return res.status(500).json({ message: "Failed to update category." });
+    }
+
+    if (results.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({ message: "Category not found or not owned by user." });
+    }
+
+    res.status(200).json({ message: "Category updated successfully." });
+  });
+};
+
+module.exports = { getUserCategories, createCategory, editCategory };
