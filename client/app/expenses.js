@@ -32,9 +32,12 @@ const expenses = () => {
 
   const height =
     Platform.OS === "android" ? expense.containerAnd : expense.containerIos;
-  const [selectedExpense, setSelectedExpense] = useState(null);
   const [isActiveModalExpense, setIsActiveModalExpense] = useState(false);
+
   const [isActiveBSExpense, setIsActiveBSExpense] = useState(false);
+  const [selectedExpense, setSelectedExpense] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
   const [editMode, setEditMode] = useState(false);
   const fixedExpenses = data.filter((item) => item.fixed === 1); //expenses fixed
   const today = new Date();
@@ -66,6 +69,12 @@ const expenses = () => {
     setSelectedExpense(null);
     setEditMode(false);
     setIsActiveBSExpense(true);
+  };
+
+  const handleEditExpense = (expense) => {
+    setSelectedExpense(expense);
+    setIsActiveModalExpense(false);
+    setIsEditing(true);
   };
 
   const toggleSection = (section) => {
@@ -220,20 +229,28 @@ const expenses = () => {
         <ModalExpense
           {...selectedExpense}
           setIsActiveModalExpense={setIsActiveModalExpense}
-          onEdit={() => {
-            setEditMode(true);
-            setIsActiveModalExpense(false);
-            setIsActiveBSExpense(true);
-          }}
+          onEdit={() => handleEditExpense(selectedExpense)}
         />
       )}
-      {isActiveBSExpense && (
+
+      {(isEditing || isActiveBSExpense) && (
         <BSExpense
-          visible={isActiveBSExpense}
-          setVisible={setIsActiveBSExpense}
-          edit={editMode}
+          visible={isEditing || isActiveBSExpense}
+          setVisible={(val) => {
+            setIsActiveBSExpense(val);
+            if (!val) {
+              setIsEditing(false);
+              setSelectedExpense(null);
+            }
+          }}
+          edit={isEditing}
           expense={selectedExpense}
-          onSaved={fetchExpenses}
+          onSaved={() => {
+            fetchExpenses();
+            setIsEditing(false);
+            setIsActiveBSExpense(false);
+            setSelectedExpense(null);
+          }}
         />
       )}
     </View>
