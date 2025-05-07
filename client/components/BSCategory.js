@@ -56,7 +56,7 @@ export default function BSCategory({
     setVisible(false);
   };
 
-  const handleCreateCategory = async () => {
+  const handleCategory = async () => {
     if (!validateForm()) {
       return;
     }
@@ -153,7 +153,7 @@ export default function BSCategory({
           </View>
           <CustomButton
             title={titleButton}
-            onPress={handleCreateCategory}
+            onPress={handleCategory}
             background={"green"}
           />
         </View>
