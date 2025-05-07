@@ -3,7 +3,16 @@ const db = require("../config/db"); // your MySQL connection
 const getUserCategories = (req, res) => {
   const userId = req.user.userId; // Extract userId from the JWT payload
 
-  const query = "SELECT * FROM categories WHERE user_id = ?";
+  // const query = "SELECT * FROM categories WHERE user_id = ?";
+  const query = `
+  SELECT 
+    c.id, c.name, c.budget, c.color, c.icon,
+    COALESCE(SUM(e.amount), 0) AS expense
+  FROM categories c
+  LEFT JOIN expenses e ON c.id = e.category_id
+  WHERE c.user_id = ?
+  GROUP BY c.id
+ `;
 
   db.query(query, [userId], (err, results) => {
     if (err) {

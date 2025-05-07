@@ -76,7 +76,7 @@ const categoriesScreen = () => {
             renderItem={({ item }) => (
               <ActivityDisplay
                 name={item.name}
-                amount={item.budget}
+                amount={item.expense}
                 color={item.color}
                 category={item.icon}
                 onPress={() => showModalCategory(item)}

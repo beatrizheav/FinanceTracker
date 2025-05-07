@@ -55,6 +55,7 @@ const ActivityDisplay = ({
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={formatName === "Sin categoría"}
       style={[activityDisplay.container, activityDisplay.format]}
       disabled={formatName === "Sin categoría" ? true : false}
     >
@@ -73,7 +74,7 @@ const ActivityDisplay = ({
       </View>
       <View style={activityDisplay.format}>
         <CustomText text={amountText} type={"TextBig"} color={amountColor} />
-        {formatName !== "Sin categoría" ? (
+        {formatName === "Sin categoría" ? null : (
           <Ionicons
             testID="chevron-forward"
             name={"chevron-forward"}
@@ -81,7 +82,7 @@ const ActivityDisplay = ({
             color={colorsTheme.dark}
             style={activityDisplay.iconForward}
           />
-        ) : null}
+        )}
       </View>
     </TouchableOpacity>
   );
