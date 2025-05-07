@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import {
   View,
   Image,
@@ -7,14 +7,16 @@ import {
   Animated,
   TouchableWithoutFeedback,
 } from "react-native";
+import { Alert } from "react-native";
+import { useRouter } from "expo-router";
 import { FontAwesome } from "@expo/vector-icons";
 import AntDesign from "@expo/vector-icons/AntDesign";
-import { colorsTheme } from "../styles/colorsTheme";
-import { offset, SIDE_MENU_WIDTH } from "../constants/sideMenuSizes";
+import { useUser } from "../hooks/useUser";
+import { getAvatarById } from "../hooks/getAvatar";
 import CustomText from "./CustomText";
+import { offset, SIDE_MENU_WIDTH } from "../constants/sideMenuSizes";
+import { colorsTheme } from "../styles/colorsTheme";
 import { sideMenu } from "../styles/components/side-menu";
-import { useRouter } from "expo-router";
-import { Alert } from "react-native";
 
 const menuItems = [
   { key: "1", icon: "home", label: "Inicio", route: "/home" },
@@ -26,6 +28,7 @@ const menuItems = [
 const SideMenu = ({ visible, setMenuVisible }) => {
   const slideAnim = useRef(new Animated.Value(-SIDE_MENU_WIDTH)).current;
   const router = useRouter();
+  const { user } = useUser();
 
   const handleMenuNavigation = (route) => {
     setMenuVisible(false);
@@ -84,17 +87,19 @@ const SideMenu = ({ visible, setMenuVisible }) => {
             </Pressable>
 
             <View style={sideMenu.avatarSection}>
-              <Image
-                source={require("../assets/avatars/3.png")}
-                style={sideMenu.avatar}
-              />
+              <View style={sideMenu.avatarContainer}>
+                <Image
+                  source={getAvatarById(user?.avatar)}
+                  style={sideMenu.avatar}
+                />
+              </View>
               <CustomText
-                text={"Nombre de Usuario"}
+                text={user.name + " " + user.lastName}
                 type={"TitleMedium"}
                 color={colorsTheme.white}
               />
               <CustomText
-                text={"correo@ejemplo.com"}
+                text={user.email}
                 type={"TextBig"}
                 color={colorsTheme.white}
               />
