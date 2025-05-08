@@ -239,13 +239,13 @@ const Incomes = () => {
               }}
             />
           )}
-          <BSIncome
+          {isActiveBSIncome && (<BSIncome
             visible={isActiveBSIncome}
             setVisible={setIsActiveBSIncome}
             edit={editMode}
             income={selectedIncome}
             onSave={loadIncomes}
-          />
+          />)}
         </View>
       )}
     </>

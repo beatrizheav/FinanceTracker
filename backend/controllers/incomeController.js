@@ -47,10 +47,10 @@ const createIncome = (req, res) => {
 };
 
 const editIncome = (req, res) => {
-  const { id, user_id, name, amount, date, fixed } = req.body;
+  const { id, name, amount, date, fixed } = req.body;
 
-  if (!user_id || !id) {
-    return res.status(400).json({ error: "id and user_id are required" });
+  if (!id) {
+    return res.status(400).json({ error: "income id are required" });
   };
 
   const fields = [];
@@ -76,13 +76,17 @@ const editIncome = (req, res) => {
     values.push(fixed);
   }
 
+  if (fields.length === 0) {
+    return res.status(400).json({ error: "No fields provided for update" });
+  }
+
   const query = `
     UPDATE incomes 
     SET ${fields.join(', ')}
-    WHERE id = ? AND user_id = ?
+    WHERE id = ?
   `;
 
-  values.push(id, user_id);
+  values.push(id);
 
   db.query(
     query,

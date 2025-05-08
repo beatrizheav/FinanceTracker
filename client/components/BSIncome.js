@@ -1,4 +1,4 @@
-import { TouchableWithoutFeedback, View, Keyboard } from "react-native";
+import { TouchableWithoutFeedback, View, Keyboard, Alert } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import RBSheet from "react-native-raw-bottom-sheet";
 import { handleInputChange } from "../hooks/handleInputChange";
@@ -29,14 +29,13 @@ export default function BSExpense({
   }, [visible]);
 
   const handleClose = () => {
-    refRBSheet.current?.close();
     setVisible(false);
   };
 
   const [incomeData, setIncomeData] = useState({
     userId: "",
     name: "",
-    quantity: "",
+    amount: "",
     date: new Date(),
     fixed: false,
   });
@@ -61,12 +60,17 @@ export default function BSExpense({
 
   useEffect(() => {
     if (edit) {
-      setIncomeData(income);
+      setIncomeData({
+        ...income,
+       date: new Date(income.date),
+       fixed: income.fixed === 1 ? true : false}
+        
+      );
     } else {
       setIncomeData({
         userId: "",
         name: "",
-        quantity: "",
+        amount: "",
         date: new Date(),
         fixed: false,
       });
@@ -79,31 +83,56 @@ export default function BSExpense({
 
   const handleSubmit = async () => {
     const validateForm = useFormValidation(incomeData, "BSIncome");
-
     if (!validateForm()) return;
 
     const newIncome = {
       user_id: incomeData.userId,
       name: incomeData.name,
-      amount: incomeData.quantity,
+      amount: incomeData.amount,
       date: incomeData.date.toISOString().slice(0, 19).replace("T", " "),
       fixed: incomeData.fixed,
-      ...AsyncStorage(edit && {id: incomeData.id})
+      ...(edit && {id: incomeData.id})
     };
 
-    try {
+
       if(edit){
-        await apiClient.put("/incomes/edit", newIncome);
-        alert("Ingreso editado correctamente");
+        try {
+         await apiClient.put("/incomes/edit", newIncome);
+          Alert.alert("Ingreso editado", "Tu ingreso fue editado correctamente",
+            [
+              {
+                text: "Ok",
+                onPress: () => {
+                  onSave?.();
+                },
+                style: "default",
+              }
+            ]);
+          handleClose();
+        } catch (error) {
+          alert("Error al editar el ingreso, por favor intentalo de nuevo");
+          console.error("Error al editar el ingreso", error)
+        }
       }else{
-        await apiClient.post("/incomes/add", newIncome);
-        alert("Ingreso agregado correctamente.");
-        handleClose();
+        try {
+          await apiClient.post("/incomes/add", newIncome);
+          Alert.alert("Ingreso agregado", "Tu ingreso fue agregado correctamente",
+            [
+              {
+                text: "Ok",
+                onPress: () => {
+                  onSave?.();
+                },
+                style: "default",
+              }
+            ]);
+          handleClose();
+        } catch (error) {
+          alert("Error al agregar el ingreso");
+          console.error("Error al agregar el ingreso", error)
+        }
       }
       handleClose();
-    } catch (error) {
-      alert("No se pudo conectar con el servidor.");
-    }
   };
 
   return (
@@ -146,9 +175,9 @@ export default function BSExpense({
               type={"number"}
               label={"Monto"}
               placeholder={"Ingresa el monto del ingreso"}
-              value={incomeData.quantity}
+              value={incomeData.amount}
               onChange={(text) =>
-                handleInputChange(setIncomeData, "quantity", text)
+                handleInputChange(setIncomeData, "amount", text)
               }
             />
             <DatePicker
