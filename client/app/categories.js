@@ -35,23 +35,22 @@ const categoriesScreen = () => {
   const getCategories = async () => {
     try {
       const response = await apiClient.get("/categories/get");
-      setCategories(response)
-    }catch{
+      setCategories(response);
+    } catch {
       alert("Error al obtener las categorías del usuario: " + error.message);
     } finally {
-      setLoading(false)
+      setLoading(false);
     }
   };
 
   useEffect(() => {
     getCategories();
   }, []);
-  
+
   const handleCategoryCreated = () => {
     getCategories();
     setIsActiveBSCategory(false);
   };
-
 
   return (
     <View style={general.safeArea}>
@@ -59,7 +58,7 @@ const categoriesScreen = () => {
       <View style={height}>
         {loading ? (
           <View style={categoriesStyles.loader}>
-            <ActivityIndicator size='large' color='#466146'/>
+            <ActivityIndicator size="large" color="#466146" />
           </View>
         ) : categories.length === 0 ? (
           <View>
@@ -77,7 +76,7 @@ const categoriesScreen = () => {
             renderItem={({ item }) => (
               <ActivityDisplay
                 name={item.name}
-                quantity={item.budget}
+                amount={item.expense}
                 color={item.color}
                 category={item.icon}
                 onPress={() => showModalCategory(item)}
@@ -100,17 +99,17 @@ const categoriesScreen = () => {
           }}
         />
       )}
-      {isActiveBSCategory &&
-      <BSCategory
-        visible={isActiveBSCategory}
-        setVisible={setIsActiveBSCategory}
-        edit={editMode}
-        category={selectedCategory}
-        onCreate={handleCategoryCreated}
-      />}
+      {isActiveBSCategory && (
+        <BSCategory
+          visible={isActiveBSCategory}
+          setVisible={setIsActiveBSCategory}
+          edit={editMode}
+          category={selectedCategory}
+          onCreate={handleCategoryCreated}
+        />
+      )}
     </View>
   );
 };
 
 export default categoriesScreen;
-

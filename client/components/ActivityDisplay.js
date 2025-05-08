@@ -51,10 +51,13 @@ const ActivityDisplay = ({
         { minimumFractionDigits: 2, maximumFractionDigits: 2 }
       )}`
     : "$ 0.00"; //Validates if there is data in the amount, if not, sets a default amount
+
   return (
     <TouchableOpacity
       onPress={onPress}
+      disabled={formatName === "Sin categoría"}
       style={[activityDisplay.container, activityDisplay.format]}
+      disabled={formatName === "Sin categoría" ? true : false}
     >
       <View style={activityDisplay.format}>
         <CategoryIcon icon={icon} type={"small"} color={colorIcon} />
@@ -71,13 +74,15 @@ const ActivityDisplay = ({
       </View>
       <View style={activityDisplay.format}>
         <CustomText text={amountText} type={"TextBig"} color={amountColor} />
-        <Ionicons
-          testID="chevron-forward"
-          name={"chevron-forward"}
-          size={22}
-          color={colorsTheme.dark}
-          style={activityDisplay.iconForward}
-        />
+        {formatName === "Sin categoría" ? null : (
+          <Ionicons
+            testID="chevron-forward"
+            name={"chevron-forward"}
+            size={22}
+            color={colorsTheme.dark}
+            style={activityDisplay.iconForward}
+          />
+        )}
       </View>
     </TouchableOpacity>
   );
