@@ -96,16 +96,7 @@ const createExpense = async (req, res) => {
 
     db.query(
       query,
-      [
-        userId,
-        category,
-        name,
-        description,
-        quantity,
-        date,
-        receiptUrl,
-        fixed ? 1 : 0,
-      ],
+      [userId, category, name, description, quantity, date, receiptUrl, fixed],
       (err, result) => {
         if (err) {
           console.error("Error inserting expense:", err);
@@ -170,7 +161,7 @@ const editExpense = async (req, res) => {
       "category_id = ?",
     ];
 
-    const values = [name, description, quantity, date, fixed ? 1 : 0, category];
+    const values = [name, description, quantity, date, fixed, category];
 
     if (receiptUrl) {
       fields.push("image = ?");

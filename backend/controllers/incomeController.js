@@ -69,13 +69,31 @@ const getBalance = (req, res) => {
 
   const query = `
     SELECT
-      (SELECT IFNULL(SUM(amount), 0) FROM incomes WHERE user_id = ? AND date BETWEEN ? AND ?) AS totalIncome,
-      (SELECT IFNULL(SUM(amount), 0) FROM expenses WHERE user_id = ? AND date BETWEEN ? AND ?) AS totalExpenses
+      (
+        SELECT IFNULL(SUM(amount), 0)
+        FROM incomes
+        WHERE user_id = ?
+          AND (
+            (fixed = 0 AND date BETWEEN ? AND ?)
+            OR
+            (fixed = 1 AND date <= ?)
+          )
+      ) AS totalIncome,
+      (
+        SELECT IFNULL(SUM(amount), 0)
+        FROM expenses
+        WHERE user_id = ?
+          AND (
+            (fixed = 0 AND date BETWEEN ? AND ?)
+            OR
+            (fixed = 1 AND date <= ?)
+          )
+      ) AS totalExpenses
   `;
 
   db.query(
     query,
-    [userId, startDate, endDate, userId, startDate, endDate],
+    [userId, startDate, endDate, endDate, userId, startDate, endDate, endDate],
     (err, results) => {
       if (err) {
         console.error("Error fetching balance:", err);
