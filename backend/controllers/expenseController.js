@@ -161,7 +161,7 @@ const editExpense = async (req, res) => {
       "category_id = ?",
     ];
 
-    const values = [name, description, quantity, date, fixed ? 1 : 0, category];
+    const values = [name, description, quantity, date, fixed, category];
 
     if (receiptUrl) {
       fields.push("image = ?");
