@@ -1,6 +1,7 @@
 import { ActivityIndicator, View, FlatList, Platform } from "react-native";
 import React, { useEffect, useState } from "react";
 import apiClient from "../api/apiClient";
+import useCategories from "../hooks/useCategories";
 import Header from "../components/Header";
 import ActivityDisplay from "../components/ActivityDisplay";
 import AddButton from "../components/AddButton";
@@ -14,8 +15,6 @@ const categoriesScreen = () => {
   const [isActiveModalCategory, setIsActiveModalCategory] = useState(false);
   const [isActiveBSCategory, setIsActiveBSCategory] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
   const height =
     Platform.OS === "android"
       ? categoriesStyles.containerAnd
@@ -32,20 +31,7 @@ const categoriesScreen = () => {
     setIsActiveBSCategory(true);
   };
 
-  const getCategories = async () => {
-    try {
-      const response = await apiClient.get("/categories/get");
-      setCategories(response);
-    } catch {
-      alert("Error al obtener las categorías del usuario: " + error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    getCategories();
-  }, []);
+  const { categories, loading, getCategories } = useCategories();
 
   const handleCategoryCreated = () => {
     getCategories();
