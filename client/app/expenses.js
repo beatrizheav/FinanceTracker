@@ -230,6 +230,7 @@ const expenses = () => {
           {...selectedExpense}
           setIsActiveModalExpense={setIsActiveModalExpense}
           onEdit={() => handleEditExpense(selectedExpense)}
+          onDelete={fetchExpenses}
         />
       )}
 

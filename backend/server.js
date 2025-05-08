@@ -55,7 +55,7 @@ app.post(
   upload.single("image"),
   expenseController.editExpense
 );
-app.delete(
+app.post(
   "/expenses/delete", 
   authenticate,
   expenseController.deleteExpense
