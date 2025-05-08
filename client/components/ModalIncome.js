@@ -13,7 +13,7 @@ const ModalIncome = ({
   name,
   date,
   amount,
-  incomeId,
+  id,
   setIsActiveModalIncome,
   onEdit,
 }) => {
@@ -31,10 +31,10 @@ const ModalIncome = ({
   const icon = { iconName: "attach-money", iconSet: "MaterialIcons" };
   const color = colorsTheme.lightGreen;
 
-  const handleDelete = (userId, incomeId) => {
+  const handleDelete = (userId, id) => {
     //agregar la logica para eliminar el gasto
     Alert.alert(
-      `Eliminar Ingreso con id: ${incomeId}`,
+      `Eliminar Ingreso con id: ${id}`,
       "¿Estas seguro que deseas eliminar el ingreso?",
       [
         {
@@ -90,7 +90,7 @@ const ModalIncome = ({
               </View>
               <View style={modalIncome.container_buttons}>
                 <CustomButton
-                  onPress={() => handleDelete(userId, incomeId)}
+                  onPress={() => handleDelete(userId, id)}
                   title={"Eliminar"}
                   background={"white"}
                   type={"modal"}
