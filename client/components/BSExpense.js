@@ -42,12 +42,10 @@ export default function BSExpense({
     // Set the initial state of the form when edit is true
     if (edit) {
       setExpenseData({
-        name: expense.name,
-        description: expense.description,
-        quantity: expense.amount.toString(),
+        ...expense,
+        amount: expense.amount.toString(),
         date: new Date(expense.date),
         category: expense.category.id,
-        image: expense.image,
         fixed: Boolean(expense.fixed),
       });
     }
@@ -60,7 +58,7 @@ export default function BSExpense({
   const [expenseData, setExpenseData] = useState({
     name: "",
     description: "",
-    quantity: "",
+    amount: "",
     date: new Date(),
     category: "",
     image: "",
@@ -99,7 +97,7 @@ export default function BSExpense({
       category: String(expenseData.category),
       name: expenseData.name,
       description: expenseData.description,
-      quantity: String(expenseData.quantity),
+      quantity: String(expenseData.amount),
       date: expenseData.date.toISOString().slice(0, 19).replace("T", " "),
       fixed: expenseData.fixed ? "1" : "0",
     };
@@ -196,9 +194,9 @@ export default function BSExpense({
                   type={"number"}
                   label={"Monto"}
                   placeholder={"Ingresa el monto del gasto"}
-                  value={expenseData.quantity}
+                  value={expenseData.amount}
                   onChange={(text) =>
-                    handleInputChange(setExpenseData, "quantity", text)
+                    handleInputChange(setExpenseData, "amount", text)
                   }
                 />
                 <DatePicker
