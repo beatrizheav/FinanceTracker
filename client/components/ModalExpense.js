@@ -59,6 +59,7 @@ const ModalExpense = ({
     try {
       await apiClient.post("/expenses/delete", {id})
       setIsActiveModalExpense(false)
+      onDelete?.()
       Alert.alert("Gasto eliminado", "Tu gasto se ha eliminado correctamente")
     } catch (error){
       console.error("Error al intentar eliminar el gasto", error)
@@ -74,8 +75,7 @@ const ModalExpense = ({
         {
           text: "Eliminar",
           onPress: () => {
-            deleteExpense(id),
-            onDelete?.();
+            deleteExpense(id)
           },
           style: "default",
         },

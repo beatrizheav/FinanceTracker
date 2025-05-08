@@ -1,4 +1,5 @@
 const db = require("../config/db");
+const { Storage } = require("@google-cloud/storage");
 const firebaseAdmin = require("../config/firebaseConfig"); // Firebase config
 const { v4: uuidv4 } = require("uuid"); // To generate unic name for the image
 
@@ -207,18 +208,41 @@ const deleteExpense = async (req, res) => {
   }
 
   try {
-    const query = `
+    const getImageQuery = `SELECT image FROM expenses WHERE id = ? AND user_id = ?`;
+    db.query(getImageQuery, [id, userId], async (err, results) => {
+      if (err) {
+        console.error("Error getting image URL:", err);
+        return res.status(500).json({ message: "Failed to get image." });
+      }
+      const imageUrl = results?.[0]?.image;
+
+      if (imageUrl) {
+        try {
+          const bucket = firebaseAdmin.storage().bucket();
+          const filePath = decodeURIComponent(
+            imageUrl.split(`https://storage.googleapis.com/${bucket.name}/`)[1]
+          );
+
+          const file = bucket.file(filePath);
+          await file.delete();
+        } catch (firebaseErr) {
+          console.error("No se pudo eliminar la imagen de Firebase:", firebaseErr);
+        }
+      }
+
+    const deleteQuery = `
       DELETE FROM expenses
       WHERE id = ? AND user_id = ?
     `;
 
-    db.query(query, [id, userId], (err, result) => {
+    db.query(deleteQuery, [id, userId], (err, result) => {
       if (err) {
         console.error("Error deleting expense:", err);
         return res.status(500).json({ message: "Failed to deleted expense." });
       }
       res.status(200).json({ message: "Expense deleted successfully." });
     });
+  });
   } catch (error) {
     console.error("Error deleting expense:", error);
     res.status(500).json({ message: "Internal server error." });
