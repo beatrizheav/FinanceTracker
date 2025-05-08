@@ -112,16 +112,13 @@ const getBalance = (req, res) => {
     return res.status(400).json({ error: "month and year are required" });
   }
 
-  // Aseguramos formato '01', '02', ..., '12'
   const formattedMonth = month.toString().padStart(2, "0");
 
-  // Obtenemos el último día del mes
   const getLastDayOfMonth = (year, month) => {
-    return new Date(year, month, 0).getDate(); // month aquí es 1-based
+    return new Date(year, month, 0).getDate();
   };
   const lastDay = getLastDayOfMonth(year, parseInt(formattedMonth));
 
-  // Fechas en formato 'YYYY-MM-DD'
   const startDate = `${year}-${formattedMonth}-01`;
   const endDate = `${year}-${formattedMonth}-${lastDay}`;
 
@@ -181,10 +178,47 @@ const getIncomesByUser = (req, res) => {
   );
 };
 
+const deleteIncome = (req, res) => {
+  const { incomeId } = req.body;
+  const userId = req.user.userId;
+
+  if (!incomeId) {
+    return res.status(400).json({ error: "incomeId is required" });
+  }
+
+  db.query("SELECT * FROM incomes WHERE id = ?", [incomeId], (err, results) => {
+    if (err) {
+      console.error("Error fetching income:", err);
+      return res.status(500).json({ error: "Database error" });
+    }
+
+    if (results.length === 0) {
+      return res.status(404).json({ error: "Income not found" });
+    }
+
+    const income = results[0];
+    if (income.user_id !== userId) {
+      return res
+        .status(403)
+        .json({ error: "Unauthorized to delete this income" });
+    }
+
+    db.query("DELETE FROM incomes WHERE id = ?", [incomeId], (err) => {
+      if (err) {
+        console.error("Error deleting income:", err);
+        return res.status(500).json({ error: "Failed to delete income" });
+      }
+
+      res.status(200).json({ message: "Income deleted successfully" });
+    });
+  });
+};
+
 module.exports = {
   createIncome,
   getAllIncomes,
   editIncome,
   getBalance,
   getIncomesByUser,
+  deleteIncome,
 };
