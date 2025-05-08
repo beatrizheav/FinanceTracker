@@ -17,18 +17,24 @@ export const header = StyleSheet.create({
   buttonPlaceholder: {
     width: 30,
   },
-  avatarContainer: {
+  welcomeContainer: {
     width: "45%",
     height: "100%",
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  avatar: {
+  avatarContainer: {
     width: 60,
     height: 60,
-    borderRadius: 50,
+    borderRadius: 30,
     borderWidth: 1,
     borderColor: colorsTheme.lightGray,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  avatar: {
+    width: 50,
+    height: 50,
   },
 });

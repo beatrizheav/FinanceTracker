@@ -15,6 +15,7 @@ import ModalIncome from "../components/ModalIncome";
 import { homeStyles } from "../styles/screens/home";
 import { general } from "../styles/general";
 import apiClient from "../api/apiClient";
+import { months } from "../constants/getDate";
 
 export default function HomeScreen() {
   const [date, setDate] = useState({ month: "", year: "" });
@@ -28,23 +29,31 @@ export default function HomeScreen() {
     setActiveSheet(item.category ? "ModalGasto" : "ModalIngreso");
   };
 
-  const handleCloseSheet = () => {
-    setActiveSheet(null);
-    setActivity(null);
-  };
-
   const fetchBalance = async () => {
     try {
-      const response = await apiClient.get("/incomes/balance");
+      const numericMonth = (months.indexOf(date.month) + 1)
+        .toString()
+        .padStart(2, "0");
+      const response = await apiClient.get(
+        `/incomes/balance?month=${numericMonth}&year=${date.year}`
+      );
       setBalance(response);
     } catch (error) {
       console.error("❌ Error al obtener el balance:", error.message);
     }
   };
 
-  useEffect(() => {
+  const handleCloseSheet = () => {
+    setActiveSheet(null);
+    setActivity(null);
     fetchBalance();
-  }, []);
+  };
+
+  useEffect(() => {
+    if (date.month && date.year) {
+      fetchBalance();
+    }
+  }, [date]);
 
   return (
     <View style={general.safeArea}>

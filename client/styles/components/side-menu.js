@@ -42,11 +42,17 @@ export const sideMenu = StyleSheet.create({
     marginBottom: 10,
   },
   avatar: {
+    width: 80,
+    height: 80,
+  },
+  avatarContainer: {
     width: 100,
     height: 100,
     borderRadius: 50,
     marginBottom: 10,
     backgroundColor: colorsTheme.white,
+    alignItems: "center",
+    justifyContent: "center",
   },
   menuButton: {
     flexDirection: "row",

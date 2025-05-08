@@ -96,16 +96,7 @@ const createExpense = async (req, res) => {
 
     db.query(
       query,
-      [
-        userId,
-        category,
-        name,
-        description,
-        quantity,
-        date,
-        receiptUrl,
-        fixed ? 1 : 0,
-      ],
+      [userId, category, name, description, quantity, date, receiptUrl, fixed],
       (err, result) => {
         if (err) {
           console.error("Error inserting expense:", err);
@@ -134,4 +125,80 @@ const createExpense = async (req, res) => {
   }
 };
 
-module.exports = { createExpense, getAllExpenses, getUserExpenses };
+const editExpense = async (req, res) => {
+  const userId = req.user.userId;
+  const { id, name, description, quantity, date, fixed, category } = req.body;
+  const receiptFile = req.file;
+
+  if (!id || !name || !quantity || !date || !category) {
+    return res
+      .status(400)
+      .json({ message: "Missing required fields to update expense." });
+  }
+
+  try {
+    let receiptUrl = null;
+
+    if (receiptFile) {
+      const bucket = firebaseAdmin.storage().bucket();
+      const fileName = `receipts/${uuidv4()}_${receiptFile.originalname}`;
+      const file = bucket.file(fileName);
+
+      await file.save(receiptFile.buffer, {
+        contentType: receiptFile.mimetype,
+        public: true,
+      });
+
+      receiptUrl = `https://storage.googleapis.com/${bucket.name}/${file.name}`;
+    }
+
+    const fields = [
+      "name = ?",
+      "description = ?",
+      "amount = ?",
+      "date = ?",
+      "fixed = ?",
+      "category_id = ?",
+    ];
+
+    const values = [name, description, quantity, date, fixed, category];
+
+    if (receiptUrl) {
+      fields.push("image = ?");
+      values.push(receiptUrl);
+    }
+
+    const query = `
+      UPDATE expenses
+      SET ${fields.join(", ")}
+      WHERE id = ? AND user_id = ?
+    `;
+
+    values.push(id, userId);
+
+    db.query(query, values, (err, result) => {
+      if (err) {
+        console.error("Error updating expense:", err);
+        return res.status(500).json({ message: "Failed to update expense." });
+      }
+
+      if (result.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ message: "Expense not found or not owned by user." });
+      }
+
+      res.status(200).json({ message: "Expense updated successfully." });
+    });
+  } catch (error) {
+    console.error("Error uploading image or updating expense:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+};
+
+module.exports = {
+  createExpense,
+  getAllExpenses,
+  getUserExpenses,
+  editExpense,
+};
