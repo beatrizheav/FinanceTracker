@@ -48,6 +48,12 @@ app.post(
   upload.single("image"),
   expenseController.createExpense
 );
+app.post(
+  "/expenses/edit",
+  authenticate,
+  upload.single("image"),
+  expenseController.editExpense
+);
 
 const PORT = process.env.PORT || 5001;
 app.listen(5001, "0.0.0.0", () => {

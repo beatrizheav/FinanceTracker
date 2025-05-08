@@ -41,7 +41,15 @@ export default function BSExpense({
 
     // Set the initial state of the form when edit is true
     if (edit) {
-      setExpenseData(expense);
+      setExpenseData({
+        name: expense.name,
+        description: expense.description,
+        quantity: expense.amount.toString(),
+        date: new Date(expense.date),
+        category: expense.category.id,
+        image: expense.image,
+        fixed: Boolean(expense.fixed),
+      });
     }
   }, [visible, edit]);
 
@@ -88,12 +96,12 @@ export default function BSExpense({
     }
 
     const fields = {
-      category: expenseData.category,
+      category: String(expenseData.category),
       name: expenseData.name,
       description: expenseData.description,
-      quantity: expenseData.quantity,
+      quantity: String(expenseData.quantity),
       date: expenseData.date.toISOString().slice(0, 19).replace("T", " "),
-      fixed: expenseData.fixed ? 1 : 0,
+      fixed: expenseData.fixed ? "1" : "0",
     };
 
     Object.entries(fields).forEach(([key, value]) => append(key, value));
@@ -105,16 +113,32 @@ export default function BSExpense({
     if (!validateForm()) return;
 
     setIsLoading(true);
-
     const formData = buildFormData();
 
+    if (edit) {
+      formData.append("id", String(expense.id));
+    }
+
     try {
-      const { expense } = await apiClient.post("/expenses/add", formData);
-      alert(`Gasto '${expense.name}' creado`);
-      if (onSaved) onSaved(); //  Charge the list of expenses
+      const endpoint = edit ? "/expenses/edit" : "/expenses/add";
+      const data = await apiClient.post(endpoint, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      alert(
+        edit
+          ? "Gasto actualizado correctamente"
+          : `Gasto '${data.expense.name}' creado`
+      );
+
+      if (onSaved) onSaved();
       handleClose();
     } catch (error) {
-      alert("Error al crear el gasto: " + error.message);
+      alert("Error al guardar el gasto: " + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
