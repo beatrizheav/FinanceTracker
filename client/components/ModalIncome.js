@@ -8,6 +8,7 @@ import CustomButton from "./CustomButton";
 import { Ionicons } from "@expo/vector-icons";
 import { colorsTheme } from "../styles/colorsTheme";
 import CategoryIcon from "./CategoryIcon";
+import apiClient from "../api/apiClient";
 
 const ModalIncome = ({
   name,
@@ -31,27 +32,42 @@ const ModalIncome = ({
   const icon = { iconName: "attach-money", iconSet: "MaterialIcons" };
   const color = colorsTheme.lightGreen;
 
-  const handleDelete = (userId, incomeId) => {
-    //agregar la logica para eliminar el gasto
+  const handleDelete = async (userId, incomeId) => {
     Alert.alert(
-      `Eliminar Ingreso con id: ${incomeId}`,
-      "¿Estas seguro que deseas eliminar el ingreso?",
+      `Eliminar Ingreso`,
+      "¿Estás seguro que deseas eliminar este ingreso?",
       [
         {
           text: "Eliminar",
-          onPress: () => {
-            Alert.alert("Ingreso Eliminado"), setIsActiveModalIncome(false);
+          onPress: async () => {
+            try {
+              const response = await apiClient.post("/incomes/delete", {
+                incomeId,
+              });
+
+              Alert.alert("Ingreso eliminado correctamente.");
+              setIsActiveModalIncome(false);
+            } catch (error) {
+              console.error("❌ Error eliminando ingreso:", error.message);
+              if (error.response?.status === 403) {
+                Alert.alert("No tienes permisos para eliminar este ingreso.");
+              } else if (error.response?.status === 404) {
+                Alert.alert("Ingreso no encontrado.");
+              } else {
+                Alert.alert("No se pudo eliminar el ingreso.");
+              }
+            }
           },
-          style: "default",
+          style: "destructive",
         },
         {
           text: "Cancelar",
-          onPress: () => {},
           style: "cancel",
         },
       ]
     );
   };
+
   const handleEdit = () => {
     onEdit();
   };
