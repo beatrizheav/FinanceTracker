@@ -238,6 +238,7 @@ const Incomes = () => {
                 setIsActiveModalIncome(false);
                 setIsActiveBSIncome(true);
               }}
+              onDelete={loadIncomes}
             />
           )}
           <BSIncome

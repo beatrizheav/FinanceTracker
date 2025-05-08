@@ -17,6 +17,7 @@ const ModalIncome = ({
   incomeId,
   setIsActiveModalIncome,
   onEdit,
+  onDelete,
 }) => {
   const userId = 2; //temporal userId
   const formatName = name ? name : "Nombre no encontrado"; //Validates if there is data in the title, if not, sets a default title
@@ -57,6 +58,7 @@ const ModalIncome = ({
                 Alert.alert("No se pudo eliminar el ingreso.");
               }
             }
+            onDelete();
           },
           style: "destructive",
         },
