@@ -196,9 +196,39 @@ const editExpense = async (req, res) => {
   }
 };
 
+const deleteExpense = async (req, res) => {
+  const userId = req.user.userId;
+  const { id } = req.body;
+
+  if (!id ) {
+    return res
+      .status(400)
+      .json({ message: "Missing id to delete expense." });
+  }
+
+  try {
+    const query = `
+      DELETE FROM expenses
+      WHERE id = ? AND user_id = ?
+    `;
+
+    db.query(query, [id, userId], (err, result) => {
+      if (err) {
+        console.error("Error deleting expense:", err);
+        return res.status(500).json({ message: "Failed to deleted expense." });
+      }
+      res.status(200).json({ message: "Expense deleted successfully." });
+    });
+  } catch (error) {
+    console.error("Error deleting expense:", error);
+    res.status(500).json({ message: "Internal server error." });
+  }
+}
+
 module.exports = {
   createExpense,
   getAllExpenses,
   getUserExpenses,
   editExpense,
+  deleteExpense
 };
