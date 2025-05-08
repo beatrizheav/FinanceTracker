@@ -56,6 +56,11 @@ app.post(
   upload.single("image"),
   expenseController.editExpense
 );
+app.post(
+  "/expenses/delete", 
+  authenticate,
+  expenseController.deleteExpense
+)
 
 const PORT = process.env.PORT || 5001;
 app.listen(5001, "0.0.0.0", () => {
