@@ -231,12 +231,14 @@ const Incomes = () => {
           {isActiveModalIncome && selectedIncome && (
             <ModalIncome
               {...selectedIncome}
+              incomeId={selectedIncome.id}
               setIsActiveModalIncome={setIsActiveModalIncome}
               onEdit={() => {
                 setEditMode(true);
                 setIsActiveModalIncome(false);
                 setIsActiveBSIncome(true);
               }}
+              onDelete={loadIncomes}
             />
           )}
           {isActiveBSIncome && (<BSIncome
