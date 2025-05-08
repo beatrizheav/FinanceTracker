@@ -1,6 +1,5 @@
 import { ActivityIndicator, View, FlatList, Platform } from "react-native";
-import React, { useEffect, useState } from "react";
-import apiClient from "../api/apiClient";
+import React, { useState } from "react";
 import useCategories from "../hooks/useCategories";
 import Header from "../components/Header";
 import ActivityDisplay from "../components/ActivityDisplay";
