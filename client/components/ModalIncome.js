@@ -14,7 +14,7 @@ const ModalIncome = ({
   name,
   date,
   amount,
-  incomeId,
+  id,
   setIsActiveModalIncome,
   onEdit,
   onDelete,
@@ -108,7 +108,7 @@ const ModalIncome = ({
               </View>
               <View style={modalIncome.container_buttons}>
                 <CustomButton
-                  onPress={() => handleDelete(userId, incomeId)}
+                  onPress={() => handleDelete(userId, id)}
                   title={"Eliminar"}
                   background={"white"}
                   type={"modal"}

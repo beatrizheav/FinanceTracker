@@ -46,6 +46,64 @@ const createIncome = (req, res) => {
   );
 };
 
+const editIncome = (req, res) => {
+  const { id, name, amount, date, fixed } = req.body;
+
+  if (!id) {
+    return res.status(400).json({ error: "income id are required" });
+  };
+
+  const fields = [];
+  const values = [];
+
+  if (name !== undefined) {
+    fields.push("name = ?");
+    values.push(name);
+  }
+
+  if (amount !== undefined) {
+    fields.push("amount = ?");
+    values.push(amount);
+  }
+
+  if (date !== undefined) {
+    fields.push("date = ?");
+    values.push(date);
+  }
+
+  if (fixed !== undefined) {
+    fields.push("fixed = ?");
+    values.push(fixed);
+  }
+
+  if (fields.length === 0) {
+    return res.status(400).json({ error: "No fields provided for update" });
+  }
+
+  const query = `
+    UPDATE incomes 
+    SET ${fields.join(', ')}
+    WHERE id = ?
+  `;
+
+  values.push(id);
+
+  db.query(
+    query,
+    values,
+    (err, result) => {
+      if (err) {
+        console.error("Error editing income:", err);
+        return res.status(500).json({ error: "Failed to edit income" });
+      }
+
+      res.status(201).json({
+        message: "Income edited successfully",
+      });
+    }
+  );
+};
+
 const getBalance = (req, res) => {
   const userId = req.user.userId;
   const { month, year } = req.query;
@@ -159,6 +217,7 @@ const deleteIncome = (req, res) => {
 module.exports = {
   createIncome,
   getAllIncomes,
+  editIncome,
   getBalance,
   getIncomesByUser,
   deleteIncome,

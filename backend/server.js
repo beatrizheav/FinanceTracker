@@ -27,6 +27,7 @@ app.post("/user/login", userController.loginUser);
 // Routes Incomes
 app.get("/incomes", authenticate, incomeController.getAllIncomes);
 app.post("/incomes/add", incomeController.createIncome);
+app.put("/incomes/edit", authenticate, incomeController.editIncome);
 app.get("/incomes/balance", authenticate, incomeController.getBalance);
 app.get("/incomes/user", authenticate, incomeController.getIncomesByUser);
 app.post("/incomes/delete", authenticate, incomeController.deleteIncome);

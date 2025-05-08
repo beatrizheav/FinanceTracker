@@ -70,9 +70,9 @@ const Incomes = () => {
   };
 
   const showBottom = () => {
-    setSelectedIncome(null);
-    setEditMode(false);
-    setIsActiveBSIncome(true);
+     setSelectedIncome(null);
+     setEditMode(false);
+     setIsActiveBSIncome(true);
   };
 
   const toggleSection = (section) => {
@@ -241,13 +241,13 @@ const Incomes = () => {
               onDelete={loadIncomes}
             />
           )}
-          <BSIncome
+          {isActiveBSIncome && (<BSIncome
             visible={isActiveBSIncome}
             setVisible={setIsActiveBSIncome}
             edit={editMode}
             income={selectedIncome}
             onSave={loadIncomes}
-          />
+          />)}
         </View>
       )}
     </>
