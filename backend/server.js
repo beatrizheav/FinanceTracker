@@ -37,6 +37,7 @@ app.get(
   categoriesController.getUserCategories
 );
 app.post("/category/add", authenticate, categoriesController.createCategory);
+app.post("/category/edit", authenticate, categoriesController.editCategory);
 
 //Routes Expenses
 app.get("/expenses", expenseController.getAllExpenses);
@@ -46,6 +47,12 @@ app.post(
   authenticate,
   upload.single("image"),
   expenseController.createExpense
+);
+app.post(
+  "/expenses/edit",
+  authenticate,
+  upload.single("image"),
+  expenseController.editExpense
 );
 
 const PORT = process.env.PORT || 5001;

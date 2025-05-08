@@ -12,7 +12,13 @@ import { sheets } from "../styles/components/bottom-sheets";
 import { bsCategory } from "../styles/components/bs-category";
 import CustomText from "./CustomText";
 
-export default function BSCategory({ visible, setVisible, edit, category, onCreate }) {
+export default function BSCategory({
+  visible,
+  setVisible,
+  edit,
+  category,
+  onCreate,
+}) {
   const [colorModalVisible, setColorModalVisible] = useState(false);
   const [iconModalVisible, setIconModalVisible] = useState(false);
   const [categoryData, setCategoryData] = useState({
@@ -33,18 +39,16 @@ export default function BSCategory({ visible, setVisible, edit, category, onCrea
   useEffect(() => {
     if (edit) {
       setCategoryData(category);
-    }else{
+    } else {
       setCategoryData({
         name: "",
         budget: "",
         expense: 0,
         color: null,
         icon: null,
-      })
+      });
     }
   }, [edit, category]);
-
-
 
   const validateForm = useFormValidation(categoryData, "categories");
 
@@ -52,21 +56,27 @@ export default function BSCategory({ visible, setVisible, edit, category, onCrea
     setVisible(false);
   };
 
-  const handleCreateCategory = async () => {
+  const handleCategory = async () => {
     if (!validateForm()) {
       return;
     }
+    const endpoint = edit ? "/category/edit" : "/category/add";
+
     try {
-      await apiClient.post("/category/add", categoryData);
-      if (typeof onCreate === "function" && !edit) {
+      await apiClient.post(endpoint, categoryData);
+      if (typeof onCreate === "function") {
         onCreate();
       }
-      alert("Categoría creada");
+      const alertMessage = edit ? "Categoría editada" : "Categoría creada";
+      alert(alertMessage);
       handleClose();
-    }catch{
-      alert("Error al agregar la categoría: " + error.message);
+    } catch {
+      const errrorMessage = edit
+        ? "Error al editar la categoría: "
+        : "Error al agregar la categoría: ";
+      alert(errrorMessage + error.message);
     }
-  }
+  };
 
   const ableToDrag = !colorModalVisible && !iconModalVisible;
 
@@ -141,10 +151,11 @@ export default function BSCategory({ visible, setVisible, edit, category, onCrea
               </View>
             </View>
           </View>
-          <CustomButton 
+          <CustomButton
             title={titleButton}
-            onPress={handleCreateCategory} 
-            background={"green"} />
+            onPress={handleCategory}
+            background={"green"}
+          />
         </View>
       </TouchableWithoutFeedback>
     </RBSheet>
