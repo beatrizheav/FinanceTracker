@@ -119,8 +119,6 @@ export default function BSExpense({
       formData.append("id", String(expense.id));
     }
 
-    console.log("Form data:", formData);
-
     try {
       const endpoint = edit ? "/expenses/edit" : "/expenses/add";
       const data = await apiClient.post(endpoint, formData, {
