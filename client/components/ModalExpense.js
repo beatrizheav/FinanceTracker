@@ -17,17 +17,18 @@ import CustomText from "./CustomText";
 import ImagePickerComponent from "./ImagePicker";
 import { modalExpense } from "../styles/components/modal-expense";
 import { colorsTheme } from "../styles/colorsTheme";
+import apiClient from "../api/apiClient";
 
 const ModalExpense = ({
   category = {},
   name,
   date,
-  quantity = 0,
+  amount = 0,
   description,
   image,
-  userId,
-  expenseId,
+  id,
   onEdit,
+  onDelete,
   setIsActiveModalExpense,
 }) => {
   const formatNameCategory = category.name
@@ -37,13 +38,13 @@ const ModalExpense = ({
   const formatDate = date
     ? format(date, "dd 'de' MMMM yyyy", { locale: es })
     : "fecha no encontrada"; //takes the date and formats it
-  const validQuantity = Number(quantity) || 0;
-  const quantityText = quantity
+  const validQuantity = Number(amount) || 0;
+  const amountText = amount
     ? `- $ ${validQuantity.toLocaleString("en-US", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`
-    : "$ 0.00"; //Validates if there is data in the quantity, if not, sets a default quantity
+    : "$ 0.00"; //Validates if there is data in the amount, if not, sets a default amount
   const validImage = image ? image : false;
   const heightModal = image
     ? Platform.OS === "android"
@@ -54,16 +55,27 @@ const ModalExpense = ({
     : { height: "60%" };
   const heightInputs = image ? { height: "37%" } : { height: "20%" };
 
-  const handleDelete = (userId, expenseId) => {
-    //agregar la logica para eliminar el gasto
+  const deleteExpense = async () => {
+    try {
+      await apiClient.post("/expenses/delete", {id})
+      setIsActiveModalExpense(false)
+      onDelete?.()
+      Alert.alert("Gasto eliminado", "Tu gasto se ha eliminado correctamente")
+    } catch (error){
+      console.error("Error al intentar eliminar el gasto", error)
+      Alert.alert("Error", "Porfavor intentalo de nuevo")
+    }
+  }
+
+  const handleDelete = (id) => {
     Alert.alert(
-      `Eliminar Gasto con id ${expenseId}`,
+      `Eliminar Gasto: ${name}`,
       "¿Estas seguro que deseas eliminar el gasto?",
       [
         {
           text: "Eliminar",
           onPress: () => {
-            Alert.alert("Gasto Eliminado"), setIsActiveModalExpense(false);
+            deleteExpense(id)
           },
           style: "default",
         },
@@ -76,8 +88,17 @@ const ModalExpense = ({
     );
   };
 
-  const handleEdit = (expenseId) => {
-    onEdit();
+  const handleEdit = () => {
+    onEdit({
+      id: id,
+      name,
+      description,
+      amount,
+      date,
+      image,
+      category,
+    });
+    setIsActiveModalExpense(false);
   };
 
   const closeModal = () => {
@@ -116,7 +137,7 @@ const ModalExpense = ({
                 <ModalDetail title={"Gasto:"} text={formatNameExpense} />
                 <ModalDetail
                   title={"Cantidad:"}
-                  text={quantityText}
+                  text={amountText}
                   color={modalExpense.red.color}
                 />
                 <ModalDetail title={"Fecha:"} text={formatDate} />
@@ -135,14 +156,14 @@ const ModalExpense = ({
               </View>
               <View style={modalExpense.container_buttons}>
                 <CustomButton
-                  onPress={() => handleDelete(userId, expenseId)}
+                  onPress={() => handleDelete(id)}
                   title={"Eliminar"}
                   background={"white"}
                   type={"modal"}
                   testID="button-Eliminar"
                 />
                 <CustomButton
-                  onPress={() => handleEdit()}
+                  onPress={handleEdit}
                   title={"Editar"}
                   background={"green"}
                   type={"modal"}

@@ -1,5 +1,8 @@
 import { View } from "react-native";
 import React, { useEffect, useState } from "react";
+import apiClient from "../api/apiClient";
+import useCategories from "../hooks/useCategories";
+import { months } from "../constants/getDate";
 import Header from "../components/Header";
 import DatePickerDropdown from "../components/DatePickerDropdown";
 import BalanceDisplay from "../components/BalanceDisplay";
@@ -14,7 +17,6 @@ import ModalExpense from "../components/ModalExpense";
 import ModalIncome from "../components/ModalIncome";
 import { homeStyles } from "../styles/screens/home";
 import { general } from "../styles/general";
-import apiClient from "../api/apiClient";
 
 export default function HomeScreen() {
   const [date, setDate] = useState({ month: "", year: "" });
@@ -22,29 +24,39 @@ export default function HomeScreen() {
   const [activeSheet, setActiveSheet] = useState(null); // "Categoria", "Ingreso", "Gasto", "ModalIngreso", "ModalGasto"
   const [activity, setActivity] = useState(null); // "Ingreso", "Gasto"
   const [balance, setBalance] = useState({ totalIncome: 0, totalExpenses: 0 });
+  const { categories, loading, getCategories } = useCategories();
 
   const onPressActivity = (item) => {
     setActivity(item);
     setActiveSheet(item.category ? "ModalGasto" : "ModalIngreso");
   };
 
-  const handleCloseSheet = () => {
-    setActiveSheet(null);
-    setActivity(null);
-  };
-
   const fetchBalance = async () => {
     try {
-      const response = await apiClient.get("/incomes/balance");
+      const numericMonth = (months.indexOf(date.month) + 1)
+        .toString()
+        .padStart(2, "0");
+      const response = await apiClient.get(
+        `/incomes/balance?month=${numericMonth}&year=${date.year}`
+      );
       setBalance(response);
     } catch (error) {
       console.error("❌ Error al obtener el balance:", error.message);
     }
   };
 
-  useEffect(() => {
+  const handleCloseSheet = () => {
+    setActiveSheet(null);
+    setActivity(null);
     fetchBalance();
-  }, []);
+    getCategories();
+  };
+
+  useEffect(() => {
+    if (date.month && date.year) {
+      fetchBalance();
+    }
+  }, [date]);
 
   return (
     <View style={general.safeArea}>
@@ -56,7 +68,7 @@ export default function HomeScreen() {
         expense={balance.totalExpenses}
       />
       <View style={homeStyles.expensesScrollview}>
-        <ExpensesScrollview />
+        <ExpensesScrollview categories={categories} loading={loading} />
       </View>
       <RecentActivity onPress={(item) => onPressActivity(item)} />
       <AddButton

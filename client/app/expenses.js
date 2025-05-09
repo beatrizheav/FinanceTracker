@@ -1,26 +1,45 @@
 import { View, FlatList, Pressable, Platform } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { isSameDay, isAfter, isBefore, subDays } from "date-fns";
+import { isSameDay, isAfter, isBefore, subDays, set } from "date-fns";
+import apiClient from "../api/apiClient";
 import Header from "../components/Header";
 import ActivityDisplay from "../components/ActivityDisplay";
 import CustomText from "../components/CustomText";
 import AddButton from "../components/AddButton";
 import ModalExpense from "../components/ModalExpense";
 import BSExpense from "../components/BSExpense";
-import { expensesData } from "../constants/expensesData";
 import { general } from "../styles/general";
 import { colorsTheme } from "../styles/colorsTheme";
 import { expense } from "../styles/screens/expense";
 
-const expenses = ({ data = expensesData }) => {
+const expenses = () => {
+  const fetchExpenses = async () => {
+    try {
+      const data = await apiClient.get("/expenses/get");
+      setData(data);
+    } catch (error) {
+      setError("Registro fallido: " + error.message);
+      alert("Registro fallido: " + error.message);
+    }
+  };
+
+  useEffect(() => {
+    fetchExpenses();
+  }, []);
+
+  const [data, setData] = useState([]);
+
   const height =
     Platform.OS === "android" ? expense.containerAnd : expense.containerIos;
-  const [selectedExpense, setSelectedExpense] = useState(null);
   const [isActiveModalExpense, setIsActiveModalExpense] = useState(false);
+
   const [isActiveBSExpense, setIsActiveBSExpense] = useState(false);
+  const [selectedExpense, setSelectedExpense] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+
   const [editMode, setEditMode] = useState(false);
-  const fixedExpenses = data.filter((item) => item.fixed === true); //expenses fixed
+  const fixedExpenses = data.filter((item) => item.fixed === 1); //expenses fixed
   const today = new Date();
   const twoWeeksAgo = subDays(today, 14);
   const [expandedSections, setExpandedSections] = useState({
@@ -52,10 +71,16 @@ const expenses = ({ data = expensesData }) => {
     setIsActiveBSExpense(true);
   };
 
+  const handleEditExpense = (expense) => {
+    setSelectedExpense(expense);
+    setIsActiveModalExpense(false);
+    setIsEditing(true);
+  };
+
   const toggleSection = (section) => {
     setExpandedSections((prev) => {
       const isCurrentlyOpen = prev[section];
-      // Si ya está abierta, solo ciérrala (permitiendo que ninguna esté abierta)
+      // If it's already open, just close it (allowing none to be open)
       if (isCurrentlyOpen) {
         return {
           fixed: false,
@@ -63,7 +88,7 @@ const expenses = ({ data = expensesData }) => {
           last: false,
         };
       }
-      // Si está cerrada, ábrela y cierra las demás
+      // If it's not open, close all others and open this one
       return {
         fixed: false,
         today: false,
@@ -106,7 +131,7 @@ const expenses = ({ data = expensesData }) => {
           ) : expandedSections.fixed ? (
             <FlatList
               data={fixedExpenses}
-              keyExtractor={(item) => item.expenseId.toString()}
+              keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
                 <ActivityDisplay
@@ -145,7 +170,7 @@ const expenses = ({ data = expensesData }) => {
           ) : expandedSections.today ? (
             <FlatList
               data={todayExpenses}
-              keyExtractor={(item) => item.expenseId.toString()}
+              keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
                 <ActivityDisplay
@@ -184,7 +209,7 @@ const expenses = ({ data = expensesData }) => {
           ) : expandedSections.last ? (
             <FlatList
               data={lastTwoWeeksExpenses}
-              keyExtractor={(item) => item.expenseId.toString()}
+              keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
                 <ActivityDisplay
@@ -204,19 +229,29 @@ const expenses = ({ data = expensesData }) => {
         <ModalExpense
           {...selectedExpense}
           setIsActiveModalExpense={setIsActiveModalExpense}
-          onEdit={() => {
-            setEditMode(true);
-            setIsActiveModalExpense(false);
-            setIsActiveBSExpense(true);
-          }}
+          onEdit={() => handleEditExpense(selectedExpense)}
+          onDelete={fetchExpenses}
         />
       )}
-      {isActiveBSExpense && (
+
+      {(isEditing || isActiveBSExpense) && (
         <BSExpense
-          visible={isActiveBSExpense}
-          setVisible={setIsActiveBSExpense}
-          edit={editMode}
+          visible={isEditing || isActiveBSExpense}
+          setVisible={(val) => {
+            setIsActiveBSExpense(val);
+            if (!val) {
+              setIsEditing(false);
+              setSelectedExpense(null);
+            }
+          }}
+          edit={isEditing}
           expense={selectedExpense}
+          onSaved={() => {
+            fetchExpenses();
+            setIsEditing(false);
+            setIsActiveBSExpense(false);
+            setSelectedExpense(null);
+          }}
         />
       )}
     </View>

@@ -1,6 +1,6 @@
 import { ActivityIndicator, View, FlatList, Platform } from "react-native";
-import React, { useEffect, useState } from "react";
-import apiClient from "../api/apiClient";
+import React, { useState } from "react";
+import useCategories from "../hooks/useCategories";
 import Header from "../components/Header";
 import ActivityDisplay from "../components/ActivityDisplay";
 import AddButton from "../components/AddButton";
@@ -14,8 +14,6 @@ const categoriesScreen = () => {
   const [isActiveModalCategory, setIsActiveModalCategory] = useState(false);
   const [isActiveBSCategory, setIsActiveBSCategory] = useState(false);
   const [editMode, setEditMode] = useState(false);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
   const height =
     Platform.OS === "android"
       ? categoriesStyles.containerAnd
@@ -32,26 +30,12 @@ const categoriesScreen = () => {
     setIsActiveBSCategory(true);
   };
 
-  const getCategories = async () => {
-    try {
-      const response = await apiClient.get("/categories/get");
-      setCategories(response)
-    }catch{
-      alert("Error al obtener las categorías del usuario: " + error.message);
-    } finally {
-      setLoading(false)
-    }
-  };
+  const { categories, loading, getCategories } = useCategories();
 
-  useEffect(() => {
-    getCategories();
-  }, []);
-  
   const handleCategoryCreated = () => {
     getCategories();
     setIsActiveBSCategory(false);
   };
-
 
   return (
     <View style={general.safeArea}>
@@ -59,7 +43,7 @@ const categoriesScreen = () => {
       <View style={height}>
         {loading ? (
           <View style={categoriesStyles.loader}>
-            <ActivityIndicator size='large' color='#466146'/>
+            <ActivityIndicator size="large" color="#466146" />
           </View>
         ) : categories.length === 0 ? (
           <View>
@@ -77,7 +61,7 @@ const categoriesScreen = () => {
             renderItem={({ item }) => (
               <ActivityDisplay
                 name={item.name}
-                quantity={item.budget}
+                amount={item.expense}
                 color={item.color}
                 category={item.icon}
                 onPress={() => showModalCategory(item)}
@@ -100,17 +84,17 @@ const categoriesScreen = () => {
           }}
         />
       )}
-      {isActiveBSCategory &&
-      <BSCategory
-        visible={isActiveBSCategory}
-        setVisible={setIsActiveBSCategory}
-        edit={editMode}
-        category={selectedCategory}
-        onCreate={handleCategoryCreated}
-      />}
+      {isActiveBSCategory && (
+        <BSCategory
+          visible={isActiveBSCategory}
+          setVisible={setIsActiveBSCategory}
+          edit={editMode}
+          category={selectedCategory}
+          onCreate={handleCategoryCreated}
+        />
+      )}
     </View>
   );
 };
 
 export default categoriesScreen;
-

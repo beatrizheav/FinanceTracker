@@ -27,7 +27,10 @@ app.post("/user/login", userController.loginUser);
 // Routes Incomes
 app.get("/incomes", authenticate, incomeController.getAllIncomes);
 app.post("/incomes/add", incomeController.createIncome);
+app.put("/incomes/edit", authenticate, incomeController.editIncome);
 app.get("/incomes/balance", authenticate, incomeController.getBalance);
+app.get("/incomes/user", authenticate, incomeController.getIncomesByUser);
+app.post("/incomes/delete", authenticate, incomeController.deleteIncome);
 
 // Routes Categories
 app.get(
@@ -36,15 +39,28 @@ app.get(
   categoriesController.getUserCategories
 );
 app.post("/category/add", authenticate, categoriesController.createCategory);
+app.post("/category/edit", authenticate, categoriesController.editCategory);
 
 //Routes Expenses
-app.get("/expenses/get", expenseController.getAllExpenses);
+app.get("/expenses", expenseController.getAllExpenses);
+app.get("/expenses/get", authenticate, expenseController.getUserExpenses);
 app.post(
   "/expenses/add",
   authenticate,
   upload.single("image"),
   expenseController.createExpense
 );
+app.post(
+  "/expenses/edit",
+  authenticate,
+  upload.single("image"),
+  expenseController.editExpense
+);
+app.post(
+  "/expenses/delete", 
+  authenticate,
+  expenseController.deleteExpense
+)
 
 const PORT = process.env.PORT || 5001;
 app.listen(5001, "0.0.0.0", () => {

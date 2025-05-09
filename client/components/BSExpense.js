@@ -21,7 +21,13 @@ import { sheets } from "../styles/components/bottom-sheets";
 import { bsExpense } from "../styles/components/bs-expense";
 import { colorsTheme } from "../styles/colorsTheme";
 
-export default function BSExpense({ edit, visible, setVisible, expense }) {
+export default function BSExpense({
+  edit,
+  visible,
+  setVisible,
+  expense,
+  onSaved,
+}) {
   const [dateModalVisible, setDateModalVisible] = useState(false);
   const [dropdownModalVisible, setDropdownModalVisible] = useState(false);
   const refRBSheet = useRef();
@@ -35,7 +41,13 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
 
     // Set the initial state of the form when edit is true
     if (edit) {
-      setExpenseData(expense);
+      setExpenseData({
+        ...expense,
+        amount: expense.amount.toString(),
+        date: new Date(expense.date),
+        category: expense.category.id,
+        fixed: Boolean(expense.fixed),
+      });
     }
   }, [visible, edit]);
 
@@ -46,7 +58,7 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
   const [expenseData, setExpenseData] = useState({
     name: "",
     description: "",
-    quantity: "",
+    amount: "",
     date: new Date(),
     category: "",
     image: "",
@@ -82,12 +94,12 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
     }
 
     const fields = {
-      category: expenseData.category,
+      category: String(expenseData.category),
       name: expenseData.name,
       description: expenseData.description,
-      quantity: expenseData.quantity,
+      quantity: String(expenseData.amount),
       date: expenseData.date.toISOString().slice(0, 19).replace("T", " "),
-      fixed: expenseData.fixed ? 1 : 0,
+      fixed: expenseData.fixed ? "1" : "0",
     };
 
     Object.entries(fields).forEach(([key, value]) => append(key, value));
@@ -99,15 +111,32 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
     if (!validateForm()) return;
 
     setIsLoading(true);
-
     const formData = buildFormData();
 
+    if (edit) {
+      formData.append("id", String(expense.id));
+    }
+
     try {
-      const { expense } = await apiClient.post("/expenses/add", formData);
-      alert(`Gasto '${expense.name}' creado`);
+      const endpoint = edit ? "/expenses/edit" : "/expenses/add";
+      const data = await apiClient.post(endpoint, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      alert(
+        edit
+          ? "Gasto actualizado correctamente"
+          : `Gasto '${data.expense.name}' creado`
+      );
+
+      if (onSaved) onSaved();
       handleClose();
     } catch (error) {
-      alert("Error al crear el gasto: " + error.message);
+      alert("Error al guardar el gasto: " + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -165,9 +194,9 @@ export default function BSExpense({ edit, visible, setVisible, expense }) {
                   type={"number"}
                   label={"Monto"}
                   placeholder={"Ingresa el monto del gasto"}
-                  value={expenseData.quantity}
+                  value={expenseData.amount}
                   onChange={(text) =>
-                    handleInputChange(setExpenseData, "quantity", text)
+                    handleInputChange(setExpenseData, "amount", text)
                   }
                 />
                 <DatePicker

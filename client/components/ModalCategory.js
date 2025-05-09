@@ -10,7 +10,7 @@ import CategoryIcon from "./CategoryIcon";
 const ModalCategory = ({
   name,
   budget = 0,
-  totalExpenses = 0,
+  expense = 0,
   icon,
   color,
   id,
@@ -25,8 +25,8 @@ const ModalCategory = ({
         maximumFractionDigits: 2,
       })}`
     : "$ 0.00"; //Validates if there is data in the quantity, if not, sets a default quantity
-  const formatTotalExpenses = totalExpenses
-    ? `- $ ${totalExpenses.toLocaleString("en-US", {
+  const formatTotalExpenses = expense
+    ? `- $ ${expense.toLocaleString("en-US", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
       })}`
@@ -54,7 +54,7 @@ const ModalCategory = ({
     );
   };
   const handleEdit = (categoryId) => {
-    onEdit()
+    onEdit();
   };
 
   const closeModal = () => {
