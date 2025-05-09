@@ -4,6 +4,7 @@ import { modalCategory } from "../styles/components/modal-category";
 import ModalDetail from "./ModalDetail";
 import CustomButton from "./CustomButton";
 import { Ionicons } from "@expo/vector-icons";
+import apiClient from "../api/apiClient";
 import { colorsTheme } from "../styles/colorsTheme";
 import CategoryIcon from "./CategoryIcon";
 
@@ -15,9 +16,9 @@ const ModalCategory = ({
   color,
   id,
   onEdit,
+  onDelete,
   setIsActiveModalCategory,
 }) => {
-  const userId = 2; //temporal userId
   const formatName = name ? name : "Categoria no encontrada"; //Validates if there is data in the title, if not, sets a default title
   const formatBudget = budget
     ? ` $ ${budget.toLocaleString("en-US", {
@@ -32,16 +33,30 @@ const ModalCategory = ({
       })}`
     : "$ 0.00"; //Validates if there is data in the quantity, if not, sets a default quantity
 
-  const handleDelete = (userId, categoryId) => {
+  const deleteCategory = async () => {
+    const body = { categoryId: id };
+
+    try {
+      await apiClient.post("/category/delete", body);
+      setIsActiveModalCategory(false);
+      onDelete?.();
+      Alert.alert("Gasto eliminado", "Tu gasto se ha eliminado correctamente");
+    } catch (error) {
+      console.error("Error al intentar eliminar el gasto", error);
+      Alert.alert("Error", "Porfavor intentalo de nuevo");
+    }
+  };
+
+  const handleDelete = () => {
     //agregar la logica para eliminar el gasto
     Alert.alert(
-      `Eliminar Categoria con id: ${categoryId}`,
+      `Eliminar Categoria con id: ${id}`,
       "¿Estas seguro que deseas eliminar la categoria?",
       [
         {
           text: "Eliminar",
           onPress: () => {
-            Alert.alert("Categoria Eliminada"), setIsActiveModalCategory(false);
+            deleteCategory();
           },
           style: "default",
         },
@@ -95,7 +110,7 @@ const ModalCategory = ({
               </View>
               <View style={modalCategory.container_buttons}>
                 <CustomButton
-                  onPress={() => handleDelete(userId, id)}
+                  onPress={() => handleDelete()}
                   title={"Eliminar"}
                   background={"white"}
                   type={"modal"}
