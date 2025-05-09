@@ -82,6 +82,7 @@ const categoriesScreen = () => {
             setIsActiveModalCategory(false);
             setIsActiveBSCategory(true);
           }}
+          onDelete={getCategories}
         />
       )}
       {isActiveBSCategory && (

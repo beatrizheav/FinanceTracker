@@ -40,6 +40,7 @@ app.get(
 );
 app.post("/category/add", authenticate, categoriesController.createCategory);
 app.post("/category/edit", authenticate, categoriesController.editCategory);
+app.post("/category/delete", authenticate, categoriesController.deleteCategory);
 
 //Routes Expenses
 app.get("/expenses", expenseController.getAllExpenses);
@@ -56,11 +57,7 @@ app.post(
   upload.single("image"),
   expenseController.editExpense
 );
-app.post(
-  "/expenses/delete", 
-  authenticate,
-  expenseController.deleteExpense
-)
+app.post("/expenses/delete", authenticate, expenseController.deleteExpense);
 
 const PORT = process.env.PORT || 5001;
 app.listen(5001, "0.0.0.0", () => {
