@@ -84,4 +84,61 @@ const editCategory = (req, res) => {
   });
 };
 
-module.exports = { getUserCategories, createCategory, editCategory };
+const deleteCategory = (req, res) => {
+  // Get the userId from the JWT payload and the categoryId from the request body
+  const userId = req.user.userId;
+  const categoryId = req.body.categoryId;
+
+  if (!categoryId) {
+    return res.status(400).json({ message: "Category ID is required." });
+  }
+
+  // Paso 1: Buscar id de la categoría "Sin categoría"
+  const findUncategorizedQuery = `SELECT id FROM categories WHERE name = 'Sin categoría' AND user_id = ?`;
+
+  db.query(findUncategorizedQuery, [userId], (err, results) => {
+    if (err) {
+      console.error("Error searching for 'Sin categoría':", err);
+      return res.status(500).json({ message: "Database error." });
+    }
+    const uncategorizedId = results[0].id;
+    reassignExpensesAndDelete(categoryId, uncategorizedId, userId, res);
+  });
+};
+
+function reassignExpensesAndDelete(categoryId, newCategoryId, userId, res) {
+  // Paso 2: Reasignar los gastos a la nueva categoría
+  const updateExpensesQuery = `UPDATE expenses SET category_id = ? WHERE category_id = ?`;
+  db.query(updateExpensesQuery, [newCategoryId, categoryId], (err) => {
+    if (err) {
+      console.error("Error updating expenses:", err);
+      return res.status(500).json({ message: "Failed to reassign expenses." });
+    }
+
+    // Paso 3: Eliminar la categoría original
+    const deleteCategoryQuery = `DELETE FROM categories WHERE id = ? AND user_id = ?`;
+    db.query(deleteCategoryQuery, [categoryId, userId], (err, result) => {
+      if (err) {
+        console.error("Error deleting category:", err);
+        return res.status(500).json({ message: "Failed to delete category." });
+      }
+
+      if (result.affectedRows === 0) {
+        return res
+          .status(404)
+          .json({ message: "Category not found or unauthorized." });
+      }
+
+      res
+        .status(200)
+        .json({ message: "Category deleted and expenses reassigned." });
+    });
+  });
+}
+
+module.exports = {
+  getUserCategories,
+  createCategory,
+  editCategory,
+  deleteCategory,
+};
