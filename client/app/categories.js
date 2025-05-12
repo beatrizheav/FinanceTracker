@@ -9,6 +9,8 @@ import BSCategory from "../components/BSCategory";
 import CustomText from "../components/CustomText";
 import { general } from "../styles/general";
 import { categoriesStyles } from "../styles/screens/categories";
+import useAuthGuard from "../hooks/useAuthGuard";
+
 const categoriesScreen = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [isActiveModalCategory, setIsActiveModalCategory] = useState(false);
@@ -18,6 +20,7 @@ const categoriesScreen = () => {
     Platform.OS === "android"
       ? categoriesStyles.containerAnd
       : categoriesStyles.containerIos;
+  useAuthGuard();
 
   const showModalCategory = (category) => {
     setSelectedCategory(category);

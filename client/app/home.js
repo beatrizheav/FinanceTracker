@@ -17,6 +17,7 @@ import ModalExpense from "../components/ModalExpense";
 import ModalIncome from "../components/ModalIncome";
 import { homeStyles } from "../styles/screens/home";
 import { general } from "../styles/general";
+import useAuthGuard from "../hooks/useAuthGuard";
 
 export default function HomeScreen() {
   const [date, setDate] = useState({ month: "", year: "" });
@@ -25,6 +26,8 @@ export default function HomeScreen() {
   const [activity, setActivity] = useState(null); // "Ingreso", "Gasto"
   const [balance, setBalance] = useState({ totalIncome: 0, totalExpenses: 0 });
   const { categories, loading, getCategories } = useCategories();
+
+  useAuthGuard();
 
   const onPressActivity = (item) => {
     setActivity(item);
