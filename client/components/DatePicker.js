@@ -9,13 +9,17 @@ import { colorsTheme } from "../styles/colorsTheme";
 import CustomButton from "./CustomButton";
 
 const DatePickerModal = ({ show, setShow, date = new Date(), onChange }) => {
+  const today = new Date();
+  const twoMonthsAgo = new Date();
+  twoMonthsAgo.setMonth(today.getMonth() - 2);
+
   const datePickerProps = {
     value: date,
     mode: "date",
     display: "spinner",
     onChange: onChange,
     themeVariant: "light",
-    minimumDate: new Date(),
+    minimumDate: twoMonthsAgo,
   };
 
   return Platform.OS === "ios" ? (
