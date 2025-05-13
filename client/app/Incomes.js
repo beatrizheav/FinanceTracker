@@ -1,7 +1,7 @@
 import { View, FlatList, Pressable, Platform } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { isSameDay, isAfter, isBefore, subDays, parseISO } from "date-fns";
+import { isSameDay, parseISO } from "date-fns";
 import Header from "../components/Header";
 import ActivityDisplay from "../components/ActivityDisplay";
 import CustomText from "../components/CustomText";
@@ -24,7 +24,11 @@ const Incomes = () => {
   const loadIncomes = async () => {
     try {
       const data = await apiClient.get("/incomes/user");
-      setIncomeList(data);
+      // Ordenar por fecha descendente
+      const sorted = [...data].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      setIncomeList(sorted);
     } catch (err) {
       console.error("Error fetching incomes:", err);
       setError(err.message);
@@ -32,6 +36,7 @@ const Incomes = () => {
       setLoading(false);
     }
   };
+
   useEffect(() => {
     loadIncomes();
   }, []);
@@ -42,29 +47,20 @@ const Incomes = () => {
   const [isActiveModalIncome, setIsActiveModalIncome] = useState(false);
   const [isActiveBSIncome, setIsActiveBSIncome] = useState(false);
   const [editMode, setEditMode] = useState(false);
+
   const fixedIncomes = incomeList.filter(
     (item) => item.fixed === true || item.fixed === 1 || item.fixed === "true"
   );
   const today = new Date();
-  const twoWeeksAgo = subDays(today, 14);
-  const [expandedSections, setExpandedSections] = useState({
-    fixed: false,
-    today: false,
-    last: false,
-  });
 
-  //incomeList of today
   const todayIncomes = incomeList.filter((item) =>
     isSameDay(parseISO(item.date), today)
   );
 
-  //incomes of last two weeks
-  const lastTwoWeeksIncomes = incomeList.filter((item) => {
-    const incomeDate = parseISO(item.date);
-    return (
-      isAfter(incomeDate, twoWeeksAgo) &&
-      (isBefore(incomeDate, today) || isSameDay(incomeDate, today))
-    );
+  const [expandedSections, setExpandedSections] = useState({
+    fixed: false,
+    today: false,
+    all: false,
   });
 
   const showModalIncome = (income) => {
@@ -81,20 +77,11 @@ const Incomes = () => {
   const toggleSection = (section) => {
     setExpandedSections((prev) => {
       const isCurrentlyOpen = prev[section];
-      // Si ya está abierta, solo ciérrala (permitiendo que ninguna esté abierta)
-      if (isCurrentlyOpen) {
-        return {
-          fixed: false,
-          today: false,
-          last: false,
-        };
-      }
-      // Si está cerrada, ábrela y cierra las demás
       return {
         fixed: false,
         today: false,
-        last: false,
-        [section]: true,
+        all: false,
+        [section]: !isCurrentlyOpen,
       };
     });
   };
@@ -112,6 +99,7 @@ const Incomes = () => {
         <View style={general.safeArea}>
           <Header title={"Ingresos"} />
           <View style={height}>
+            {/* Ingresos Fijos */}
             <View style={incomes.section}>
               <Pressable
                 onPress={() => toggleSection("fixed")}
@@ -119,12 +107,10 @@ const Incomes = () => {
               >
                 <CustomText text={"Ingresos fijos"} type={"TitleMedium"} />
                 <Ionicons
-                  onPress={() => toggleSection("fixed")}
                   name={getIcon("fixed")}
                   size={27}
                   color={colorsTheme.black}
                   style={incomes.icon_chev}
-                  testID="chevron-down-outline"
                 />
               </Pressable>
               {expandedSections.fixed && fixedIncomes.length === 0 ? (
@@ -145,12 +131,13 @@ const Incomes = () => {
                       {...item}
                       onPress={() => showModalIncome(item)}
                       screen={"income"}
-                      testID="mock-income-item"
                     />
                   )}
                 />
               ) : null}
             </View>
+
+            {/* Ingresos Hoy */}
             <View style={incomes.section}>
               <Pressable
                 onPress={() => toggleSection("today")}
@@ -158,12 +145,10 @@ const Incomes = () => {
               >
                 <CustomText text={"Hoy"} type={"TitleMedium"} />
                 <Ionicons
-                  onPress={() => toggleSection("today")}
                   name={getIcon("today")}
                   size={27}
                   color={colorsTheme.black}
                   style={incomes.icon_chev}
-                  testID="chevron-down-outline"
                 />
               </Pressable>
               {expandedSections.today && todayIncomes.length === 0 ? (
@@ -184,38 +169,37 @@ const Incomes = () => {
                       {...item}
                       onPress={() => showModalIncome(item)}
                       screen={"income"}
-                      testID="mock-income-item"
                     />
                   )}
                 />
               ) : null}
             </View>
+
+            {/* Todos los ingresos */}
             <View style={incomes.section}>
               <Pressable
-                onPress={() => toggleSection("last")}
+                onPress={() => toggleSection("all")}
                 style={incomes.container_title}
               >
-                <CustomText text={"Últimas dos semanas"} type={"TitleMedium"} />
+                <CustomText text={"Todos los ingresos"} type={"TitleMedium"} />
                 <Ionicons
-                  onPress={() => toggleSection("last")}
-                  name={getIcon("last")}
+                  name={getIcon("all")}
                   size={27}
                   color={colorsTheme.black}
                   style={incomes.icon_chev}
-                  testID="chevron-down-outline"
                 />
               </Pressable>
-              {expandedSections.last && lastTwoWeeksIncomes.length === 0 ? (
+              {expandedSections.all && incomeList.length === 0 ? (
                 <View style={incomes.container_text}>
                   <CustomText
-                    text={"No tienes ningún Ingreso en las últimas dos semanas"}
+                    text={"No tienes ningún ingreso registrado todavía"}
                     type={"TextSmall"}
                     numberOfLines={0}
                   />
                 </View>
-              ) : expandedSections.last ? (
+              ) : expandedSections.all ? (
                 <FlatList
-                  data={lastTwoWeeksIncomes}
+                  data={incomeList}
                   keyExtractor={(item) => item.id.toString()}
                   showsVerticalScrollIndicator={false}
                   renderItem={({ item }) => (
@@ -223,14 +207,15 @@ const Incomes = () => {
                       {...item}
                       onPress={() => showModalIncome(item)}
                       screen={"income"}
-                      testID="mock-income-item"
                     />
                   )}
                 />
               ) : null}
             </View>
           </View>
+
           <AddButton onPress={showBottom} />
+
           {isActiveModalIncome && selectedIncome && (
             <ModalIncome
               {...selectedIncome}
@@ -244,6 +229,7 @@ const Incomes = () => {
               onDelete={loadIncomes}
             />
           )}
+
           {isActiveBSIncome && (
             <BSIncome
               visible={isActiveBSIncome}
