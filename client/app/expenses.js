@@ -1,7 +1,7 @@
 import { View, FlatList, Pressable, Platform } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { isSameDay, isAfter, isBefore, subDays } from "date-fns";
+import { isSameDay } from "date-fns";
 import apiClient from "../api/apiClient";
 import Header from "../components/Header";
 import ActivityDisplay from "../components/ActivityDisplay";
@@ -18,7 +18,6 @@ const Expenses = () => {
   const fetchExpenses = async () => {
     try {
       const data = await apiClient.get("/expenses/get");
-      // Ordenar los gastos por fecha descendente
       const sortedData = [...data].sort(
         (a, b) => new Date(b.date) - new Date(a.date)
       );
@@ -46,24 +45,12 @@ const Expenses = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
-  const fixedExpenses = data.filter((item) => item.fixed === 1); // gastos fijos
+  const fixedExpenses = data.filter((item) => item.fixed === 1);
   const today = new Date();
-  const twoWeeksAgo = subDays(today, 14);
-
-  const [expandedSections, setExpandedSections] = useState({
-    fixed: false,
-    today: false,
-    last: false,
-  });
 
   const todayExpenses = data.filter((item) =>
     isSameDay(new Date(item.date), today)
   );
-
-  const lastTwoWeeksExpenses = data.filter((item) => {
-    const expenseDate = new Date(item.date);
-    return isAfter(expenseDate, twoWeeksAgo) && isBefore(expenseDate, today);
-  });
 
   const showModalExpense = (expense) => {
     setSelectedExpense(expense);
@@ -82,21 +69,20 @@ const Expenses = () => {
     setIsEditing(true);
   };
 
+  const [expandedSections, setExpandedSections] = useState({
+    fixed: false,
+    today: false,
+    all: false,
+  });
+
   const toggleSection = (section) => {
     setExpandedSections((prev) => {
       const isCurrentlyOpen = prev[section];
-      if (isCurrentlyOpen) {
-        return {
-          fixed: false,
-          today: false,
-          last: false,
-        };
-      }
       return {
         fixed: false,
         today: false,
-        last: false,
-        [section]: true,
+        all: false,
+        [section]: !isCurrentlyOpen,
       };
     });
   };
@@ -108,6 +94,7 @@ const Expenses = () => {
     <View style={general.safeArea}>
       <Header title={"Gastos"} />
       <View style={height}>
+        {/* Gastos fijos */}
         <View style={expense.section}>
           <Pressable
             onPress={() => toggleSection("fixed")}
@@ -145,6 +132,7 @@ const Expenses = () => {
           ) : null}
         </View>
 
+        {/* Hoy */}
         <View style={expense.section}>
           <Pressable
             onPress={() => toggleSection("today")}
@@ -182,30 +170,31 @@ const Expenses = () => {
           ) : null}
         </View>
 
+        {/* Todos los gastos */}
         <View style={expense.section}>
           <Pressable
-            onPress={() => toggleSection("last")}
+            onPress={() => toggleSection("all")}
             style={expense.container_title}
           >
-            <CustomText text={"Últimas dos semanas"} type={"TitleMedium"} />
+            <CustomText text={"Todos los gastos"} type={"TitleMedium"} />
             <Ionicons
-              onPress={() => toggleSection("last")}
-              name={getIcon("last")}
+              onPress={() => toggleSection("all")}
+              name={getIcon("all")}
               size={27}
               color={colorsTheme.black}
               style={expense.icon_chev}
             />
           </Pressable>
-          {expandedSections.last && lastTwoWeeksExpenses.length === 0 ? (
+          {expandedSections.all && data.length === 0 ? (
             <View style={expense.container_text}>
               <CustomText
-                text={"No tienes ningún Gasto en las últimas dos semanas"}
+                text={"No tienes ningún gasto registrado"}
                 type={"TextSmall"}
               />
             </View>
-          ) : expandedSections.last ? (
+          ) : expandedSections.all ? (
             <FlatList
-              data={lastTwoWeeksExpenses}
+              data={data}
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
@@ -221,6 +210,7 @@ const Expenses = () => {
       </View>
 
       <AddButton onPress={showBottom} />
+
       {isActiveModalExpense && selectedExpense && (
         <ModalExpense
           {...selectedExpense}
