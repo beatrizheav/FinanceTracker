@@ -12,11 +12,14 @@ import apiClient from "../api/apiClient";
 import { general } from "../styles/general";
 import { colorsTheme } from "../styles/colorsTheme";
 import { incomes } from "../styles/screens/incomes";
+import useAuthGuard from "../hooks/useAuthGuard";
 
 const Incomes = () => {
   const [incomeList, setIncomeList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  useAuthGuard();
 
   const loadIncomes = async () => {
     try {
@@ -70,9 +73,9 @@ const Incomes = () => {
   };
 
   const showBottom = () => {
-     setSelectedIncome(null);
-     setEditMode(false);
-     setIsActiveBSIncome(true);
+    setSelectedIncome(null);
+    setEditMode(false);
+    setIsActiveBSIncome(true);
   };
 
   const toggleSection = (section) => {
@@ -241,13 +244,15 @@ const Incomes = () => {
               onDelete={loadIncomes}
             />
           )}
-          {isActiveBSIncome && (<BSIncome
-            visible={isActiveBSIncome}
-            setVisible={setIsActiveBSIncome}
-            edit={editMode}
-            income={selectedIncome}
-            onSave={loadIncomes}
-          />)}
+          {isActiveBSIncome && (
+            <BSIncome
+              visible={isActiveBSIncome}
+              setVisible={setIsActiveBSIncome}
+              edit={editMode}
+              income={selectedIncome}
+              onSave={loadIncomes}
+            />
+          )}
         </View>
       )}
     </>

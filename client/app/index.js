@@ -52,14 +52,20 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (fontsLoaded && assetsLoaded) {
-      SplashScreen.hideAsync();
-      const token = AsyncStorage.getItem("token");
-      if (token) {
-        router.replace("/home");
-      } else router.replace("/login");
-    }
-  }, [fontsLoaded, router, assetsLoaded]);
+    const checkSession = async () => {
+      if (fontsLoaded && assetsLoaded) {
+        await SplashScreen.hideAsync();
+
+        const token = await AsyncStorage.getItem("token");
+        if (token) {
+          router.replace("/home");
+        } else {
+          router.replace("/login");
+        }
+      }
+    };
+    checkSession();
+  }, [fontsLoaded, assetsLoaded]);
 
   return null;
 }

@@ -12,6 +12,7 @@ import BSExpense from "../components/BSExpense";
 import { general } from "../styles/general";
 import { colorsTheme } from "../styles/colorsTheme";
 import { expense } from "../styles/screens/expense";
+import useAuthGuard from "../hooks/useAuthGuard";
 
 const expenses = () => {
   const fetchExpenses = async () => {
@@ -23,6 +24,8 @@ const expenses = () => {
       alert("Registro fallido: " + error.message);
     }
   };
+
+  useAuthGuard();
 
   useEffect(() => {
     fetchExpenses();
