@@ -1,5 +1,5 @@
 import { View } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,  useMemo } from "react";
 import apiClient from "../api/apiClient";
 import useCategories from "../hooks/useCategories";
 import { months } from "../constants/getDate";
@@ -17,20 +17,35 @@ import ModalExpense from "../components/ModalExpense";
 import ModalIncome from "../components/ModalIncome";
 import { homeStyles } from "../styles/screens/home";
 import { general } from "../styles/general";
+import useExpensesAndIncomes from "../hooks/useExpenseAndIncomes";
+
 
 export default function HomeScreen() {
   const [date, setDate] = useState({ month: "", year: "" });
   const [isMenuActive, setIsMenuActive] = useState(false);
+  const [editMode, setEditMode] = useState(false);
   const [activeSheet, setActiveSheet] = useState(null); // "Categoria", "Ingreso", "Gasto", "ModalIngreso", "ModalGasto"
   const [activity, setActivity] = useState(null); // "Ingreso", "Gasto"
   const [balance, setBalance] = useState({ totalIncome: 0, totalExpenses: 0 });
   const { categories, loading, getCategories } = useCategories();
+  const {expenses, incomes, loadingIncomesAndExpenses, getExpensesAndIncomes} = useExpensesAndIncomes();
+ 
+ //Function to combine and sort data
+const mergeAndSortData = (incomes, expenses) => {
+  return [...incomes, ...expenses]
+    .sort((a, b) => new Date(b.date) - new Date(a.date))
+    .slice(0, 10);
+};
+
+  const combinedData = useMemo(
+    () => mergeAndSortData(incomes, expenses),
+    [incomes, expenses]
+  );
 
   const onPressActivity = (item) => {
     setActivity(item);
     setActiveSheet(item.category ? "ModalGasto" : "ModalIngreso");
   };
-
   const fetchBalance = async () => {
     try {
       const numericMonth = (months.indexOf(date.month) + 1)
@@ -50,6 +65,7 @@ export default function HomeScreen() {
     setActivity(null);
     fetchBalance();
     getCategories();
+    getExpensesAndIncomes();
   };
 
   useEffect(() => {
@@ -70,7 +86,7 @@ export default function HomeScreen() {
       <View style={homeStyles.expensesScrollview}>
         <ExpensesScrollview categories={categories} loading={loading} />
       </View>
-      <RecentActivity onPress={(item) => onPressActivity(item)} />
+      <RecentActivity onPress={(item) => onPressActivity(item)} activity={combinedData} loading={loadingIncomesAndExpenses}/>
       <AddButton
         onPress={() => setIsMenuActive(!isMenuActive)}
         isActiveAddButton={isMenuActive}
@@ -108,14 +124,20 @@ export default function HomeScreen() {
         <ModalExpense
           {...activity}
           setIsActiveModalExpense={handleCloseSheet}
-          onEdit={() => setActiveSheet("Gasto")}
+          onEdit={() => {
+            setActiveSheet("Gasto");
+            setEditMode(true)}
+          }
         />
       )}
       {activeSheet === "ModalIngreso" && (
         <ModalIncome
           {...activity}
           setIsActiveModalIncome={handleCloseSheet}
-          onEdit={() => setActiveSheet("Ingreso")}
+          onEdit={() => {
+            setActiveSheet("Ingreso");
+            setEditMode(true)}
+          }
         />
       )}
     </View>

@@ -4,18 +4,18 @@ import apiClient from "../api/apiClient";
 const useExpensesAndIncomes = () => {
     const [expenses, setExpenses] = useState([]);
     const [incomes, setIncomes] = useState([]);
-    const [loading, setLoading] = useState(true);
+    const [loadingIncomesAndExpenses, setloadingIncomesAndExpenses] = useState(true);
 
     const getExpensesAndIncomes = async () => {
         try {
             const responseExpenses = await apiClient.get("/expenses/get");
-            const responseIncomes = await apiClient.get("/incomes");
+            const responseIncomes = await apiClient.get("/incomes/user");
             setExpenses(responseExpenses);
             setIncomes(responseIncomes);
         } catch (error) {
             console.error('Error al obtener la actividad reciente', error)
         } finally {
-            setLoading(false);
+            setloadingIncomesAndExpenses(false);
         }
     }
 
@@ -24,7 +24,7 @@ const useExpensesAndIncomes = () => {
     }, [])
     
 
-  return {expenses, incomes, loading}
+  return {expenses, incomes, loadingIncomesAndExpenses, getExpensesAndIncomes}
 }
 
 export default useExpensesAndIncomes
