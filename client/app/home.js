@@ -23,7 +23,6 @@ import { general } from "../styles/general";
 export default function HomeScreen() {
   const [date, setDate] = useState({ month: "", year: "" });
   const [isMenuActive, setIsMenuActive] = useState(false);
-  const [editMode, setEditMode] = useState(false);
   const [activeSheet, setActiveSheet] = useState(null); // "Categoria", "Ingreso", "Gasto", "ModalIngreso", "ModalGasto"
   const [activity, setActivity] = useState(null); // "Ingreso", "Gasto"
   const [balance, setBalance] = useState({ totalIncome: 0, totalExpenses: 0 });
@@ -127,8 +126,7 @@ const mergeAndSortData = (incomes, expenses) => {
           {...activity}
           setIsActiveModalExpense={handleCloseSheet}
           onEdit={() => {
-            setActiveSheet("Gasto");
-            setEditMode(true)}
+            setActiveSheet("Gasto")}
           }
         />
       )}
@@ -137,8 +135,7 @@ const mergeAndSortData = (incomes, expenses) => {
           {...activity}
           setIsActiveModalIncome={handleCloseSheet}
           onEdit={() => {
-            setActiveSheet("Ingreso");
-            setEditMode(true)}
+            setActiveSheet("Ingreso")}
           }
         />
       )}
