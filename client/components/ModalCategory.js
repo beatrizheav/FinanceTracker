@@ -40,9 +40,9 @@ const ModalCategory = ({
       await apiClient.post("/category/delete", body);
       setIsActiveModalCategory(false);
       onDelete?.();
-      Alert.alert("Gasto eliminado", "Tu gasto se ha eliminado correctamente");
+      Alert.alert("Categoría eliminada", "Tu gasto se ha eliminado correctamente");
     } catch (error) {
-      console.error("Error al intentar eliminar el gasto", error);
+      console.error("Error al intentar eliminar la categoría", error);
       Alert.alert("Error", "Porfavor intentalo de nuevo");
     }
   };
@@ -50,8 +50,8 @@ const ModalCategory = ({
   const handleDelete = () => {
     //agregar la logica para eliminar el gasto
     Alert.alert(
-      `Eliminar Categoria con id: ${id}`,
-      "¿Estas seguro que deseas eliminar la categoria?",
+      `Eliminar Categoría: ${name}`,
+      "¿Estas seguro que deseas eliminar la categoría?",
       [
         {
           text: "Eliminar",

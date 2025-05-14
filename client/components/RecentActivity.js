@@ -1,48 +1,42 @@
 import {
   View,
-  TouchableOpacity,
   FlatList,
-  ImageBackground,
 } from "react-native";
-import React, { useMemo } from "react";
-import { incomesData } from "../constants/incomesData";
-import { expensesData } from "../constants/expensesData";
+import React from "react";
 import CustomText from "./CustomText";
 import ActivityDisplay from "./ActivityDisplay";
 import { recentActivity } from "../styles/components/recent-activity";
-import { colorsTheme } from "../styles/colorsTheme";
+import { homeStyles } from "../styles/screens/home";
 
-// Function to combine and sort data
-const mergeAndSortData = (incomes, expenses) => {
-  return [...incomes, ...expenses]
-    .map((item, index) => ({ ...item, id: (index + 1).toString() }))
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
-    .slice(0, 10);
-};
 
-export default function RecentActivity({ onPress }) {
-  const combinedData = useMemo(
-    () => mergeAndSortData(incomesData, expensesData),
-    []
-  );
-
+export default function RecentActivity({ onPress, activity, loading }) {
   return (
     <View style={recentActivity.container}>
       <View style={recentActivity.header}>
         <CustomText text="Actividad Reciente" type="TitleSmall" />
       </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={combinedData}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <ActivityDisplay
-            {...item}
-            screen={item.category ? "expense" : "income"}
-            onPress={() => onPress(item)}
+      {loading || activity.length === 0 
+        ? (
+          <View style={homeStyles.recentActivityContainer}>
+            <CustomText 
+            text={"Cargando..."} 
+            type={"TextSmall"}
+            />
+          </View>
+        ): (
+          <FlatList
+          showsVerticalScrollIndicator={false}
+          data={activity}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => (
+            <ActivityDisplay
+              {...item}
+              screen={item.category ? "expense" : "income"}
+              onPress={() => onPress(item)}
+            />
+          )}
           />
         )}
-      />
     </View>
   );
 }

@@ -89,16 +89,7 @@ const ModalExpense = ({
   };
 
   const handleEdit = () => {
-    onEdit({
-      id: id,
-      name,
-      description,
-      amount,
-      date,
-      image,
-      category,
-    });
-    setIsActiveModalExpense(false);
+    onEdit();
   };
 
   const closeModal = () => {
@@ -163,7 +154,7 @@ const ModalExpense = ({
                   testID="button-Eliminar"
                 />
                 <CustomButton
-                  onPress={handleEdit}
+                  onPress={() => handleEdit()}
                   title={"Editar"}
                   background={"green"}
                   type={"modal"}
