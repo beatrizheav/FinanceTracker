@@ -2,6 +2,8 @@ import { View } from "react-native";
 import React, { useEffect, useState,  useMemo } from "react";
 import apiClient from "../api/apiClient";
 import useCategories from "../hooks/useCategories";
+import useExpensesAndIncomes from "../hooks/useExpenseAndIncomes";
+import useAuthGuard from "../hooks/useAuthGuard";
 import { months } from "../constants/getDate";
 import Header from "../components/Header";
 import DatePickerDropdown from "../components/DatePickerDropdown";
@@ -17,8 +19,6 @@ import ModalExpense from "../components/ModalExpense";
 import ModalIncome from "../components/ModalIncome";
 import { homeStyles } from "../styles/screens/home";
 import { general } from "../styles/general";
-import useExpensesAndIncomes from "../hooks/useExpenseAndIncomes";
-
 
 export default function HomeScreen() {
   const [date, setDate] = useState({ month: "", year: "" });
@@ -41,6 +41,8 @@ const mergeAndSortData = (incomes, expenses) => {
     () => mergeAndSortData(incomes, expenses),
     [incomes, expenses]
   );
+
+  useAuthGuard();
 
   const onPressActivity = (item) => {
     setActivity(item);

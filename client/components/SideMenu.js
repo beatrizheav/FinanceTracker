@@ -17,6 +17,7 @@ import CustomText from "./CustomText";
 import { offset, SIDE_MENU_WIDTH } from "../constants/sideMenuSizes";
 import { colorsTheme } from "../styles/colorsTheme";
 import { sideMenu } from "../styles/components/side-menu";
+import { logout } from "../utils/auth";
 
 const menuItems = [
   { key: "1", icon: "home", label: "Inicio", route: "/home" },
@@ -47,7 +48,8 @@ const SideMenu = ({ visible, setMenuVisible }) => {
         {
           text: "Sí",
           onPress: () => {
-            router.replace("/login");
+            logout();
+            // router.replace("/login");
           },
           style: "destructive",
         },

@@ -36,6 +36,11 @@ const request = async (
     const data = await res.json();
 
     if (!res.ok) {
+      if (res.status === 401) {
+        await AsyncStorage.removeItem("token");
+        await AsyncStorage.removeItem("user");
+        router.replace("/login");
+      }
       throw new Error(data.message || "Error en la solicitud");
     }
 
