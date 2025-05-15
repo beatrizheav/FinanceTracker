@@ -15,7 +15,7 @@ export default function RecentActivity({ onPress, activity, loading }) {
       <View style={recentActivity.header}>
         <CustomText text="Actividad Reciente" type="TitleSmall" />
       </View>
-      {loading || activity.length === 0 
+      {loading
         ? (
           <View style={homeStyles.recentActivityContainer}>
             <CustomText 
@@ -23,20 +23,28 @@ export default function RecentActivity({ onPress, activity, loading }) {
             type={"TextSmall"}
             />
           </View>
-        ): (
-          <FlatList
-          showsVerticalScrollIndicator={false}
-          data={activity}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <ActivityDisplay
-              {...item}
-              screen={item.category ? "expense" : "income"}
-              onPress={() => onPress(item)}
-            />
-          )}
-          />
-        )}
+        ): activity.length === 0 
+          ? (
+              <View style={homeStyles.recentActivityContainer}>
+                <CustomText 
+                text={"Aún no tienes ninguna actividad"} 
+                type={"TextSmall"}
+                />
+              </View>
+          )
+          : (<FlatList
+              showsVerticalScrollIndicator={false}
+              data={activity}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <ActivityDisplay
+                  {...item}
+                  screen={item.category ? "expense" : "income"}
+                  onPress={() => onPress(item)}
+                />
+              )}
+          />) 
+        }
     </View>
   );
 }
