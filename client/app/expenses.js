@@ -1,7 +1,7 @@
 import { View, FlatList, Pressable, Platform } from "react-native";
 import React, { useState, useEffect } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { isSameDay, isAfter, isBefore, subDays, set } from "date-fns";
+import { isSameDay } from "date-fns";
 import apiClient from "../api/apiClient";
 import Header from "../components/Header";
 import ActivityDisplay from "../components/ActivityDisplay";
@@ -12,53 +12,45 @@ import BSExpense from "../components/BSExpense";
 import { general } from "../styles/general";
 import { colorsTheme } from "../styles/colorsTheme";
 import { expense } from "../styles/screens/expense";
+import useAuthGuard from "../hooks/useAuthGuard";
 
-const expenses = () => {
+const Expenses = () => {
   const fetchExpenses = async () => {
     try {
       const data = await apiClient.get("/expenses/get");
-      setData(data);
+      const sortedData = [...data].sort(
+        (a, b) => new Date(b.date) - new Date(a.date)
+      );
+      setData(sortedData);
     } catch (error) {
       setError("Registro fallido: " + error.message);
       alert("Registro fallido: " + error.message);
     }
   };
 
+  useAuthGuard();
+
   useEffect(() => {
     fetchExpenses();
   }, []);
 
   const [data, setData] = useState([]);
+  const [error, setError] = useState(null);
 
   const height =
     Platform.OS === "android" ? expense.containerAnd : expense.containerIos;
   const [isActiveModalExpense, setIsActiveModalExpense] = useState(false);
-
   const [isActiveBSExpense, setIsActiveBSExpense] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
-
   const [editMode, setEditMode] = useState(false);
-  const fixedExpenses = data.filter((item) => item.fixed === 1); //expenses fixed
+
+  const fixedExpenses = data.filter((item) => item.fixed === 1);
   const today = new Date();
-  const twoWeeksAgo = subDays(today, 14);
-  const [expandedSections, setExpandedSections] = useState({
-    fixed: false,
-    today: false,
-    last: false,
-  });
 
-  const todayExpenses = data.filter(
-    (
-      item //expenses of today
-    ) => isSameDay(new Date(item.date), today)
+  const todayExpenses = data.filter((item) =>
+    isSameDay(new Date(item.date), today)
   );
-
-  const lastTwoWeeksExpenses = data.filter((item) => {
-    //expenses of last two weeks
-    const expenseDate = new Date(item.date);
-    return isAfter(expenseDate, twoWeeksAgo) && isBefore(expenseDate, today);
-  });
 
   const showModalExpense = (expense) => {
     setSelectedExpense(expense);
@@ -77,23 +69,20 @@ const expenses = () => {
     setIsEditing(true);
   };
 
+  const [expandedSections, setExpandedSections] = useState({
+    fixed: false,
+    today: false,
+    all: false,
+  });
+
   const toggleSection = (section) => {
     setExpandedSections((prev) => {
       const isCurrentlyOpen = prev[section];
-      // If it's already open, just close it (allowing none to be open)
-      if (isCurrentlyOpen) {
-        return {
-          fixed: false,
-          today: false,
-          last: false,
-        };
-      }
-      // If it's not open, close all others and open this one
       return {
         fixed: false,
         today: false,
-        last: false,
-        [section]: true,
+        all: false,
+        [section]: !isCurrentlyOpen,
       };
     });
   };
@@ -105,6 +94,7 @@ const expenses = () => {
     <View style={general.safeArea}>
       <Header title={"Gastos"} />
       <View style={height}>
+        {/* Gastos fijos */}
         <View style={expense.section}>
           <Pressable
             onPress={() => toggleSection("fixed")}
@@ -117,7 +107,6 @@ const expenses = () => {
               size={27}
               color={colorsTheme.black}
               style={expense.icon_chev}
-              testID="chevron-down-outline"
             />
           </Pressable>
           {expandedSections.fixed && fixedExpenses.length === 0 ? (
@@ -125,7 +114,6 @@ const expenses = () => {
               <CustomText
                 text={"No tienes ningún Gasto fijo todavía"}
                 type={"TextSmall"}
-                numberOfLines={0}
               />
             </View>
           ) : expandedSections.fixed ? (
@@ -138,12 +126,13 @@ const expenses = () => {
                   {...item}
                   onPress={() => showModalExpense(item)}
                   screen={"expense"}
-                  testID="mock-expense-item"
                 />
               )}
             />
           ) : null}
         </View>
+
+        {/* Hoy */}
         <View style={expense.section}>
           <Pressable
             onPress={() => toggleSection("today")}
@@ -156,7 +145,6 @@ const expenses = () => {
               size={27}
               color={colorsTheme.black}
               style={expense.icon_chev}
-              testID="chevron-down-outline"
             />
           </Pressable>
           {expandedSections.today && todayExpenses.length === 0 ? (
@@ -164,7 +152,6 @@ const expenses = () => {
               <CustomText
                 text={"No tienes ningún Gasto hoy todavía"}
                 type={"TextSmall"}
-                numberOfLines={0}
               />
             </View>
           ) : expandedSections.today ? (
@@ -177,38 +164,37 @@ const expenses = () => {
                   {...item}
                   onPress={() => showModalExpense(item)}
                   screen={"expense"}
-                  testID="mock-expense-item"
                 />
               )}
             />
           ) : null}
         </View>
+
+        {/* Todos los gastos */}
         <View style={expense.section}>
           <Pressable
-            onPress={() => toggleSection("last")}
+            onPress={() => toggleSection("all")}
             style={expense.container_title}
           >
-            <CustomText text={"Últimas dos semanas"} type={"TitleMedium"} />
+            <CustomText text={"Todos los gastos"} type={"TitleMedium"} />
             <Ionicons
-              onPress={() => toggleSection("last")}
-              name={getIcon("last")}
+              onPress={() => toggleSection("all")}
+              name={getIcon("all")}
               size={27}
               color={colorsTheme.black}
               style={expense.icon_chev}
-              testID="chevron-down-outline"
             />
           </Pressable>
-          {expandedSections.last && lastTwoWeeksExpenses.length === 0 ? (
+          {expandedSections.all && data.length === 0 ? (
             <View style={expense.container_text}>
               <CustomText
-                text={"No tienes ningún Gasto en las últimas dos semanas"}
+                text={"No tienes ningún gasto registrado"}
                 type={"TextSmall"}
-                numberOfLines={0}
               />
             </View>
-          ) : expandedSections.last ? (
+          ) : expandedSections.all ? (
             <FlatList
-              data={lastTwoWeeksExpenses}
+              data={data}
               keyExtractor={(item) => item.id.toString()}
               showsVerticalScrollIndicator={false}
               renderItem={({ item }) => (
@@ -216,7 +202,6 @@ const expenses = () => {
                   {...item}
                   onPress={() => showModalExpense(item)}
                   screen={"expense"}
-                  testID="mock-expense-item"
                 />
               )}
             />
@@ -225,6 +210,7 @@ const expenses = () => {
       </View>
 
       <AddButton onPress={showBottom} />
+
       {isActiveModalExpense && selectedExpense && (
         <ModalExpense
           {...selectedExpense}
@@ -258,4 +244,4 @@ const expenses = () => {
   );
 };
 
-export default expenses;
+export default Expenses;

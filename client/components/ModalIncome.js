@@ -32,10 +32,9 @@ const ModalIncome = ({
     : "$ 0.00"; //Validates if there is data in the amount, if not, sets a default amount
   const icon = { iconName: "attach-money", iconSet: "MaterialIcons" };
   const color = colorsTheme.lightGreen;
-
   const handleDelete = async (userId, incomeId) => {
     Alert.alert(
-      `Eliminar Ingreso`,
+      `Eliminar Ingreso: ${name}`,
       "¿Estás seguro que deseas eliminar este ingreso?",
       [
         {
